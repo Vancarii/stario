@@ -21,16 +21,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool canClear = false;
 
   TextEditingController _searchTextController = TextEditingController();
-
   TabController _tabController;
-
   AnimationController _fadeAnimationController;
   AnimationController _slideAnimationController;
 
   Animation<double> _fadeAnimation;
-
   Animation<Offset> _slideAnimation;
-
   Animation<Color> _blackWhiteAnimation;
   Animation<Color> _whiteBlackAnimation;
 
@@ -146,66 +142,74 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               );
             },
             animation: _fadeAnimationController,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: CustomRoundedTextField(
-                keyboard: TextInputType.text,
-                controller: _searchTextController,
-                maxLines: 1,
-                padding: const EdgeInsets.all(0.0),
-                labelText: 'Search',
-                onTextChanged: (value) {
+            child: searchBar(),
+          ),
+          bottom: tabBar(),
+        ),
+      ),
+    );
+  }
+
+  Widget searchBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: CustomRoundedTextField(
+        keyboard: TextInputType.text,
+        controller: _searchTextController,
+        maxLines: 1,
+        padding: const EdgeInsets.all(0.0),
+        labelText: 'Search',
+        onTextChanged: (value) {
+          setState(() {
+            if (value == '') {
+              canClear = false;
+            } else {
+              canClear = true;
+            }
+          });
+        },
+        endIcon: canClear == true
+            ? IconButton(
+                onPressed: () {
                   setState(() {
-                    if (value == '') {
-                      canClear = false;
-                    } else {
-                      canClear = true;
-                    }
+                    _searchTextController.clear();
+                    canClear = false;
                   });
                 },
-                endIcon: canClear == true
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _searchTextController.clear();
-                            canClear = false;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.cancel,
-                          color: Colors.grey,
-                        ),
-                      )
-                    : null,
-              ),
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(kToolbarHeight),
-            child: AnimatedBuilder(
-              builder: (context, child) {
-                return AnimatedBuilder(
-                  builder: (context, child) {
-                    return TabBar(
-                      controller: _tabController,
-                      unselectedLabelColor: Colors.white.withOpacity(0.6),
-                      labelColor: _whiteBlackAnimation.value,
-                      tabs: forumTabs,
-                      isScrollable: true,
-                      indicator: BubbleTabIndicator(
-                        indicatorHeight: 35.0,
-                        indicatorColor: _blackWhiteAnimation.value,
-                        tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                      ),
-                    );
-                  },
-                  animation: _whiteBlackAnimation,
-                );
-              },
-              animation: _blackWhiteAnimation,
-            ),
-          ),
-        ),
+                icon: Icon(
+                  Icons.cancel,
+                  color: Colors.grey,
+                ),
+              )
+            : null,
+      ),
+    );
+  }
+
+  Widget tabBar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(kToolbarHeight),
+      child: AnimatedBuilder(
+        builder: (context, child) {
+          return AnimatedBuilder(
+            builder: (context, child) {
+              return TabBar(
+                controller: _tabController,
+                unselectedLabelColor: Colors.white.withOpacity(0.6),
+                labelColor: _whiteBlackAnimation.value,
+                tabs: forumTabs,
+                isScrollable: true,
+                indicator: BubbleTabIndicator(
+                  indicatorHeight: 35.0,
+                  indicatorColor: _blackWhiteAnimation.value,
+                  tabBarIndicatorSize: TabBarIndicatorSize.tab,
+                ),
+              );
+            },
+            animation: _whiteBlackAnimation,
+          );
+        },
+        animation: _blackWhiteAnimation,
       ),
     );
   }

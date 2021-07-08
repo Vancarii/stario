@@ -84,7 +84,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                     ),
                     Spacer(),
                     Icon(
-                      Icons.more_vert,
+                      Icons.refresh,
                       color: Colors.white,
                     ),
                   ],

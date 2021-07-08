@@ -6,11 +6,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarIconBrightness: Brightness.light,
-    statusBarBrightness: Brightness.light,
-    statusBarColor: Colors.transparent,
-  ));
   runApp(StarioApp());
 }
 
