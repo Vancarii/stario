@@ -230,15 +230,17 @@ class _ExplorePageState extends State<ExplorePage> {
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: FittedBox(
-                                            child: Text(
-                                              genres[index].genre,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
+                                          child: Wrap(
+                                            children: [
+                                              Text(
+                                                genres[index].genre,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -319,7 +321,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0, right: 15.0),
+                   padding: const EdgeInsets.only(left: 5.0, right: 15.0),
                   child: FilterChip(
                     label: Text('More'),
                     onSelected: (bool selected) {},
