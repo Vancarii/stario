@@ -21,12 +21,12 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*      appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 0,
         brightness: Brightness.dark,
-      ),
+      ),*/
       body: SlidingSheet(
         controller: songSheetController,
         closeOnBackdropTap: true,

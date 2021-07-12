@@ -100,7 +100,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/covers/rehab.jpg'),
+                          image: AssetImage('assets/covers/wakeup.jpg'),
                         ),
                       ),
                     );
@@ -127,7 +127,13 @@ class _ExplorePageState extends State<ExplorePage> {
                       decoration: BoxDecoration(
                         borderRadius:
                             BorderRadius.all(Radius.circular(showGenres == false ? 50.0 : 15.0)),
-                        color: Colors.white,
+
+                        /*gradient: LinearGradient(colors: [
+                          Color(0xfff593FA9),
+                          Color(0xfff5B5488),
+                        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+*/
+                        color: Theme.of(context).accentColor,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black54,

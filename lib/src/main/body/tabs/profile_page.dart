@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
@@ -27,13 +28,13 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     _sliverScrollController.addListener(() {
       if (!isPinned &&
           _sliverScrollController.hasClients &&
-          _sliverScrollController.offset > (profileExpandedHeight - (kToolbarHeight * 2) - 3)) {
+          _sliverScrollController.offset > (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
         setState(() {
           isPinned = true;
         });
       } else if (isPinned &&
           _sliverScrollController.hasClients &&
-          _sliverScrollController.offset < (profileExpandedHeight - (kToolbarHeight * 2) - 3)) {
+          _sliverScrollController.offset < (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
         setState(() {
           isPinned = false;
         });
@@ -91,253 +92,275 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             body: MediaQuery.removePadding(
               removeTop: true,
               context: context,
-              child: NestedScrollView(
-                controller: _sliverScrollController,
-                physics: BouncingScrollPhysics(),
-                headerSliverBuilder: (context, isScrolled) {
-                  return [
-                    SliverAppBar(
-                      stretch: true,
-                      pinned: true,
-                      elevation: 0,
-                      expandedHeight: profileExpandedHeight,
-                      collapsedHeight: kToolbarHeight * 2,
-                      backgroundColor: Color(0xfff222222),
-                      flexibleSpace: FlexibleSpaceBar(
-                        centerTitle: false,
-                        titlePadding: const EdgeInsets.all(0),
-                        title: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                isPinned == false ? Colors.transparent : Color(0xfff222222),
-                                Theme.of(context).primaryColorLight,
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0, left: 15.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Artist Name',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.more_vert,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        background: Container(
-                          foregroundDecoration: BoxDecoration(
-                            color: Colors.black45,
-                          ),
-                          child: Image.asset(
-                            'assets/covers/ramenandoj.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SliverAppBar(
-                      backgroundColor: Color(0xfff222222),
-                      //toolbarHeight: 60,
-                      flexibleSpace: FlexibleSpaceBar(
-                        centerTitle: false,
-                        titlePadding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      text: '2530 ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Followers',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: Colors.white70,
-                                            fontSize: 18.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      text: '26 ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Songs',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: Colors.white70,
-                                            fontSize: 18.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Spacer(),
-                            Container(
-                              height: 35.0,
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                              child: Text(
-                                'Edit Profile',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14.0,
-                                ),
-                              ),
-                            ),
-                            Container(
-                                height: 35.0,
-                                margin: const EdgeInsets.symmetric(),
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white),
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                                child: Icon(
-                                  Icons.reply,
-                                  textDirection: TextDirection.rtl,
-                                  color: Colors.white,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverAppBar(
-                      pinned: true,
-                      backgroundColor: Colors.transparent,
-                      titleSpacing: 5,
-                      toolbarHeight: 80,
-                      flexibleSpace: Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xfff222222),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30.0),
-                            bottomRight: Radius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                      title: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                                color: Colors.black,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: Offset(1, 1),
-                                  )
-                                ],
-                              ),
-                              child: Text(
-                                'Shuffle Play',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 40,
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                                color: Theme.of(context).accentColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: Offset(1, 1),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                'Release New',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SliverAppBar(
-                      titleSpacing: 0,
-                      title: Container(
-                        height: 50,
-                        width: double.infinity,
-                        child: TabBar(
-                          controller: _tabViewController,
-                          labelColor: Colors.white,
-                          unselectedLabelColor: Colors.white38,
-                          tabs: [
-                            Text('SONGS'),
-                            Text('ALBUMS'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ];
-                },
-                body: TabBarView(
-                  controller: _tabViewController,
-                  children: [
-                    MySongsTab(),
-                    MyAlbumsTab(),
-                  ],
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: kCurrentSongTabHeight + kPlayPauseButtonHeight,
+                ),
+                child: NestedScrollView(
+                  controller: _sliverScrollController,
+                  physics: BouncingScrollPhysics(),
+                  headerSliverBuilder: (context, isScrolled) {
+                    return [
+                      profileCoverBar(),
+                      profileInfoBar(),
+                      profileActionBar(),
+                      profileTabBar(),
+                    ];
+                  },
+                  body: TabBarView(
+                    controller: _tabViewController,
+                    children: [
+                      MySongsTab(),
+                      MyAlbumsTab(),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget profileCoverBar() {
+    return SliverAppBar(
+      stretch: true,
+      pinned: true,
+      elevation: 0,
+      expandedHeight: profileExpandedHeight,
+      collapsedHeight: kToolbarHeight * 2 + (kToolbarHeight / 2),
+      backgroundColor: Color(0xfff222222),
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: false,
+        titlePadding: const EdgeInsets.all(0),
+        title: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                isPinned == false ? Colors.transparent : Color(0xfff222222),
+                Color(0xfff222222),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10.0, left: 15.0),
+            child: Row(
+              children: [
+                Text(
+                  'Artist Name',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+                Spacer(),
+                Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ),
+        background: Container(
+          foregroundDecoration: BoxDecoration(
+            color: Colors.black45,
+          ),
+          child: Image.asset(
+            'assets/covers/ramenandoj.jpg',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget profileInfoBar() {
+    return SliverAppBar(
+      backgroundColor: Color(0xfff222222),
+      //toolbarHeight: 60,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: false,
+        titlePadding: const EdgeInsets.symmetric(horizontal: 15.0),
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: '2530 ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Followers',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '26 ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Songs',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            Container(
+              height: 35.0,
+              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              child: Text(
+                'Edit Profile',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ),
+            ),
+            Container(
+                height: 35.0,
+                margin: const EdgeInsets.symmetric(),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: Icon(
+                  Icons.reply,
+                  textDirection: TextDirection.rtl,
+                  color: Colors.white,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget profileActionBar() {
+    return SliverAppBar(
+      pinned: true,
+      backgroundColor: Colors.transparent,
+      titleSpacing: 5,
+      elevation: 0,
+      toolbarHeight: 80,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          color: Color(0xfff222222),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(30.0),
+            bottomRight: Radius.circular(30.0),
+          ),
+        ),
+      ),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Container(
+              height: 40,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                color: Colors.grey[800],
+              ),
+              child: Text(
+                'Shuffle Play',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 40,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                color: Theme.of(context).accentColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white,
+                    offset: Offset(1, 1),
+                  ),
+                ],
+              ),
+              child: Text(
+                'Release New',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget profileTabBar() {
+    return SliverAppBar(
+      titleSpacing: 0,
+      title: TabBar(
+        controller: _tabViewController,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white38,
+        tabs: [
+          Container(
+              width: double.infinity,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                'SONGS',
+              )),
+          Container(
+              width: double.infinity,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text('ALBUMS')),
+        ],
       ),
     );
   }
@@ -355,7 +378,6 @@ class _MySongsTabState extends State<MySongsTab> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: mySongs.length,
-      shrinkWrap: true,
       itemBuilder: (context, index) {
         return Container(
           height: 65,

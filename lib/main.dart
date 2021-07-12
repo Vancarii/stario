@@ -12,14 +12,20 @@ void main() {
 class StarioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.dark,
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Color(0xfff3a5461),
+    ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        //backgroundColor: Colors.black,
-        scaffoldBackgroundColor: Colors.black,
-        primaryColor: Colors.black,
-        primaryColorLight: Color(0xfff222222),
-        accentColor: Color(0xfffdc143c),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Color(0xfff1b3845),
+        primaryColor: Color(0xfff1b3845),
+        primaryColorDark: Color(0xfff1C00ff00),
+        primaryColorLight: Color(0xfff3a5461),
+        accentColor: Color(0xfff448e96),
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
@@ -31,3 +37,11 @@ class StarioApp extends StatelessWidget {
 //grey = Color(0xfff333333),
 
 // offblack = Color(0xfff222222),
+
+// teal = Color(0xfff00ffa0),
+
+// Carmine = Color(0xfffff0038),
+
+// pink = Color(0xfffed5752),
+
+//purplel = Color(0xfff593FA9),
