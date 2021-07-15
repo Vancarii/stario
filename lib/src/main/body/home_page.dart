@@ -1,9 +1,12 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/genre_list/genre_list.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
+import 'package:stario/src/models/genre_model.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 
@@ -25,6 +28,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   FocusNode searchBarFocusNode = FocusNode();
   bool isFocused = false;
+
+  bool showGenres = false;
+  double genreFilterButtonWidth = 65;
+
+  int currentSelectedGenreIndex;
+
+  Genre selectedGenre;
 
   TextEditingController _searchTextController = TextEditingController();
   AnimationController _fadeAnimationController;
@@ -109,22 +119,200 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       child: Builder(
         builder: (context) {
           tabController.addListener(() {});
-          return Scaffold(
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            //resizeToAvoidBottomInset: true,
-            appBar: homeAppBar(),
-            body: TabBarView(
-              controller: tabController,
-              //physics: CustomScrollPhysics(),
-              children: [
-                ExplorePage(),
-                SafeArea(child: MyCollectionsPage()),
-                ProfilePage(),
-              ],
+          return InkWell(
+            onTap: () {
+              if (showGenres == true) {
+                setState(() {
+                  showGenres = false;
+                });
+              }
+            },
+            child: Scaffold(
+              extendBody: true,
+              extendBodyBehindAppBar: true,
+              //resizeToAvoidBottomInset: true,
+              appBar: homeAppBar(),
+              body: Stack(
+                children: [
+                  TabBarView(
+                    controller: tabController,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      ExplorePage(),
+                      SafeArea(child: MyCollectionsPage()),
+                      ProfilePage(),
+                    ],
+                  ),
+                  floatingActionButton(),
+                ],
+              ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget floatingActionButton() {
+    return Positioned(
+      bottom: kPlayPauseButtonHeight + kCurrentSongTabHeight + 25.0,
+      right: 25.0,
+      child: GestureDetector(
+        /*onVerticalDragUpdate: (details) {
+          int sens = 5;
+          setState(() {
+            if (showGenres == true) {
+              if (details.delta.dy > sens) {
+                //down
+                showGenres = false;
+              } else if (details.delta.dy < -sens) {
+                //up
+              }
+            }
+          });
+        },*/
+        onTap: () {
+          setState(() {
+            showGenres = true;
+          });
+        },
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOutCirc,
+          height: showGenres == false ? 65 : MediaQuery.of(context).size.height / 4,
+          width: showGenres == false
+              ? currentSelectedGenreIndex == null
+                  ? 65
+                  : MediaQuery.of(context).size.width - 50.0
+              : MediaQuery.of(context).size.width - 50.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(showGenres == false ? 50.0 : 15.0)),
+
+            /*gradient: LinearGradient(colors: [
+                            Color(0xfff593FA9),
+                            Color(0xfff5B5488),
+                          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+*/
+            color: Theme.of(context).accentColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54,
+                offset: Offset(2, 2),
+                spreadRadius: 2,
+                blurRadius: 2,
+              ),
+            ],
+          ),
+          child: showGenres == false
+              ? currentSelectedGenreIndex != null
+                  ? Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: AssetImage(selectedGenre.imagePath),
+                          ),
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                          Text(
+                            selectedGenre.genre,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Spacer(),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                showGenres = false;
+                                currentSelectedGenreIndex = null;
+                              });
+                            },
+                            child: Icon(
+                              Icons.highlight_off,
+                              size: 32,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Icon(
+                      Icons.settings_input_component,
+                      color: Colors.black,
+                    )
+              : MediaQuery.removePadding(
+                  removeTop: true,
+                  context: context,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 7.0,
+                        crossAxisSpacing: 7.0,
+                      ),
+                      physics: BouncingScrollPhysics(),
+                      // padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      itemCount: 20,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (currentSelectedGenreIndex != index) {
+                                currentSelectedGenreIndex = index;
+                                showGenres = false;
+                                selectedGenre = genres[index];
+                              } else {
+                                currentSelectedGenreIndex = null;
+                              }
+                              //showGenres = false;
+                            });
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 100,
+                            alignment: Alignment.bottomLeft,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15.0),
+                                  topRight: Radius.circular(15.0),
+                                  bottomRight: Radius.circular(15.0),
+                                  bottomLeft: Radius.circular(5.0)),
+                              border: currentSelectedGenreIndex == index
+                                  ? Border.all(color: Theme.of(context).accentColor, width: 4)
+                                  : Border.all(width: 0),
+                              image: DecorationImage(
+                                colorFilter: ColorFilter.mode(Colors.black45, BlendMode.multiply),
+                                fit: BoxFit.cover,
+                                image: AssetImage(genres[index].imagePath),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Wrap(
+                                children: [
+                                  Text(
+                                    genres[index].genre,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+        ),
       ),
     );
   }
