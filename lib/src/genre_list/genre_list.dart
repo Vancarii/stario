@@ -2,7 +2,7 @@ import 'package:stario/src/models/genre_model.dart';
 
 List<Genre> genres = [
   Genre(genre: 'Lo-fi', imagePath: 'assets/genres/lofi.jpg'),
-  Genre(genre: 'Hip Hop', imagePath: 'assets/genres/blues.jpg'),
+  Genre(genre: 'Hip Hop', imagePath: 'assets/genres/hiphop.jpg'),
   Genre(genre: 'Christian & Gospel', imagePath: 'assets/genres/christian.jpg'),
   Genre(genre: 'Pop', imagePath: 'assets/genres/pop.jpg'),
   Genre(genre: 'R&B', imagePath: 'assets/genres/r&b.jpg'),

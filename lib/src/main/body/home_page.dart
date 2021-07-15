@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
@@ -22,11 +23,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   bool canClear = false;
 
+  FocusNode searchBarFocusNode = FocusNode();
+  bool isFocused = false;
+
   TextEditingController _searchTextController = TextEditingController();
   AnimationController _fadeAnimationController;
   AnimationController _slideAnimationController;
 
   Animation<double> _fadeAnimation;
+
   Animation<Offset> _slideAnimation;
   Animation<Color> _blackWhiteAnimation;
   Animation<Color> _whiteBlackAnimation;
@@ -107,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           return Scaffold(
             extendBody: true,
             extendBodyBehindAppBar: true,
-            resizeToAvoidBottomInset: true,
+            //resizeToAvoidBottomInset: true,
             appBar: homeAppBar(),
             body: TabBarView(
               controller: tabController,
@@ -157,11 +162,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: CustomRoundedTextField(
+        node: searchBarFocusNode,
         keyboard: TextInputType.text,
         controller: _searchTextController,
         maxLines: 1,
         padding: const EdgeInsets.all(0.0),
         labelText: 'Search',
+        //labelTextStyle: TextStyle(color: Colors.white.withOpacity(_fadeSearchLabelAnimation.value)),
         onTextChanged: (value) {
           setState(() {
             if (value == '') {
@@ -198,7 +205,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             builder: (context, child) {
               return TabBar(
                 controller: tabController,
-                unselectedLabelColor: Colors.white.withOpacity(0.6),
+                unselectedLabelColor: Colors.white.withOpacity(0.8),
                 labelColor: _whiteBlackAnimation.value,
                 tabs: forumTabs,
                 isScrollable: true,

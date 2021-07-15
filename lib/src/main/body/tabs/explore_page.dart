@@ -18,7 +18,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   PageController _explorePageViewController;
 
-  //bool isScrollingDown;\
+  //bool isScrollingDown;
   bool showGenres = false;
   double genreFilterButtonWidth = 65;
 
@@ -100,7 +100,7 @@ class _ExplorePageState extends State<ExplorePage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage('assets/covers/wakeup.jpg'),
+                          image: AssetImage('assets/covers/norolemodelz.jpg'),
                         ),
                       ),
                     );

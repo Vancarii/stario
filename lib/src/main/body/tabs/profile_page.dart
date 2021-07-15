@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
+import 'package:stario/src/widgets/list_of_songs.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -110,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   body: TabBarView(
                     controller: _tabViewController,
                     children: [
-                      MySongsTab(),
+                      ListOfSongs(songList: mySongs),
                       MyAlbumsTab(),
                     ],
                   ),
@@ -150,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             child: Row(
               children: [
                 Text(
-                  'Artist Name',
+                  'Xiuneng',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
                 Spacer(),
@@ -362,83 +363,6 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               child: Text('ALBUMS')),
         ],
       ),
-    );
-  }
-}
-
-class MySongsTab extends StatefulWidget {
-  const MySongsTab({Key key}) : super(key: key);
-
-  @override
-  _MySongsTabState createState() => _MySongsTabState();
-}
-
-class _MySongsTabState extends State<MySongsTab> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: mySongs.length,
-      itemBuilder: (context, index) {
-        return Container(
-          height: 65,
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 45,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      color: Colors.red,
-                      image: DecorationImage(
-                        image: AssetImage(mySongs[index].imagePath),
-                      )),
-                ),
-                SizedBox(
-                  width: 15.0,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        mySongs[index].songName,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        mySongs[index].artistName,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white60,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {});
-                  },
-                  child: Icon(
-                    Icons.more_vert,
-                    size: 28,
-                    color: Color(0xfff333333),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

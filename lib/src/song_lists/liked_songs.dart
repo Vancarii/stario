@@ -2,6 +2,11 @@ import 'package:stario/src/models/song_model.dart';
 
 final List<Song> likedSongs = [
   Song(
+    songName: 'Eden',
+    artistName: 'Xiuneng',
+    imagePath: 'assets/covers/eden.jpg',
+  ),
+  Song(
     songName: 'Back in my Bag',
     artistName: 'Aha Gazelle',
     imagePath: 'assets/covers/backinmybag.jpg',

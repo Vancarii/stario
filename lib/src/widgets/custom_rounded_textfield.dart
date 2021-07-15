@@ -19,6 +19,8 @@ class CustomRoundedTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onTextChanged;
   final Function(String) onSubmit;
+  final TextStyle labelTextStyle;
+  final Widget prefix;
 
   const CustomRoundedTextField({
     Key key,
@@ -39,6 +41,8 @@ class CustomRoundedTextField extends StatelessWidget {
     this.controller,
     this.onTextChanged,
     this.onSubmit,
+    this.labelTextStyle = const TextStyle(color: Colors.white),
+    this.prefix,
   }) : super(key: key);
 
   @override
@@ -63,6 +67,7 @@ class CustomRoundedTextField extends StatelessWidget {
           maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
           onFieldSubmitted: onSubmit,
           decoration: InputDecoration(
+            prefix: prefix,
             fillColor: Colors.white12,
             filled: true,
             isDense: true,
@@ -74,9 +79,7 @@ class CustomRoundedTextField extends StatelessWidget {
             alignLabelWithHint: true,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             labelText: labelText,
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
+            labelStyle: labelTextStyle,
             prefixIcon: startIcon,
             suffixIcon: endIcon,
             focusedBorder: OutlineInputBorder(
