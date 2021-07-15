@@ -95,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             _fadeAnimationController.forward();
             _slideAnimationController.forward();
           }
-          if (tabController.index == 1 && tabController.previousIndex != 0) {
+          if (tabController.index == 1) {
             _fadeAnimationController.forward();
             _slideAnimationController.forward();
           }
@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             appBar: homeAppBar(),
             body: TabBarView(
               controller: tabController,
-              physics: CustomScrollPhysics(),
+              //physics: CustomScrollPhysics(),
               children: [
                 ExplorePage(),
                 SafeArea(child: MyCollectionsPage()),

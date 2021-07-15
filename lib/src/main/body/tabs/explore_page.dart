@@ -87,178 +87,187 @@ class _ExplorePageState extends State<ExplorePage> {
               });
             }
           },
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-            child: Stack(
-              children: [
-                PageView.builder(
-                  controller: _explorePageViewController,
-                  physics: CustomScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/covers/norolemodelz.jpg'),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                Positioned(
-                  bottom: kPlayPauseButtonHeight + kCurrentSongTabHeight + 25.0,
-                  right: 25.0,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        showGenres = true;
-                      });
-                    },
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOutCirc,
-                      height: showGenres == false ? 65 : MediaQuery.of(context).size.height / 4,
-                      width: showGenres == false
-                          ? currentSelectedGenreIndex == null
-                              ? 65
-                              : MediaQuery.of(context).size.width - 50.0
-                          : MediaQuery.of(context).size.width - 50.0,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(showGenres == false ? 50.0 : 15.0)),
-
-                        /*gradient: LinearGradient(colors: [
-                          Color(0xfff593FA9),
-                          Color(0xfff5B5488),
-                        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-*/
-                        color: Theme.of(context).accentColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            offset: Offset(2, 2),
-                            spreadRadius: 2,
-                            blurRadius: 2,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              border: Border.all(
+                width: 10,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    controller: _explorePageViewController,
+                    physics: CustomScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/covers/norolemodelz.jpg'),
                           ),
-                        ],
-                      ),
-                      child: showGenres == false
-                          ? currentSelectedGenreIndex != null
-                              ? Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      CircleAvatar(
-                                        backgroundImage: AssetImage(selectedGenre.imagePath),
-                                      ),
-                                      SizedBox(
-                                        width: 15.0,
-                                      ),
-                                      Text(
-                                        selectedGenre.genre,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: kPlayPauseButtonHeight + kCurrentSongTabHeight + 25.0,
+                    right: 25.0,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          showGenres = true;
+                        });
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCirc,
+                        height: showGenres == false ? 65 : MediaQuery.of(context).size.height / 4,
+                        width: showGenres == false
+                            ? currentSelectedGenreIndex == null
+                                ? 65
+                                : MediaQuery.of(context).size.width - 50.0
+                            : MediaQuery.of(context).size.width - 50.0,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(showGenres == false ? 50.0 : 15.0)),
+
+                          /*gradient: LinearGradient(colors: [
+                            Color(0xfff593FA9),
+                            Color(0xfff5B5488),
+                          ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+*/
+                          color: Theme.of(context).accentColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black54,
+                              offset: Offset(2, 2),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: showGenres == false
+                            ? currentSelectedGenreIndex != null
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: AssetImage(selectedGenre.imagePath),
                                         ),
-                                      ),
-                                      Spacer(),
-                                      InkWell(
+                                        SizedBox(
+                                          width: 15.0,
+                                        ),
+                                        Text(
+                                          selectedGenre.genre,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              showGenres = false;
+                                              currentSelectedGenreIndex = null;
+                                            });
+                                          },
+                                          child: Icon(
+                                            Icons.highlight_off,
+                                            size: 32,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Icon(
+                                    Icons.settings_input_component,
+                                    color: Colors.black,
+                                  )
+                            : MediaQuery.removePadding(
+                                removeTop: true,
+                                context: context,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                                  child: GridView.builder(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      mainAxisSpacing: 7.0,
+                                      crossAxisSpacing: 7.0,
+                                    ),
+                                    physics: BouncingScrollPhysics(),
+                                    // padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                    itemCount: 20,
+                                    itemBuilder: (context, index) {
+                                      return InkWell(
                                         onTap: () {
                                           setState(() {
-                                            showGenres = false;
-                                            currentSelectedGenreIndex = null;
+                                            if (currentSelectedGenreIndex != index) {
+                                              currentSelectedGenreIndex = index;
+                                              showGenres = false;
+                                              selectedGenre = genres[index];
+                                            } else {
+                                              currentSelectedGenreIndex = null;
+                                            }
+                                            //showGenres = false;
                                           });
                                         },
-                                        child: Icon(
-                                          Icons.highlight_off,
-                                          size: 32,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Icon(
-                                  Icons.settings_input_component,
-                                  color: Colors.black,
-                                )
-                          : MediaQuery.removePadding(
-                              removeTop: true,
-                              context: context,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                                child: GridView.builder(
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: 7.0,
-                                    crossAxisSpacing: 7.0,
-                                  ),
-                                  physics: BouncingScrollPhysics(),
-                                  // padding: const EdgeInsets.symmetric(vertical: 15.0),
-                                  itemCount: 20,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          if (currentSelectedGenreIndex != index) {
-                                            currentSelectedGenreIndex = index;
-                                            showGenres = false;
-                                            selectedGenre = genres[index];
-                                          } else {
-                                            currentSelectedGenreIndex = null;
-                                          }
-                                          //showGenres = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 100,
-                                        alignment: Alignment.bottomLeft,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(15.0),
-                                              topRight: Radius.circular(15.0),
-                                              bottomRight: Radius.circular(15.0),
-                                              bottomLeft: Radius.circular(5.0)),
-                                          border: currentSelectedGenreIndex == index
-                                              ? Border.all(
-                                                  color: Theme.of(context).accentColor, width: 4)
-                                              : Border.all(width: 0),
-                                          image: DecorationImage(
-                                            colorFilter: ColorFilter.mode(
-                                                Colors.black45, BlendMode.multiply),
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(genres[index].imagePath),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 100,
+                                          alignment: Alignment.bottomLeft,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15.0),
+                                                topRight: Radius.circular(15.0),
+                                                bottomRight: Radius.circular(15.0),
+                                                bottomLeft: Radius.circular(5.0)),
+                                            border: currentSelectedGenreIndex == index
+                                                ? Border.all(
+                                                    color: Theme.of(context).accentColor, width: 4)
+                                                : Border.all(width: 0),
+                                            image: DecorationImage(
+                                              colorFilter: ColorFilter.mode(
+                                                  Colors.black45, BlendMode.multiply),
+                                              fit: BoxFit.cover,
+                                              image: AssetImage(genres[index].imagePath),
+                                            ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Wrap(
-                                            children: [
-                                              Text(
-                                                genres[index].genre,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Wrap(
+                                              children: [
+                                                Text(
+                                                  genres[index].genre,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

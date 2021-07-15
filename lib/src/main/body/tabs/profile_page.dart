@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
-import 'package:stario/src/widgets/list_of_songs.dart';
+import 'package:stario/src/widgets/song_tiles_listview.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -81,39 +81,48 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         }*/
         return true;
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-        child: Container(
-          //margin: const EdgeInsets.only(top: 120),
-          decoration: BoxDecoration(
-            color: Color(0xfff333333),
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          border: Border.all(
+            width: 10,
+            color: Theme.of(context).primaryColor,
           ),
-          child: Scaffold(
-            body: MediaQuery.removePadding(
-              removeTop: true,
-              context: context,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: kCurrentSongTabHeight + kPlayPauseButtonHeight,
-                ),
-                child: NestedScrollView(
-                  controller: _sliverScrollController,
-                  physics: BouncingScrollPhysics(),
-                  headerSliverBuilder: (context, isScrolled) {
-                    return [
-                      profileCoverBar(),
-                      profileInfoBar(),
-                      profileActionBar(),
-                      profileTabBar(),
-                    ];
-                  },
-                  body: TabBarView(
-                    controller: _tabViewController,
-                    children: [
-                      ListOfSongs(songList: mySongs),
-                      MyAlbumsTab(),
-                    ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          child: Container(
+            //margin: const EdgeInsets.only(top: 120),
+            decoration: BoxDecoration(
+              color: Color(0xfff333333),
+              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            ),
+            child: Scaffold(
+              body: MediaQuery.removePadding(
+                removeTop: true,
+                context: context,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: kCurrentSongTabHeight + kPlayPauseButtonHeight,
+                  ),
+                  child: NestedScrollView(
+                    controller: _sliverScrollController,
+                    physics: BouncingScrollPhysics(),
+                    headerSliverBuilder: (context, isScrolled) {
+                      return [
+                        profileCoverBar(),
+                        profileInfoBar(),
+                        profileActionBar(),
+                        profileTabBar(),
+                      ];
+                    },
+                    body: TabBarView(
+                      controller: _tabViewController,
+                      children: [
+                        SongTilesListView(songList: mySongs),
+                        MyAlbumsTab(),
+                      ],
+                    ),
                   ),
                 ),
               ),

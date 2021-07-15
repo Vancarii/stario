@@ -37,6 +37,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         elevation: 15,
         scrollSpec: ScrollSpec(showScrollbar: true),
         addTopViewPaddingOnFullscreen: true,
+        //margin: const EdgeInsets.symmetric(horizontal: 10.0),
         cornerRadius: 20,
         cornerRadiusOnFullscreen: 0,
         duration: Duration(milliseconds: 500),

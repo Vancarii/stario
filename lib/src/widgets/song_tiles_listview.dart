@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stario/src/models/song_model.dart';
 
-class ListOfSongs extends StatefulWidget {
+class SongTilesListView extends StatefulWidget {
   final List songList;
   final ScrollPhysics physics;
   final bool isFavouriteList;
 
-  const ListOfSongs({
+  const SongTilesListView({
     Key key,
     @required this.songList,
     this.physics = const BouncingScrollPhysics(),
@@ -14,10 +14,10 @@ class ListOfSongs extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ListOfSongsState createState() => _ListOfSongsState();
+  _SongTilesListViewState createState() => _SongTilesListViewState();
 }
 
-class _ListOfSongsState extends State<ListOfSongs> {
+class _SongTilesListViewState extends State<SongTilesListView> {
   List<int> favouritedSongs = [];
 
   int currentSelectedSongIndex;
