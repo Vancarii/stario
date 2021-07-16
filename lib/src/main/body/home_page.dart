@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
@@ -7,8 +6,8 @@ import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
 import 'package:stario/src/models/genre_model.dart';
-import 'package:stario/src/widgets/custom_physics.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
+import 'package:extended_tabs/extended_tabs.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -134,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               appBar: homeAppBar(),
               body: Stack(
                 children: [
-                  TabBarView(
+                  ExtendedTabBarView(
                     controller: tabController,
                     physics: BouncingScrollPhysics(),
                     children: [

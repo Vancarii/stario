@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                         profileTabBar(),
                       ];
                     },
-                    body: TabBarView(
+                    body: ExtendedTabBarView(
                       controller: _tabViewController,
                       children: [
                         SongTilesListView(songList: mySongs),
