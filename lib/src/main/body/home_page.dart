@@ -80,74 +80,76 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  handleSearchbarSwipeAnimation() {
+    //HANDLES TABBARVIEW SWIPES APPBAR ANIMATION
+    if (_fadeAnimationController.value == 1 &&
+        tabController.offset >= 0.5 &&
+        tabController.index == 1) {
+      _fadeAnimationController.reverse();
+      _slideAnimationController.reverse();
+    }
+    if (_fadeAnimationController.value == 0 &&
+        tabController.offset < -0.5 &&
+        tabController.index == 2) {
+      _fadeAnimationController.forward();
+      _slideAnimationController.forward();
+    }
+  }
+
+  handleSearchBarTapAnimation() {
+    //HANDLE TABBAR TAPS NOT SWIPES
+    if (tabController.index == 0) {
+      _fadeAnimationController.forward();
+      _slideAnimationController.forward();
+    }
+    if (tabController.index == 1) {
+      _fadeAnimationController.forward();
+      _slideAnimationController.forward();
+    }
+    if (tabController.index == 2) {
+      _fadeAnimationController.reverse();
+      _slideAnimationController.reverse();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: (notification) {
-        //HANDLES TABBARVIEW SWIPES APPBAR ANIMATION
-        if (_fadeAnimationController.value == 1 &&
-            tabController.offset >= 0.5 &&
-            tabController.index == 1) {
-          _fadeAnimationController.reverse();
-          _slideAnimationController.reverse();
-        }
-        if (_fadeAnimationController.value == 0 &&
-            tabController.offset < -0.5 &&
-            tabController.index == 2) {
-          _fadeAnimationController.forward();
-          _slideAnimationController.forward();
-        }
-
-        //HANDLE TABBAR TAPS NOT SWIPES
+        handleSearchbarSwipeAnimation();
         if (notification is ScrollEndNotification) {
-          if (tabController.index == 0) {
-            _fadeAnimationController.forward();
-            _slideAnimationController.forward();
-          }
-          if (tabController.index == 1) {
-            _fadeAnimationController.forward();
-            _slideAnimationController.forward();
-          }
-          if (tabController.index == 2) {
-            _fadeAnimationController.reverse();
-            _slideAnimationController.reverse();
-          }
+          handleSearchBarTapAnimation();
         }
         return true;
       },
-      child: Builder(
-        builder: (context) {
-          tabController.addListener(() {});
-          return InkWell(
-            onTap: () {
-              if (showGenres == true) {
-                setState(() {
-                  showGenres = false;
-                });
-              }
-            },
-            child: Scaffold(
-              extendBody: true,
-              extendBodyBehindAppBar: true,
-              //resizeToAvoidBottomInset: true,
-              appBar: homeAppBar(),
-              body: Stack(
+      child: InkWell(
+        onTap: () {
+          if (showGenres == true) {
+            setState(() {
+              showGenres = false;
+            });
+          }
+        },
+        child: Scaffold(
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          //resizeToAvoidBottomInset: true,
+          appBar: homeAppBar(),
+          body: Stack(
+            children: [
+              ExtendedTabBarView(
+                controller: tabController,
+                physics: BouncingScrollPhysics(),
                 children: [
-                  ExtendedTabBarView(
-                    controller: tabController,
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      ExplorePage(),
-                      SafeArea(child: MyCollectionsPage()),
-                      ProfilePage(),
-                    ],
-                  ),
-                  floatingActionButton(),
+                  ExplorePage(),
+                  SafeArea(child: MyCollectionsPage()),
+                  ProfilePage(),
                 ],
               ),
-            ),
-          );
-        },
+              floatingActionButton(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -241,7 +243,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     )
                   : Icon(
                       Icons.settings_input_component,
-                      color: Colors.black,
+                      color: Theme.of(context).primaryColor,
                     )
               : MediaQuery.removePadding(
                   removeTop: true,
@@ -256,61 +258,65 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ),
                       physics: BouncingScrollPhysics(),
                       // padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      itemCount: 20,
+                      itemCount: genres.length,
                       itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (currentSelectedGenreIndex != index) {
-                                currentSelectedGenreIndex = index;
-                                showGenres = false;
-                                selectedGenre = genres[index];
-                              } else {
-                                currentSelectedGenreIndex = null;
-                              }
-                              //showGenres = false;
-                            });
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            height: 100,
-                            alignment: Alignment.bottomLeft,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15.0),
-                                  topRight: Radius.circular(15.0),
-                                  bottomRight: Radius.circular(15.0),
-                                  bottomLeft: Radius.circular(5.0)),
-                              border: currentSelectedGenreIndex == index
-                                  ? Border.all(color: Theme.of(context).accentColor, width: 4)
-                                  : Border.all(width: 0),
-                              image: DecorationImage(
-                                colorFilter: ColorFilter.mode(Colors.black45, BlendMode.multiply),
-                                fit: BoxFit.cover,
-                                image: AssetImage(genres[index].imagePath),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Wrap(
-                                children: [
-                                  Text(
-                                    genres[index].genre,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
+                        return buildGenreTiles(index);
                       },
                     ),
                   ),
                 ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildGenreTiles(int index) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          if (currentSelectedGenreIndex != index) {
+            currentSelectedGenreIndex = index;
+            showGenres = false;
+            selectedGenre = genres[index];
+          } else {
+            currentSelectedGenreIndex = null;
+          }
+          //showGenres = false;
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        height: 100,
+        alignment: Alignment.bottomLeft,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+              bottomRight: Radius.circular(15.0),
+              bottomLeft: Radius.circular(5.0)),
+          border: currentSelectedGenreIndex == index
+              ? Border.all(color: Theme.of(context).accentColor, width: 4)
+              : Border.all(width: 0),
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(Colors.black45, BlendMode.multiply),
+            fit: BoxFit.cover,
+            image: AssetImage(genres[index].imagePath),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Wrap(
+            children: [
+              Text(
+                genres[index].genre,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

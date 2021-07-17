@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   bubble_tab_indicator: ^0.1.6
   extended_tabs: ^2.3.0
+  font_awesome_flutter: ^9.1.0
 
   music_sliding_sheet:
     path: ./music_sliding_sheet/

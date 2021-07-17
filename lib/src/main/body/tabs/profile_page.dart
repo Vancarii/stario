@@ -3,6 +3,7 @@ import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
 import 'package:stario/src/widgets/song_tiles_listview.dart';
@@ -25,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
 
   @override
   void initState() {
-    _tabViewController = TabController(length: 2, vsync: this);
+    _tabViewController = TabController(length: 3, vsync: this);
 
     _sliverScrollController.addListener(() {
       if (!isPinned &&
@@ -122,6 +123,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                       children: [
                         SongTilesListView(songList: mySongs),
                         MyAlbumsTab(),
+                        AboutTab(),
                       ],
                     ),
                   ),
@@ -247,37 +249,30 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               ),
             ),
             Spacer(),
-            Container(
-              height: 35.0,
-              margin: const EdgeInsets.symmetric(horizontal: 10.0),
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              child: Text(
-                'Edit Profile',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14.0,
-                ),
-              ),
-            ),
-            Container(
-                height: 35.0,
-                margin: const EdgeInsets.symmetric(),
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: Icon(
-                  Icons.reply,
-                  textDirection: TextDirection.rtl,
-                  color: Colors.white,
-                )),
+            profileIconButton(icon: Icons.reply, flipped: true),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget profileIconButton({IconData icon, bool flipped = false}) {
+    return Container(
+      height: 40.0,
+      width: 40.0,
+      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
+        //color: Theme.of(context).accentColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(10.0),
+        ),
+      ),
+      child: Icon(
+        icon,
+        textDirection: flipped == true ? TextDirection.rtl : TextDirection.ltr,
+        color: Colors.white,
       ),
     );
   }
@@ -303,45 +298,47 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
-            child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                color: Colors.grey[800],
-              ),
-              child: Text(
-                'Shuffle Play',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+            child: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              onPressed: () {},
+              child: Container(
+                height: 40,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  color: Theme.of(context).accentColor,
+                ),
+                child: Text(
+                  'Shuffle Play',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: Container(
-              height: 40,
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                color: Theme.of(context).accentColor,
-                boxShadow: [
-                  BoxShadow(
+            child: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              onPressed: () {},
+              child: Container(
+                height: 40,
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  color: Colors.grey[800],
+                ),
+                child: Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    fontSize: 15,
                     color: Colors.white,
-                    offset: Offset(1, 1),
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-              child: Text(
-                'Release New',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -371,6 +368,11 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               height: 50,
               alignment: Alignment.center,
               child: Text('ALBUMS')),
+          Container(
+              width: double.infinity,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text('ABOUT')),
         ],
       ),
     );
@@ -391,5 +393,14 @@ class _MyAlbumsTabState extends State<MyAlbumsTab> {
       height: 100,
       color: Colors.red,
     );
+  }
+}
+
+class AboutTab extends StatelessWidget {
+  const AboutTab({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

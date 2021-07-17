@@ -42,13 +42,13 @@ class _ExplorePageState extends State<ExplorePage> {
           await Future.delayed(Duration(milliseconds: 1000));
         },
         child: Container(
-          decoration: BoxDecoration(
+          /*decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
             border: Border.all(
               width: 10,
               color: Theme.of(context).primaryColor,
             ),
-          ),
+          ),*/
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
             child: PageView.builder(
@@ -58,6 +58,11 @@ class _ExplorePageState extends State<ExplorePage> {
               itemBuilder: (context, index) {
                 return Container(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    border: Border.all(
+                      width: 10,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage('assets/covers/norolemodelz.jpg'),
