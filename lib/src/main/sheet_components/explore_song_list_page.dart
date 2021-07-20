@@ -12,7 +12,7 @@ class _ExploreSongListPageState extends State<ExploreSongListPage> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      color: Theme.of(context).primaryColorLight.withOpacity(0.8),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: SongTilesListView(
         songList: exploreSongs,
         physics: NeverScrollableScrollPhysics(),

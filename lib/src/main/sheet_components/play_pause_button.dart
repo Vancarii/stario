@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 
@@ -10,6 +11,8 @@ class PlayPauseButton extends StatefulWidget {
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
   bool isPlaying = false;
+
+  bool isLooped = false;
 
   AnimationController _animationController;
 
@@ -27,26 +30,36 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          isPlaying = !isPlaying;
-          isPlaying ? _animationController.forward() : _animationController.reverse();
-        });
-      },
-      child: Container(
-        height: kPlayPauseButtonHeight,
-        width: double.infinity,
-        color: Theme.of(context).primaryColorLight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.transparent,
+    return Container(
+      height: kPlayPauseButtonHeight,
+      width: double.infinity,
+      //color: Theme.of(context).scaffoldBackgroundColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: CupertinoButton(
+              //padding: const EdgeInsets.all(15),
+              onPressed: () {
+                setState(() {
+                  isLooped = !isLooped;
+                });
+              },
+              child: Icon(
+                Icons.all_inclusive,
+                color: isLooped == false ? Colors.white : Theme.of(context).accentColor,
               ),
+            ),
+          ),
+          Expanded(
+            child: CupertinoButton(
+              //padding: const EdgeInsets.all(0),
+              onPressed: () {
+                setState(() {
+                  isPlaying = !isPlaying;
+                  isPlaying ? _animationController.forward() : _animationController.reverse();
+                });
+              },
               child: AnimatedIcon(
                 progress: _animationController,
                 icon: AnimatedIcons.play_pause,
@@ -54,8 +67,18 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
                 color: Colors.white,
               ),
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: CupertinoButton(
+              //padding: const EdgeInsets.all(15),
+              onPressed: () {},
+              child: Icon(
+                Icons.shuffle,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

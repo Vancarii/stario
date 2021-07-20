@@ -1,5 +1,7 @@
+import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:stario/src/main/body/settings_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 
 void main() {
@@ -15,17 +17,28 @@ class StarioApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Color(0xfff3a5461),
+      systemNavigationBarColor: Color(0xfff17181c),
     ));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: Color(0xfff1b3845),
+
+        //custom blue theme
+/*        scaffoldBackgroundColor: Color(0xfff132630),
         primaryColor: Color(0xfff1b3845),
         primaryColorDark: Color(0xfff1C00ff00),
         primaryColorLight: Color(0xfff3a5461),
+        accentColor: Color(0xfff448e96),*/
         accentColor: Color(0xfff448e96),
+
+        //Discord Theme
+        scaffoldBackgroundColor: Color(0xfff17181c),
+        primaryColor: Color(0xfff35383f),
+        primaryColorDark: Color(0xfff1C00ff00),
+        primaryColorLight: Color(0xfff3a5461),
+        //accentColor: Color(0xfff4e5d94),
+
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),

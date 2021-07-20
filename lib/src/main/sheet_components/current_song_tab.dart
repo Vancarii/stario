@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
@@ -16,6 +17,8 @@ class CurrentSongTab extends StatefulWidget {
 
 class _CurrentSongTabState extends State<CurrentSongTab> {
   bool sheetIsHalfway = false;
+
+  bool isFavourite = false;
 
   double fadeInOutHeader({bool fadeOut = true}) {
     if (fadeOut == true) {
@@ -53,14 +56,15 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
             child: Container(
               width: double.infinity,
               height: kCurrentSongTabHeight,
-              color: Theme.of(context).primaryColorLight,
+              //color: Theme.of(context).scaffoldBackgroundColor,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InkWell(
-                      onTap: () {
+                    CupertinoButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {
                         setState(() {
                           widget.sheetController.snapToExtent(
                             SnapSpec.headerFooterSnap,
@@ -74,19 +78,27 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                         size: 45,
                       ),
                     ),
-                    Text(
-                      'Explore',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Text(
+                          'Recently Played',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    Spacer(),
-                    Icon(
-                      Icons.refresh,
-                      color: Colors.white,
-                    ),
+                    /*CupertinoButton(
+                      padding: const EdgeInsets.all(0),
+                      onPressed: () {},
+                      child: Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      ),
+                    ),*/
                   ],
                 ),
               ),
@@ -94,8 +106,9 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
           )
         : Opacity(
             opacity: fadeInOutHeader(fadeOut: true),
-            child: InkWell(
-              onTap: () {
+            child: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              onPressed: () {
                 setState(() {
                   widget.sheetController.snapToExtent(
                     SnapSpec.expanded,
@@ -106,7 +119,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
               child: Container(
                 width: double.infinity,
                 height: kCurrentSongTabHeight,
-                color: Theme.of(context).primaryColorLight,
+                //color: Theme.of(context).scaffoldBackgroundColor,
                 child: Column(
                   children: [
                     Align(
@@ -171,14 +184,16 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Icon(
-                                Icons.fast_forward,
-                                color: Colors.white,
-                                size: 40,
-                              ),
+                          CupertinoButton(
+                            padding: const EdgeInsets.all(0),
+                            onPressed: () {
+                              setState(() {
+                                isFavourite = !isFavourite;
+                              });
+                            },
+                            child: Icon(
+                              isFavourite == false ? Icons.favorite_border : Icons.favorite,
+                              color: isFavourite == false ? Colors.grey : Colors.redAccent,
                             ),
                           ),
                         ],

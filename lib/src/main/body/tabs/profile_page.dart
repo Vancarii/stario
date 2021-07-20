@@ -87,45 +87,37 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
           border: Border.all(
-            width: 10,
-            color: Theme.of(context).primaryColor,
+            width: 7,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          child: Container(
-            //margin: const EdgeInsets.only(top: 120),
-            decoration: BoxDecoration(
-              color: Color(0xfff333333),
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-            ),
-            child: Scaffold(
-              body: MediaQuery.removePadding(
-                removeTop: true,
-                context: context,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: kCurrentSongTabHeight + kPlayPauseButtonHeight,
-                  ),
-                  child: NestedScrollView(
-                    controller: _sliverScrollController,
-                    physics: BouncingScrollPhysics(),
-                    headerSliverBuilder: (context, isScrolled) {
-                      return [
-                        profileCoverBar(),
-                        profileInfoBar(),
-                        profileActionBar(),
-                        profileTabBar(),
-                      ];
-                    },
-                    body: ExtendedTabBarView(
-                      controller: _tabViewController,
-                      children: [
-                        SongTilesListView(songList: mySongs),
-                        MyAlbumsTab(),
-                        AboutTab(),
-                      ],
-                    ),
+          child: Scaffold(
+            backgroundColor: Theme.of(context).primaryColor,
+            body: MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: Padding(
+                padding: const EdgeInsets.only(),
+                child: NestedScrollView(
+                  controller: _sliverScrollController,
+                  physics: BouncingScrollPhysics(),
+                  headerSliverBuilder: (context, isScrolled) {
+                    return [
+                      profileCoverBar(),
+                      profileInfoBar(),
+                      profileActionBar(),
+                      profileTabBar(),
+                    ];
+                  },
+                  body: ExtendedTabBarView(
+                    controller: _tabViewController,
+                    children: [
+                      SongTilesListView(songList: mySongs),
+                      MyAlbumsTab(),
+                      AboutTab(),
+                    ],
                   ),
                 ),
               ),
@@ -389,10 +381,7 @@ class MyAlbumsTab extends StatefulWidget {
 class _MyAlbumsTabState extends State<MyAlbumsTab> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      color: Colors.red,
-    );
+    return Container();
   }
 }
 

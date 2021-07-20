@@ -33,19 +33,25 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         closeOnBackButtonPressed: true,
         isBackdropInteractable: true,
         shadowColor: Colors.black54,
-        color: Theme.of(context).primaryColorLight,
-        elevation: 15,
+        color: Theme.of(context).scaffoldBackgroundColor,
         scrollSpec: ScrollSpec(showScrollbar: true),
         addTopViewPaddingOnFullscreen: true,
         //margin: const EdgeInsets.symmetric(horizontal: 10.0),
-        cornerRadius: 20,
+        //cornerRadius: 15,
+        // elevation: 15,
         cornerRadiusOnFullscreen: 0,
         duration: Duration(milliseconds: 500),
         snapSpec: const SnapSpec(
           snappings: [SnapSpec.headerFooterSnap, double.infinity],
           initialSnap: SnapSpec.headerFooterSnap,
         ),
-        body: MyHomePage(),
+        body: Scaffold(
+          body: MyHomePage(),
+          bottomNavigationBar: Container(
+            height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
+            width: double.infinity,
+          ),
+        ),
         headerBuilder: (BuildContext context, SheetState state) {
           return SheetListenerBuilder(buildWhen: (oldState, newState) {
             return oldState.progress != newState.progress;

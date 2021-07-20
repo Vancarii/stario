@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/models/song_model.dart';
 
@@ -104,9 +105,10 @@ class _SongTilesListViewState extends State<SongTilesListView> {
   }
 
   Widget singleSongTile(int index) {
-    return InkWell(
+    return CupertinoButton(
+      padding: const EdgeInsets.all(0),
       key: Key('$index'),
-      onTap: () {
+      onPressed: () {
         setState(() {
           currentSelectedSongIndex = index;
         });
@@ -158,8 +160,9 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
+              CupertinoButton(
+                padding: const EdgeInsets.all(0),
+                onPressed: () {
                   setState(() {
                     if (isFavourited(index) == false) {
                       favouritedSongs.add(index);
@@ -183,7 +186,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                   width: 65,
                   child: Icon(
                     isFavourited(index) == true ? Icons.favorite : Icons.favorite_border,
-                    color: Color(0xfffdc143c),
+                    color: isFavourited(index) == true ? Colors.redAccent : Colors.grey,
                   ),
                 ),
               ),

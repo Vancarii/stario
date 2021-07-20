@@ -16,27 +16,37 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(15)),
+      //borderRadius: BorderRadius.all(Radius.circular(15)),
       child: Container(
         height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  _collectionsPageRefreshKey.currentState?.show(atTop: true);
-                  await Future.delayed(Duration(milliseconds: 1000));
-                },
-                child: SongTilesListView(
-                  songList: likedSongs,
-                  isFavouriteList: true,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          border: Border.all(
+            width: 7,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    _collectionsPageRefreshKey.currentState?.show(atTop: true);
+                    await Future.delayed(Duration(milliseconds: 1000));
+                  },
+                  child: SongTilesListView(
+                    songList: likedSongs,
+                    isFavouriteList: true,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
-            ),
-          ],
+              /*SizedBox(
+                height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
+              ),*/
+            ],
+          ),
         ),
       ),
     );
