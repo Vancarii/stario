@@ -1,10 +1,7 @@
 import 'dart:ui';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
 import 'package:stario/src/widgets/song_tiles_listview.dart';
 
@@ -29,7 +26,12 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     _tabViewController = TabController(length: 3, vsync: this);
 
     _sliverScrollController.addListener(() {
-      if (!isPinned &&
+      if (_sliverScrollController.offset <= _sliverScrollController.position.minScrollExtent &&
+          !_sliverScrollController.position.outOfRange) {
+        print('reach top');
+      }
+
+      /*if (!isPinned &&
           _sliverScrollController.hasClients &&
           _sliverScrollController.offset > (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
         setState(() {
@@ -41,60 +43,27 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         setState(() {
           isPinned = false;
         });
-      }
+      }*/
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener(
-      onNotification: (notification) {
-        /*if (notification is ScrollEndNotification) {
-          if (_tabViewController.index == 0 && selectedTab != myMusicTab.songs) {
-            selectedTab = myMusicTab.songs;
-          } else if (_tabViewController.index == 1 && selectedTab != myMusicTab.albums) {
-            selectedTab = myMusicTab.albums;
-          }
-          setState(() {});
-        }
-        if (notification is ScrollNotification) {
-          //print('offset: ${_tabViewController.offset}');
-          print(selectedTab);
-
-          if (_tabViewController.offset >= 0.5 ||
-              _tabViewController.offset >= -0.5 &&
-                  _tabViewController.offset < 0 &&
-                  selectedTab != myMusicTab.albums) {
-            setState(() {
-              selectedTab = myMusicTab.albums;
-              print('> = 0.5');
-            });
-          }
-          if (_tabViewController.offset <= -0.5 ||
-              _tabViewController.offset <= 0.5 &&
-                  _tabViewController.offset > 0 &&
-                  selectedTab != myMusicTab.songs) {
-            setState(() {
-              selectedTab = myMusicTab.songs;
-              print('< = 0.5');
-            });
-          }
-        }*/
-        return true;
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          border: Border.all(
-            width: 7,
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        border: Border.all(
+          width: 7,
+          color: Theme.of(context).scaffoldBackgroundColor,
         ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: kToolbarHeight + 40),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
           child: Scaffold(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Color(0xfff222222),
             body: MediaQuery.removePadding(
               removeTop: true,
               context: context,
@@ -131,48 +100,94 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   Widget profileCoverBar() {
     return SliverAppBar(
       stretch: true,
+      backgroundColor: Color(0xfff222222),
       pinned: true,
       elevation: 0,
       expandedHeight: profileExpandedHeight,
-      collapsedHeight: kToolbarHeight * 2 + (kToolbarHeight / 2),
-      backgroundColor: Color(0xfff222222),
+      titleSpacing: 5,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          /*CupertinoButton(
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            color: Theme.of(context).primaryColor,
+            padding: const EdgeInsets.all(0),
+            child: Icon(
+              Icons.edit,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {},
+          ),*/
+          CupertinoButton(
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            color: Color(0xfff222222),
+            padding: const EdgeInsets.all(0),
+            child: Icon(
+              Icons.settings,
+              color: Colors.white,
+              size: 25,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      //collapsedHeight: kToolbarHeight * 2 + (kToolbarHeight / 2),
+      //backgroundColor: Color(0xfff222222),
       flexibleSpace: FlexibleSpaceBar(
-        centerTitle: false,
+        centerTitle: true,
         titlePadding: const EdgeInsets.all(0),
         title: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            color: Color(0xfff222222),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(15.0),
+            ),
+            /*gradient: LinearGradient(
               colors: [
-                isPinned == false ? Colors.transparent : Color(0xfff222222),
-                Color(0xfff222222),
+                isPinned == false ? Colors.transparent : Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor,
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-            ),
+            ),*/
           ),
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0, left: 15.0),
+            padding: const EdgeInsets.only(bottom: 5.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Xiuneng',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                Spacer(),
-                Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 6.0, bottom: 4.0),
+                        width: 25,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.all(Radius.circular(2)),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Xiuneng',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
         background: Container(
-          foregroundDecoration: BoxDecoration(
-            color: Colors.black45,
-          ),
           child: Image.asset(
-            'assets/covers/ramenandoj.jpg',
+            'assets/genres/hiphop.jpg',
             fit: BoxFit.cover,
           ),
         ),
@@ -180,9 +195,9 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     );
   }
 
-  Widget profileInfoBar() {
+/*  Widget profileInfoBar() {
     return SliverAppBar(
-      backgroundColor: Color(0xfff222222),
+      //backgroundColor: Color(0xfff222222),
       //toolbarHeight: 60,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: false,
@@ -246,6 +261,106 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         ),
       ),
     );
+  }*/
+
+  Widget profileInfoBar() {
+    return SliverAppBar(
+      backgroundColor: Color(0xfff222222),
+      toolbarHeight: 75,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: false,
+        titlePadding: const EdgeInsets.symmetric(horizontal: 15.0),
+        title: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15.0),
+                child: Text(
+                  '302,532 Monthly listeners',
+                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                ),
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '15',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Songs',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '5',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Albums',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '240k',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Followers',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget profileIconButton({IconData icon, bool flipped = false}) {
@@ -271,18 +386,15 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
 
   Widget profileActionBar() {
     return SliverAppBar(
-      pinned: true,
-      backgroundColor: Colors.transparent,
       titleSpacing: 5,
       elevation: 0,
       toolbarHeight: 80,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           color: Color(0xfff222222),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30.0),
-            bottomRight: Radius.circular(30.0),
-          ),
+          /*borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30.0),
+          ),*/
         ),
       ),
       title: Row(
@@ -302,7 +414,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   color: Theme.of(context).accentColor,
                 ),
                 child: Text(
-                  'Shuffle Play',
+                  'New Release',
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -322,7 +434,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                 margin: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  color: Colors.grey[800],
+                  color: Colors.white12,
                 ),
                 child: Text(
                   'Edit Profile',
@@ -342,7 +454,11 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
 
   Widget profileTabBar() {
     return SliverAppBar(
+      backgroundColor: Color(0xfff222222),
+      pinned: true,
       titleSpacing: 0,
+      toolbarHeight: 40,
+      elevation: 0,
       title: TabBar(
         controller: _tabViewController,
         labelColor: Colors.white,
@@ -350,19 +466,19 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         tabs: [
           Container(
               width: double.infinity,
-              height: 50,
+              height: 40,
               alignment: Alignment.center,
               child: Text(
                 'SONGS',
               )),
           Container(
               width: double.infinity,
-              height: 50,
+              height: 40,
               alignment: Alignment.center,
               child: Text('ALBUMS')),
           Container(
               width: double.infinity,
-              height: 50,
+              height: 40,
               alignment: Alignment.center,
               child: Text('ABOUT')),
         ],

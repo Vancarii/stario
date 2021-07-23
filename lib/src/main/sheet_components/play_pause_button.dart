@@ -3,33 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 
 class PlayPauseButton extends StatefulWidget {
-  const PlayPauseButton({Key key}) : super(key: key);
-
   @override
   _PlayPauseButtonState createState() => _PlayPauseButtonState();
 }
 
-class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProviderStateMixin {
+class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderStateMixin {
   bool isPlaying = false;
 
   bool isLooped = false;
 
-  AnimationController _animationController;
+  AnimationController _playPauseIconAnimationController;
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _playPauseIconAnimationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _playPauseIconAnimationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    //print(fadeInOutHeader());
     return Container(
       height: kPlayPauseButtonHeight,
       width: double.infinity,
@@ -57,11 +58,13 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with SingleTickerProv
               onPressed: () {
                 setState(() {
                   isPlaying = !isPlaying;
-                  isPlaying ? _animationController.forward() : _animationController.reverse();
+                  isPlaying
+                      ? _playPauseIconAnimationController.forward()
+                      : _playPauseIconAnimationController.reverse();
                 });
               },
               child: AnimatedIcon(
-                progress: _animationController,
+                progress: _playPauseIconAnimationController,
                 icon: AnimatedIcons.play_pause,
                 size: 40,
                 color: Colors.white,

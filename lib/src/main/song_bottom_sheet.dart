@@ -14,7 +14,7 @@ class SongBottomSheet extends StatefulWidget {
 }
 
 class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProviderStateMixin {
-  double sheetPosition;
+  double sheetProgress;
 
   SheetController songSheetController = SheetController();
 
@@ -42,8 +42,9 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         cornerRadiusOnFullscreen: 0,
         duration: Duration(milliseconds: 500),
         snapSpec: const SnapSpec(
-          snappings: [SnapSpec.headerFooterSnap, double.infinity],
-          initialSnap: SnapSpec.headerFooterSnap,
+          positioning: SnapPositioning.pixelOffset,
+          snappings: [kPlayPauseButtonHeight + kCurrentSongTabHeight, double.infinity],
+          initialSnap: kPlayPauseButtonHeight + kCurrentSongTabHeight,
         ),
         body: Scaffold(
           body: MyHomePage(),
@@ -66,6 +67,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
           return ExploreSongListPage();
         },
         footerBuilder: (context, state) {
+          //print(state.isAtBottom);
           return PlayPauseButton();
         },
       ),
