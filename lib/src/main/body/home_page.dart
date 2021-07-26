@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/genre_list/genre_list.dart';
-import 'package:stario/src/main/body/settings_page.dart';
+import 'package:stario/src/main/body/search_page.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
@@ -134,6 +134,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           }
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           extendBody: true,
           extendBodyBehindAppBar: true,
           //resizeToAvoidBottomInset: true,
@@ -345,9 +346,43 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 );
               },
               animation: _fadeAnimationController,
-              child: searchBar(),
+              child: search(),
             ),
             bottom: tabBar(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget search() {
+    return CupertinoButton(
+      padding: const EdgeInsets.all(0),
+      onPressed: () {
+        setState(() {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return SearchPage();
+          }));
+        });
+      },
+      child: Container(
+        width: double.infinity,
+        height: 40.0,
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 15.0),
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.white12,
+          borderRadius: BorderRadius.all(
+            Radius.circular(30.0),
+          ),
+        ),
+        child: Text(
+          'Search Explore',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white70,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),

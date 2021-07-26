@@ -12,27 +12,11 @@ class _ExploreSongListPageState extends State<ExploreSongListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height - (kPlayPauseButtonHeight + kCurrentSongTabHeight),
+      height: MediaQuery.of(context).size.height,
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 2,
-            child: SingleChildScrollView(
-              child: SongTilesListView(
-                songList: exploreSongs,
-                physics: NeverScrollableScrollPhysics(),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 250,
-              color: Colors.red,
-            ),
-          ),
-        ],
+      child: SongTilesListView(
+        songList: exploreSongs,
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }

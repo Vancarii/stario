@@ -34,7 +34,9 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderSt
     return Container(
       height: kPlayPauseButtonHeight,
       width: double.infinity,
-      //color: Theme.of(context).scaffoldBackgroundColor,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

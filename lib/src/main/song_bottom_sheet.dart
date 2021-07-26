@@ -14,14 +14,15 @@ class SongBottomSheet extends StatefulWidget {
 }
 
 class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProviderStateMixin {
-  double sheetProgress;
-
+  //Controller for the bottom sheet
   SheetController songSheetController = SheetController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/*      appBar: AppBar(
+      resizeToAvoidBottomInset: false,
+      /*appBar: AppBar(
+      //appBar that makes the body not extend past the android status bar
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 0,
@@ -32,21 +33,23 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         closeOnBackdropTap: true,
         closeOnBackButtonPressed: true,
         isBackdropInteractable: true,
+        backdropColor: Colors.black54,
         shadowColor: Colors.black54,
         color: Theme.of(context).scaffoldBackgroundColor,
-        scrollSpec: ScrollSpec(showScrollbar: true),
+        scrollSpec: ScrollSpec(
+          showScrollbar: true,
+          physics: BouncingScrollPhysics(),
+        ),
         addTopViewPaddingOnFullscreen: true,
-        //margin: const EdgeInsets.symmetric(horizontal: 10.0),
-        //cornerRadius: 15,
-        // elevation: 15,
-        cornerRadiusOnFullscreen: 0,
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 300),
         snapSpec: const SnapSpec(
-          positioning: SnapPositioning.pixelOffset,
-          snappings: [kPlayPauseButtonHeight + kCurrentSongTabHeight, double.infinity],
-          initialSnap: kPlayPauseButtonHeight + kCurrentSongTabHeight,
+          snappings: [SnapSpec.headerFooterSnap, double.infinity],
+          initialSnap: SnapSpec.headerFooterSnap,
         ),
         body: Scaffold(
+          resizeToAvoidBottomInset: false,
+          //Using this scaffold so that there is a gap below the body
+          //so the body doesnt go behind the bottom sheet
           body: MyHomePage(),
           bottomNavigationBar: Container(
             height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
@@ -55,6 +58,12 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         ),
         headerBuilder: (BuildContext context, SheetState state) {
           return SheetListenerBuilder(buildWhen: (oldState, newState) {
+            //Sheet Listener is used so that it constantly checks to rebuild state when
+            //new state is different than old state
+            //in this case, once its different, it means it is changing
+            //We then pass through the state progress to current song tab which uses the
+            //progress values to animate the fade transition of the current Song Tab  to
+            //the title of the sliding sheet
             return oldState.progress != newState.progress;
           }, builder: (context, state) {
             return CurrentSongTab(

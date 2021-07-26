@@ -1,7 +1,5 @@
-import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stario/src/main/body/settings_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 
 void main() {
