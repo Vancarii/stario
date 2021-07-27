@@ -41,6 +41,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
 
   @override
   void initState() {
+    //This adds all the songs in the list to the local favorite list for the my collections page
     if (widget.isFavouriteList == true) {
       for (var i = 0; i <= widget.songList.length; i++) {
         favouritedSongs.add(i);

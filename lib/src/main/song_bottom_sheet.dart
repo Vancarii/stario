@@ -46,7 +46,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
           physics: BouncingScrollPhysics(),
         ),
         addTopViewPaddingOnFullscreen: true,
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 500),
         snapSpec: const SnapSpec(
           snappings: [SnapSpec.headerSnap, double.infinity],
           initialSnap: SnapSpec.headerSnap,
