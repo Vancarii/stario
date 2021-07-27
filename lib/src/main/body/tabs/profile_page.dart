@@ -2,8 +2,11 @@ import 'dart:ui';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
 import 'package:stario/src/widgets/song_tiles_listview.dart';
+
+import '../sub_screens/settings_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -128,6 +131,10 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
             onPressed: () {},
           ),*/
           CupertinoButton(
+            onPressed: () {
+              Navigator.push(
+                  context, RouteTransitions().slideRightToLeftTransitionType(SettingsPage()));
+            },
             borderRadius: BorderRadius.all(Radius.circular(30.0)),
             color: Color(0xfff222222),
             padding: const EdgeInsets.all(0),
@@ -136,7 +143,6 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               color: Colors.white,
               size: 25,
             ),
-            onPressed: () {},
           ),
         ],
       ),

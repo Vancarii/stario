@@ -3,7 +3,7 @@ import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/genre_list/genre_list.dart';
-import 'package:stario/src/main/body/search_page.dart';
+import 'package:stario/src/main/body/sub_screens/search_page.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';

@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 
 class RouteTransitions {
-/*  Route fadeThroughTransition(nextPage) {
+  Route slideRightToLeftTransitionType(secondPage) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => nextPage,
+      transitionDuration: Duration(milliseconds: 100),
+      reverseTransitionDuration: Duration(milliseconds: 150),
+      pageBuilder: (context, animation, secondaryAnimation) => secondPage,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 0.8);
-        var end = Offset(0.0, 0.0);
-        var curve = Curves.ease;
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.easeInOut;
 
-        var tween = Tween(begin: 0.0, end: 1.0)
-            .animate(CurvedAnimation(parent: animation, curve: Curves.linear));
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-        return Transition(
-          scale: tween,
+        return SlideTransition(
+          position: animation.drive(tween),
           child: child,
         );
       },
     );
-      
-    
-  }*/
-
+  }
 }

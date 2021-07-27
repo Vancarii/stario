@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/main/body/home_page.dart';
-import 'package:stario/src/main/body/search_page.dart';
+import 'package:stario/src/main/body/sub_screens/search_page.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/explore_song_list_page.dart';
 import 'sheet_components/play_pause_button.dart';
