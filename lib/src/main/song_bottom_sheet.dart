@@ -1,7 +1,9 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/main/body/home_page.dart';
+import 'package:stario/src/main/body/search_page.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/explore_song_list_page.dart';
 import 'sheet_components/play_pause_button.dart';
@@ -16,6 +18,8 @@ class SongBottomSheet extends StatefulWidget {
 class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProviderStateMixin {
   //Controller for the bottom sheet
   SheetController songSheetController = SheetController();
+
+  bool searchBarTapped = false;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,34 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
           resizeToAvoidBottomInset: false,
           //Using this scaffold so that there is a gap below the body
           //so the body doesnt go behind the bottom sheet
-          body: MyHomePage(),
+          body: PageTransitionSwitcher(
+            transitionBuilder: (
+              Widget child,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) {
+              return FadeThroughTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                child: child,
+              );
+            },
+            child: searchBarTapped == false
+                ? MyHomePage(
+                    onSearchBarTap: (bool tapped) {
+                      setState(() {
+                        searchBarTapped = tapped;
+                      });
+                    },
+                  )
+                : SearchPage(
+                    searchBarTapped: (bool tapped) {
+                      setState(() {
+                        searchBarTapped = tapped;
+                      });
+                    },
+                  ),
+          ),
           bottomNavigationBar: Container(
             height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
             width: double.infinity,

@@ -25,13 +25,15 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   void initState() {
     _tabViewController = TabController(length: 3, vsync: this);
 
-    _sliverScrollController.addListener(() {
+/*    _sliverScrollController.addListener(() {
       if (_sliverScrollController.offset <= _sliverScrollController.position.minScrollExtent &&
           !_sliverScrollController.position.outOfRange) {
         print('reach top');
       }
 
-      /*if (!isPinned &&
+      */
+
+    /*if (!isPinned &&
           _sliverScrollController.hasClients &&
           _sliverScrollController.offset > (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
         setState(() {
@@ -43,20 +45,24 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         setState(() {
           isPinned = false;
         });
-      }*/
-    });
+      }*/ /*
+    });*/
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabViewController.dispose();
+    _sliverScrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.all(7),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        border: Border.all(
-          width: 7,
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
       ),
       child: Padding(
         padding: const EdgeInsets.only(top: kToolbarHeight + 40),
@@ -83,7 +89,9 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   body: ExtendedTabBarView(
                     controller: _tabViewController,
                     children: [
-                      SongTilesListView(songList: mySongs),
+                      SongTilesListView(
+                        songList: mySongs,
+                      ),
                       MyAlbumsTab(),
                       AboutTab(),
                     ],

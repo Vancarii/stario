@@ -1,7 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/genre_list/genre_list.dart';
 import 'package:stario/src/main/body/search_page.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
@@ -9,10 +9,13 @@ import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
 import 'package:stario/src/models/genre_model.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
-import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 
 class MyHomePage extends StatefulWidget {
+  final Function(bool) onSearchBarTap;
+
+  const MyHomePage({Key key, @required this.onSearchBarTap}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -26,11 +29,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     Tab(text: 'Profile'),
   ];
 
-  bool canClear = false;
-
-  FocusNode searchBarFocusNode = FocusNode();
-  bool isFocused = false;
-
   bool showGenres = false;
   double genreFilterButtonWidth = 65;
 
@@ -38,7 +36,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   Genre selectedGenre;
 
-  TextEditingController _searchTextController = TextEditingController();
   AnimationController _fadeAnimationController;
   AnimationController _slideAnimationController;
 
@@ -80,6 +77,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   void dispose() {
     tabController.dispose();
+    _slideAnimationController.dispose();
+    _fadeAnimationController.dispose();
+
     super.dispose();
   }
 
@@ -346,7 +346,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 );
               },
               animation: _fadeAnimationController,
-              child: search(),
+              child: searchBar(),
             ),
             bottom: tabBar(),
           ),
@@ -355,15 +355,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget search() {
+  Widget searchBar() {
     return CupertinoButton(
       padding: const EdgeInsets.all(0),
       onPressed: () {
-        setState(() {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return SearchPage();
-          }));
-        });
+        widget.onSearchBarTap(true);
       },
       child: Container(
         width: double.infinity,
@@ -385,44 +381,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             fontWeight: FontWeight.w400,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget searchBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: CustomRoundedTextField(
-        node: searchBarFocusNode,
-        keyboard: TextInputType.text,
-        controller: _searchTextController,
-        maxLines: 1,
-        padding: const EdgeInsets.all(0.0),
-        labelText: 'Search',
-        //labelTextStyle: TextStyle(color: Colors.white.withOpacity(_fadeSearchLabelAnimation.value)),
-        onTextChanged: (value) {
-          setState(() {
-            if (value == '') {
-              canClear = false;
-            } else {
-              canClear = true;
-            }
-          });
-        },
-        endIcon: canClear == true
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _searchTextController.clear();
-                    canClear = false;
-                  });
-                },
-                icon: Icon(
-                  Icons.cancel,
-                  color: Colors.grey,
-                ),
-              )
-            : null,
       ),
     );
   }

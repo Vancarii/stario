@@ -33,7 +33,7 @@ class CustomRoundedTextField extends StatelessWidget {
     this.startIcon,
     this.endIcon,
     this.keyboardAction = TextInputAction.done,
-    this.keyboard = TextInputType.multiline,
+    this.keyboard = TextInputType.text,
     this.focusIconColor = Colors.white,
     this.cursorColor = Colors.white,
     this.focusedBorderColor = Colors.white,

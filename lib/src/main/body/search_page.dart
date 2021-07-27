@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 
 class SearchPage extends StatefulWidget {
+  final Function(bool) searchBarTapped;
+
+  const SearchPage({Key key, this.searchBarTapped}) : super(key: key);
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -23,6 +27,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   @override
+  void dispose() {
+    searchBarFocusNode.unfocus();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -33,23 +43,19 @@ class _SearchPageState extends State<SearchPage> {
               child: Row(
                 children: [
                   CupertinoButton(
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          searchBarFocusNode.unfocus();
-                          Navigator.pop(context);
-                        });
-                      }),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      searchBarFocusNode.unfocus();
+                      widget.searchBarTapped(false);
+                    },
+                  ),
                   Expanded(
                     child: CustomRoundedTextField(
                       node: searchBarFocusNode,
-                      keyboard: TextInputType.text,
                       controller: _searchTextController,
-                      maxLines: 1,
-                      padding: const EdgeInsets.all(0.0),
                       labelText: 'Search',
                       //labelTextStyle: TextStyle(color: Colors.white.withOpacity(_fadeSearchLabelAnimation.value)),
                       onTextChanged: (value) {

@@ -16,6 +16,7 @@ dependencies:
   bubble_tab_indicator: ^0.1.6
   extended_tabs: ^2.3.0
   font_awesome_flutter: ^9.1.0
+  animations: ^2.0.1
 
   music_sliding_sheet:
     path: ./music_sliding_sheet/

@@ -18,14 +18,11 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
     return ClipRRect(
       //borderRadius: BorderRadius.all(Radius.circular(15)),
       child: Container(
+        margin: const EdgeInsets.all(7),
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          border: Border.all(
-            width: 7,
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
         ),
         child: SafeArea(
           child: Column(
@@ -39,6 +36,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                   child: SongTilesListView(
                     songList: likedSongs,
                     isFavouriteList: true,
+                    physics: BouncingScrollPhysics(),
                   ),
                 ),
               ),

@@ -25,6 +25,12 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   @override
+  void dispose() {
+    _explorePageViewController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: (notification) {
@@ -50,12 +56,9 @@ class _ExplorePageState extends State<ExplorePage> {
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 return Container(
+                  margin: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    border: Border.all(
-                      width: 7,
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                    ),
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage('assets/covers/eden.jpg'),

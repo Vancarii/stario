@@ -10,7 +10,7 @@ class SongTilesListView extends StatefulWidget {
   const SongTilesListView({
     Key key,
     @required this.songList,
-    this.physics = const BouncingScrollPhysics(),
+    this.physics = const ScrollPhysics(),
     this.isFavouriteList = false,
   }) : super(key: key);
 
@@ -85,7 +85,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                 );
               });
             },
-            physics: widget.physics,
+            //physics:  widget.physics,
             shrinkWrap: true,
             padding: const EdgeInsets.all(0),
             itemCount: widget.songList.length,
