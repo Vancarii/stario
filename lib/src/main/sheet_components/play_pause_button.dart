@@ -9,7 +9,6 @@ class PlayPauseButton extends StatefulWidget {
 
 class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderStateMixin {
   bool isPlaying = false;
-
   bool isLooped = false;
 
   AnimationController _playPauseIconAnimationController;
@@ -18,7 +17,6 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderSt
   void initState() {
     _playPauseIconAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-
     super.initState();
   }
 
@@ -30,7 +28,10 @@ class _PlayPauseButtonState extends State<PlayPauseButton> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    //print(fadeInOutHeader());
+    return playBar();
+  }
+
+  Widget playBar() {
     return Container(
       height: kPlayPauseButtonHeight,
       width: double.infinity,

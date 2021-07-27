@@ -4,6 +4,7 @@ import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/main/body/home_page.dart';
 import 'package:stario/src/main/body/sub_screens/search_page.dart';
+import 'package:stario/src/main/sheet_components/song_details_tab.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/explore_song_list_page.dart';
 import 'sheet_components/play_pause_button.dart';
@@ -47,8 +48,10 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         addTopViewPaddingOnFullscreen: true,
         duration: Duration(milliseconds: 300),
         snapSpec: const SnapSpec(
-          snappings: [SnapSpec.headerFooterSnap, double.infinity],
-          initialSnap: SnapSpec.headerFooterSnap,
+          snappings: [SnapSpec.headerSnap, double.infinity],
+          initialSnap: SnapSpec.headerSnap,
+/*          snappings: [SnapSpec.headerFooterSnap, double.infinity],
+          initialSnap: SnapSpec.headerFooterSnap,*/
         ),
         body: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -83,11 +86,11 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
                   ),
           ),
           bottomNavigationBar: Container(
-            height: kPlayPauseButtonHeight + kCurrentSongTabHeight,
+            height: kCurrentSongTabHeight,
             width: double.infinity,
           ),
         ),
-        headerBuilder: (BuildContext context, SheetState state) {
+        headerBuilder: (BuildContext context, SheetState headerState) {
           return SheetListenerBuilder(buildWhen: (oldState, newState) {
             //Sheet Listener is used so that it constantly checks to rebuild state when
             //new state is different than old state
@@ -103,14 +106,14 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
             );
           });
         },
-        builder: (BuildContext context, SheetState state) {
+        builder: (BuildContext context, SheetState bodyState) {
           return ExploreSongListPage();
         },
-        footerBuilder: (context, state) {
-          //print(state.isAtBottom);
-          return PlayPauseButton();
+        footerBuilder: (BuildContext context, SheetState footerState) {
+          return SongDetailsTab();
         },
       ),
+      bottomNavigationBar: PlayPauseButton(),
     );
   }
 }

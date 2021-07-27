@@ -85,7 +85,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                 );
               });
             },
-            //physics:  widget.physics,
+            physics: widget.physics,
             shrinkWrap: true,
             padding: const EdgeInsets.all(0),
             itemCount: widget.songList.length,

@@ -67,7 +67,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                       onPressed: () {
                         setState(() {
                           widget.sheetController.snapToExtent(
-                            SnapSpec.headerFooterSnap,
+                            SnapSpec.headerSnap,
                             duration: Duration(milliseconds: 250),
                           );
                         });
