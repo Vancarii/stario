@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/song_lists/explore_songs.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 
 class SongDetailsTab extends StatefulWidget {
   const SongDetailsTab({Key key}) : super(key: key);
@@ -25,105 +27,105 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
         maxHeight: 250,
       ),
       color: Theme.of(context).scaffoldBackgroundColor,
-      child: PageView.builder(
-        itemCount: exploreSongs.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(30.0),
-              ),
-              color: Theme.of(context).accentColor.withOpacity(0.2),
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30.0),
-                      ),
-                      color: Colors.black38,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Card(
-                                margin: const EdgeInsets.all(0),
-                                child: Image.asset(exploreSongs[index].imagePath),
-                                elevation: 20.0,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      exploreSongs[index].songName,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                      exploreSongs[index].artistName,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white60,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15.0),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Text(
-                                  '0:00',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              songDurationSlider(),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  '0:00',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+      child: Container(
+        margin: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(30.0),
+          ),
+          color: Theme.of(context).accentColor.withOpacity(0.2),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(30.0),
                   ),
+                  color: Colors.black38,
                 ),
-                actionBar(),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: PageView.builder(
+                          physics: CustomScrollPhysics(),
+                          itemCount: exploreSongs.length,
+                          itemBuilder: (context, index) {
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Card(
+                                  margin: const EdgeInsets.all(0),
+                                  child: Image.asset(exploreSongs[index].imagePath),
+                                  elevation: 20.0,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 15.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        exploreSongs[index].songName,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5.0,
+                                      ),
+                                      Text(
+                                        exploreSongs[index].artistName,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text(
+                              '0:00',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          songDurationSlider(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text(
+                              '0:00',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          );
-        },
+            actionBar(),
+          ],
+        ),
       ),
     );
   }
@@ -201,7 +203,9 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
           CupertinoButton(
             padding: const EdgeInsets.all(0),
             onPressed: () {
-              setState(() {});
+              setState(() {
+                showShareSheet(context);
+              });
             },
             child: Icon(
               Icons.share_outlined,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/song_lists/explore_songs.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 
 class CurrentSongTab extends StatefulWidget {
   final double sheetProgress;
@@ -145,6 +146,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                               width: 100,
                               color: Colors.transparent,
                               child: PageView.builder(
+                                physics: CustomScrollPhysics(),
                                 itemCount: exploreSongs.length,
                                 itemBuilder: (context, index) {
                                   return Row(

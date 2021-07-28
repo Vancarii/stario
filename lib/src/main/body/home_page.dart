@@ -32,6 +32,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool showGenres = false;
   double genreFilterButtonWidth = 65;
 
+  String searchBarText = 'Explore';
+
   int currentSelectedGenreIndex;
 
   Genre selectedGenre;
@@ -83,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  handleSearchbarSwipeAnimation() {
+  handleSearchBarSwipeAnimation() {
     //HANDLES TABBARVIEW SWIPES APPBAR ANIMATION
     if (_fadeAnimationController.value == 1 &&
         tabController.offset >= 0.5 &&
@@ -101,17 +103,44 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   handleSearchBarTapAnimation() {
     //HANDLE TABBAR TAPS NOT SWIPES
-    if (tabController.index == 0) {
+    if (tabController.index == 0 && _fadeAnimationController.value != 1) {
       _fadeAnimationController.forward();
       _slideAnimationController.forward();
     }
-    if (tabController.index == 1) {
+    if (tabController.index == 1 && _fadeAnimationController.value != 1) {
       _fadeAnimationController.forward();
       _slideAnimationController.forward();
     }
-    if (tabController.index == 2) {
+    if (tabController.index == 2 && _fadeAnimationController.value != 0) {
       _fadeAnimationController.reverse();
       _slideAnimationController.reverse();
+    }
+  }
+
+  handleSearchTextSwipeTransition() {
+    if (searchBarText == 'Explore' && tabController.index == 0 && tabController.offset > 0.6) {
+      setState(() {
+        searchBarText = 'My Collection';
+      });
+    }
+    if (searchBarText == 'My Collection' &&
+        tabController.index == 1 &&
+        tabController.offset < -0.25) {
+      setState(() {
+        searchBarText = 'Explore';
+      });
+    }
+  }
+
+  handleSearchTextTapTransition() {
+    if (tabController.index == 0 && searchBarText != 'Explore') {
+      setState(() {
+        searchBarText = 'Explore';
+      });
+    } else if (tabController.index == 1 && searchBarText != 'My Collection') {
+      setState(() {
+        searchBarText = 'My Collection';
+      });
     }
   }
 
@@ -119,9 +148,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return NotificationListener(
       onNotification: (notification) {
-        handleSearchbarSwipeAnimation();
+        handleSearchBarSwipeAnimation();
+        handleSearchTextSwipeTransition();
         if (notification is ScrollEndNotification) {
           handleSearchBarTapAnimation();
+          handleSearchTextTapTransition();
         }
         return true;
       },
@@ -373,13 +404,45 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             Radius.circular(30.0),
           ),
         ),
-        child: Text(
-          'Search Explore',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white70,
-            fontWeight: FontWeight.w400,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Search ',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                inherit: false,
+                fontSize: 16,
+                color: Colors.white70,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  key: UniqueKey(),
+                  child: Text(
+                    searchBarText,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      inherit: false,
+                      fontSize: 16,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
