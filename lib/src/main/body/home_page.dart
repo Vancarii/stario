@@ -417,6 +417,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 fontWeight: FontWeight.w400,
               ),
             ),
+            //THIS EXPANDED, the container, and the unique key for the container that wraps the
+            //text is crucial crucial crucial for the animation to be smooth and not jump around
+            //when transitioning and have it aligned to the left of the container
             Expanded(
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),
