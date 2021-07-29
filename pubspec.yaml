@@ -17,6 +17,9 @@ dependencies:
   extended_tabs: ^2.3.0
   font_awesome_flutter: ^9.1.0
   animations: ^2.0.1
+  provider: ^5.0.0
+
+  just_audio: ^0.9.4
 
   music_sliding_sheet:
     path: ./music_sliding_sheet/
@@ -32,4 +35,5 @@ flutter:
     - assets/images/
     - assets/covers/
     - assets/genres/
+    - assets/songs/
 
