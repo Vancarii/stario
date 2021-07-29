@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
 import 'package:stario/src/widgets/song_tiles_listview.dart';
@@ -317,6 +318,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white54,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -340,6 +342,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white54,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -363,6 +366,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.white54,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -432,7 +436,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -455,7 +459,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

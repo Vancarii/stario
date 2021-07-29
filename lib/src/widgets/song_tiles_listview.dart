@@ -127,10 +127,10 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                 width: 45,
                 height: 45,
                 decoration: BoxDecoration(
-                    color: Colors.red,
                     image: DecorationImage(
-                      image: AssetImage(widget.songList[index].imagePath),
-                    )),
+                  fit: BoxFit.cover,
+                  image: AssetImage(widget.songList[index].imagePath),
+                )),
               ),
               SizedBox(
                 width: 15.0,
@@ -145,17 +145,17 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       widget.songList[index].artistName,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         color: Colors.white60,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],

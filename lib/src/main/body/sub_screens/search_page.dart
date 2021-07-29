@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 
 class SearchPage extends StatefulWidget {
-  final Function(bool) searchBarTapped;
+  final Function(bodyPages) onBackButtonTapped;
 
-  const SearchPage({Key key, this.searchBarTapped}) : super(key: key);
+  const SearchPage({Key key, this.onBackButtonTapped}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -49,14 +50,14 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     onPressed: () {
                       searchBarFocusNode.unfocus();
-                      widget.searchBarTapped(false);
+                      widget.onBackButtonTapped(bodyPages.mainBody);
                     },
                   ),
                   Expanded(
                     child: CustomRoundedTextField(
                       node: searchBarFocusNode,
                       controller: _searchTextController,
-                      labelText: 'Search',
+                      labelText: 'Search...',
                       //labelTextStyle: TextStyle(color: Colors.white.withOpacity(_fadeSearchLabelAnimation.value)),
                       onTextChanged: (value) {
                         setState(() {

@@ -4,10 +4,16 @@ import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/main/body/home_page.dart';
 import 'package:stario/src/main/body/sub_screens/search_page.dart';
+import 'package:stario/src/main/body/sub_screens/settings_page.dart';
 import 'package:stario/src/main/sheet_components/song_details_tab.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/explore_song_list_page.dart';
 import 'sheet_components/play_pause_button.dart';
+
+enum bodyPages {
+  mainBody,
+  search,
+}
 
 class SongBottomSheet extends StatefulWidget {
   const SongBottomSheet({Key key}) : super(key: key);
@@ -20,7 +26,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
   //Controller for the bottom sheet
   SheetController songSheetController = SheetController();
 
-  bool searchBarTapped = false;
+  bodyPages body = bodyPages.mainBody;
 
   @override
   Widget build(BuildContext context) {
@@ -69,18 +75,18 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
                 child: child,
               );
             },
-            child: searchBarTapped == false
-                ? MyHomePage(
-                    onSearchBarTap: (bool tapped) {
+            child: body == bodyPages.search
+                ? SearchPage(
+                    onBackButtonTapped: (page) {
                       setState(() {
-                        searchBarTapped = tapped;
+                        body = page;
                       });
                     },
                   )
-                : SearchPage(
-                    searchBarTapped: (bool tapped) {
+                : MyHomePage(
+                    onSearchBarTapped: (page) {
                       setState(() {
-                        searchBarTapped = tapped;
+                        body = page;
                       });
                     },
                   ),

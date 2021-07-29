@@ -132,52 +132,28 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
 
   Widget songDurationSlider() {
     return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: Stack(
-          alignment: Alignment.centerLeft,
-          children: [
-            Container(
-              width: 27,
-              height: 26,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.horizontal(
-                  left: Radius.circular(15.0),
-                  right: Radius.circular(5.0),
-                ),
-                color: Theme.of(context).accentColor,
-              ),
-            ),
-            SliderTheme(
-              data: SliderThemeData(
-                thumbShape: RoundSliderThumbShape(
-                  enabledThumbRadius: 13,
-                  disabledThumbRadius: 13,
-                  elevation: 0,
-                  pressedElevation: 0,
-                ),
-                thumbColor: Theme.of(context).accentColor,
-                inactiveTrackColor: Colors.transparent,
-                overlayColor: Colors.transparent,
-                trackHeight: 24.0,
-                activeTrackColor: Theme.of(context).accentColor,
-                overlayShape: SliderComponentShape.noOverlay,
-              ),
-              child: Slider(
-                value: _currentSliderValue,
-                min: 0.0,
-                max: 1.0,
-                onChanged: (double value) {
-                  setState(() {
-                    _currentSliderValue = value;
-                  });
-                },
-              ),
-            ),
-          ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15.0),
+        child: SliderTheme(
+          data: SliderThemeData(
+            thumbShape: SliderComponentShape.noThumb,
+            thumbColor: Theme.of(context).accentColor,
+            inactiveTrackColor: Theme.of(context).primaryColor.withOpacity(0.5),
+            overlayColor: Colors.transparent,
+            trackHeight: 24.0,
+            activeTrackColor: Theme.of(context).accentColor,
+            overlayShape: SliderComponentShape.noOverlay,
+          ),
+          child: Slider(
+            value: _currentSliderValue,
+            min: 0.0,
+            max: 1.0,
+            onChanged: (double value) {
+              setState(() {
+                _currentSliderValue = value;
+              });
+            },
+          ),
         ),
       ),
     );

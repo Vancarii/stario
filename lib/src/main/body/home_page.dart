@@ -7,14 +7,15 @@ import 'package:stario/src/main/body/sub_screens/search_page.dart';
 import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
+import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/models/genre_model.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 
 class MyHomePage extends StatefulWidget {
-  final Function(bool) onSearchBarTap;
+  final Function(bodyPages) onSearchBarTapped;
 
-  const MyHomePage({Key key, @required this.onSearchBarTap}) : super(key: key);
+  const MyHomePage({Key key, @required this.onSearchBarTapped}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -32,7 +33,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool showGenres = false;
   double genreFilterButtonWidth = 65;
 
-  String searchBarText = 'Explore';
+  String kExploreSearchText = 'Explore';
+  String kMyCollectionSearchText = 'My Collection';
+  String searchBarText;
 
   int currentSelectedGenreIndex;
 
@@ -61,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    searchBarText = kExploreSearchText;
+
     tabController = TabController(length: forumTabs.length, vsync: this);
 
     _slideAnimationController = appbarAnimation(400, 400);
@@ -118,28 +123,30 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   handleSearchTextSwipeTransition() {
-    if (searchBarText == 'Explore' && tabController.index == 0 && tabController.offset > 0.6) {
+    if (searchBarText == kExploreSearchText &&
+        tabController.index == 0 &&
+        tabController.offset > 0.6) {
       setState(() {
-        searchBarText = 'My Collection';
+        searchBarText = kMyCollectionSearchText;
       });
     }
-    if (searchBarText == 'My Collection' &&
+    if (searchBarText == kMyCollectionSearchText &&
         tabController.index == 1 &&
         tabController.offset < -0.25) {
       setState(() {
-        searchBarText = 'Explore';
+        searchBarText = kExploreSearchText;
       });
     }
   }
 
   handleSearchTextTapTransition() {
-    if (tabController.index == 0 && searchBarText != 'Explore') {
+    if (tabController.index == 0 && searchBarText != kExploreSearchText) {
       setState(() {
-        searchBarText = 'Explore';
+        searchBarText = kExploreSearchText;
       });
-    } else if (tabController.index == 1 && searchBarText != 'My Collection') {
+    } else if (tabController.index == 1 && searchBarText != kMyCollectionSearchText) {
       setState(() {
-        searchBarText = 'My Collection';
+        searchBarText = kMyCollectionSearchText;
       });
     }
   }
@@ -194,19 +201,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       bottom: 25.0,
       right: 25.0,
       child: GestureDetector(
-        /*onVerticalDragUpdate: (details) {
-          int sens = 5;
-          setState(() {
-            if (showGenres == true) {
-              if (details.delta.dy > sens) {
-                //down
-                showGenres = false;
-              } else if (details.delta.dy < -sens) {
-                //up
-              }
-            }
-          });
-        },*/
         onTap: () {
           setState(() {
             showGenres = true;
@@ -390,7 +384,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return CupertinoButton(
       padding: const EdgeInsets.all(0),
       onPressed: () {
-        widget.onSearchBarTap(true);
+        widget.onSearchBarTapped(bodyPages.search);
       },
       child: Container(
         width: double.infinity,
@@ -422,7 +416,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             //when transitioning and have it aligned to the left of the container
             Expanded(
               child: AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
+                duration: Duration(milliseconds: 250),
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return FadeTransition(
                     opacity: animation,
