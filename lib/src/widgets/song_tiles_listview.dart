@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stario/src/models/song_model.dart';
+import 'package:stario/src/provider/audio_provider.dart';
 
 class SongTilesListView extends StatefulWidget {
   final List songList;
@@ -22,6 +24,8 @@ class _SongTilesListViewState extends State<SongTilesListView> {
   List<int> favouritedSongs = [];
 
   int currentSelectedSongIndex;
+
+  AudioProvider _audioProvider;
 
   bool isFavourited(int index) {
     bool songIsFav = false;
@@ -47,6 +51,8 @@ class _SongTilesListViewState extends State<SongTilesListView> {
         favouritedSongs.add(i);
       }
     }
+
+    _audioProvider = Provider.of<AudioProvider>(context, listen: false);
     super.initState();
   }
 
@@ -111,6 +117,11 @@ class _SongTilesListViewState extends State<SongTilesListView> {
       key: Key('$index'),
       onPressed: () {
         setState(() {
+          _audioProvider.audioPlayer.seek(
+            Duration(),
+          );
+          //TODO: notify provider which song is tapped so it can play it and show in current song tab
+          _audioProvider.audioPlayer.play();
           currentSelectedSongIndex = index;
         });
       },

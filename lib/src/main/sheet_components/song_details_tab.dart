@@ -1,13 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stario/src/provider/audio_provider.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/song_lists/explore_songs.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
 
 class SongDetailsTab extends StatefulWidget {
-  const SongDetailsTab({Key key}) : super(key: key);
-
   @override
   _SongDetailsTabState createState() => _SongDetailsTabState();
 }
@@ -17,10 +17,25 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
 
   bool isFavourite = false;
 
+  AudioProvider _audioProvider;
+
+  Duration currentSongPosition;
+
+  @override
+  void initState() {
+    _audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    //print(_audioProvider.audioPlayer.position);
+    super.initState();
+  }
+
   //TODO: Fix favourite button, duration slider, add func for action bar buttons
 
   @override
   Widget build(BuildContext context) {
+/*    _audioProvider.audioPlayer.positionStream.listen((event) {
+      currentSongPosition = event;
+    });*/
+    //print(Provider.of<AudioProvider>(context).audioPlayer.position);
     return Container(
       constraints: BoxConstraints(
         maxWidth: double.infinity,
@@ -110,7 +125,7 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
-                              '0:00',
+                              '0:00', //'${_audioProvider.audioPlayer.duration.inMinutes}:${_audioProvider.audioPlayer.duration.inSeconds % 60}',
                               style: TextStyle(
                                 fontSize: 12,
                               ),
@@ -146,8 +161,8 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
           ),
           child: Slider(
             value: _currentSliderValue,
-            min: 0.0,
-            max: 1.0,
+            min: 0,
+            max: 100,
             onChanged: (double value) {
               setState(() {
                 _currentSliderValue = value;

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
 import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/provider/audio_provider.dart';
 
 class BottomActionBar extends StatefulWidget {
   @override
@@ -11,10 +13,12 @@ class BottomActionBar extends StatefulWidget {
 class _BottomActionBarState extends State<BottomActionBar> with TickerProviderStateMixin {
   bool isPlaying = false;
 
+  AudioProvider _audioProvider;
+
   AnimationController _playPauseIconAnimationController;
 
   //AUDIO
-  AudioPlayer _audioPlayer;
+  //AudioPlayer _audioPlayer;
 
   @override
   void initState() {
@@ -22,18 +26,20 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
 
     //AUDIO
-    _audioPlayer = AudioPlayer();
+    _audioProvider = Provider.of<AudioProvider>(context, listen: false);
+
+    /*_audioPlayer = AudioPlayer();
     // Set a sequence of audio sources that will be played by the audio player.
     _audioPlayer.setAsset('assets/songs/eden-xiuneng.mp3')
-        /*.setAudioSource(
+        */ /*.setAudioSource(
       ConcatenatingAudioSource(
         children: [AudioSource.uri(Uri.file('/assets/songs/eden-xiuneng.mp3'))],
       ),
-    )*/
+    )*/ /*
         .catchError((error) {
       // catch load errors: 404, invalid url ...
       print("An error occured $error");
-    });
+    });*/
 
     super.initState();
   }
@@ -42,7 +48,7 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
   void dispose() {
     _playPauseIconAnimationController.dispose();
 
-    _audioPlayer.dispose();
+    //_audioPlayer.dispose();
 
     super.dispose();
   }
@@ -63,12 +69,17 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               StreamBuilder<LoopMode>(
-                stream: _audioPlayer.loopModeStream,
+                stream: _audioProvider.audioPlayer.loopModeStream,
                 builder: (context, snapshot) {
                   return loopButton(context, snapshot.data ?? LoopMode.off);
                 },
               ),
-              playButton(),
+              StreamBuilder(
+                stream: _audioProvider.audioPlayer.playingStream,
+                builder: (context, snapshot) {
+                  return playButton(snapshot.data);
+                },
+              ),
               shuffleButton(),
             ],
           ),
@@ -87,7 +98,7 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
       child: CupertinoButton(
         onPressed: () {
           setState(() {
-            _audioPlayer.setLoopMode(
+            _audioProvider.audioPlayer.setLoopMode(
               cycleModes[(cycleModes.indexOf(loopMode) + 1) % cycleModes.length],
             );
           });
@@ -100,25 +111,21 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     );
   }
 
-  Widget playButton() {
+  Widget playButton(bool isPlaying) {
+    if (isPlaying == true) {
+      _playPauseIconAnimationController.fling();
+    } else {
+      _playPauseIconAnimationController.reset();
+    }
     return Expanded(
       child: CupertinoButton(
-        //padding: const EdgeInsets.all(0),
         onPressed: () {
           setState(() {
-            if (_audioPlayer.playing == false) {
-              print('falseeee');
-              _audioPlayer.play();
-              _playPauseIconAnimationController.forward();
+            if (_audioProvider.audioPlayer.playing == false) {
+              _audioProvider.audioPlayer.play();
             } else {
-              print('trueeee');
-              _audioPlayer.pause();
-              _playPauseIconAnimationController.reverse();
+              _audioProvider.audioPlayer.pause();
             }
-            /*isPlaying = !isPlaying;
-                  isPlaying
-                      ? _playPauseIconAnimationController.forward()
-                      : _playPauseIconAnimationController.reverse();*/
           });
         },
         child: AnimatedIcon(
