@@ -20,50 +20,48 @@ class SettingsPage extends StatelessWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text('Settings'),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ProfileSettingsTileButton(
-                text: 'Privacy',
-                icon: Icons.lock_outline_rounded,
-                nextScreen: Scaffold(),
-              ),
-              ProfileSettingsTileButton(
-                text: 'Manage Account',
-                icon: Icons.person_outline_outlined,
-                nextScreen: Scaffold(),
-              ),
-              ProfileSettingsTileButton(
-                text: 'Notifications',
-                icon: Icons.notifications_none_outlined,
-                nextScreen: Scaffold(),
-              ),
-              ProfileSettingsTileButton(
-                text: 'Saved',
-                icon: Icons.bookmark_border_rounded,
-                nextScreen: Scaffold(),
-              ),
-              ProfileSettingsTileButton(
-                text: 'Help',
-                icon: Icons.help_outline,
-                nextScreen: Scaffold(),
-              ),
-              ProfileSettingsTileButton(
-                text: 'About',
-                icon: Icons.info_outline_rounded,
-                onTap: () {
-                  showAboutDialog(
-                    context: context,
-                    applicationVersion: '0.0.1',
-                    applicationName: 'Stario App',
-                  );
-                },
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProfileSettingsTileButton(
+              text: 'Privacy',
+              icon: Icons.lock_outline_rounded,
+              nextScreen: Scaffold(),
+            ),
+            ProfileSettingsTileButton(
+              text: 'Manage Account',
+              icon: Icons.person_outline_outlined,
+              nextScreen: Scaffold(),
+            ),
+            ProfileSettingsTileButton(
+              text: 'Notifications',
+              icon: Icons.notifications_none_outlined,
+              nextScreen: Scaffold(),
+            ),
+            ProfileSettingsTileButton(
+              text: 'Saved',
+              icon: Icons.bookmark_border_rounded,
+              nextScreen: Scaffold(),
+            ),
+            ProfileSettingsTileButton(
+              text: 'Help',
+              icon: Icons.help_outline,
+              nextScreen: Scaffold(),
+            ),
+            ProfileSettingsTileButton(
+              text: 'About',
+              icon: Icons.info_outline_rounded,
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationVersion: '0.0.1',
+                  applicationName: 'Stario App',
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

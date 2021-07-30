@@ -117,6 +117,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
       elevation: 0,
       expandedHeight: profileExpandedHeight,
       titleSpacing: 5,
+
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
