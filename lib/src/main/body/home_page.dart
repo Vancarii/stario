@@ -8,7 +8,7 @@ import 'package:stario/src/main/body/tabs/explore_page.dart';
 import 'package:stario/src/main/body/tabs/my_collections_page.dart';
 import 'package:stario/src/main/body/tabs/profile_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
-import 'package:stario/src/models/genre_model.dart';
+import 'package:stario/src/models/my_genre_model.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 

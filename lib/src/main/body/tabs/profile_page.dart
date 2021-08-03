@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/song_lists/my_songs.dart';
@@ -94,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                     controller: _tabViewController,
                     children: [
                       SongTilesListView(
-                        songList: mySongs,
+                        playlistName: kMySongsPlaylist,
                       ),
                       MyAlbumsTab(),
                       AboutTab(),

@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -20,6 +21,7 @@ class AudioProvider extends ChangeNotifier {
     super.dispose();
   }
 
+*/
 /*  void playPauseButtonTapped(bool isPlaying) {
     if (isPlaying == true) {
       audioPlayer.pause();
@@ -27,5 +29,7 @@ class AudioProvider extends ChangeNotifier {
       audioPlayer.play();
     }
     notifyListeners();
-  }*/
+  }*/ /*
+
 }
+*/

@@ -4,16 +4,17 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/provider/audio_provider.dart';
+import 'package:stario/src/services/audio/audio_player_service.dart';
 
-class BottomActionBar extends StatefulWidget {
+class BottomMusicActionBar extends StatefulWidget {
   @override
-  _BottomActionBarState createState() => _BottomActionBarState();
+  _BottomMusicActionBarState createState() => _BottomMusicActionBarState();
 }
 
-class _BottomActionBarState extends State<BottomActionBar> with TickerProviderStateMixin {
+class _BottomMusicActionBarState extends State<BottomMusicActionBar> with TickerProviderStateMixin {
   bool isPlaying = false;
 
-  AudioProvider _audioProvider;
+  //AudioProvider _audioProvider;
 
   AnimationController _playPauseIconAnimationController;
 
@@ -23,10 +24,10 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
   @override
   void initState() {
     _playPauseIconAnimationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+        AnimationController(value: 0, vsync: this, duration: Duration(milliseconds: 200));
 
     //AUDIO
-    _audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    //_audioProvider = Provider.of<AudioProvider>(context, listen: false);
 
     /*_audioPlayer = AudioPlayer();
     // Set a sequence of audio sources that will be played by the audio player.
@@ -55,10 +56,8 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    //streambuilder not used yet
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        //final playerState = snapshot.data;
+    return Consumer<AudioPlayerService>(
+      builder: (key, player, child) {
         return Container(
           height: kPlayPauseButtonHeight,
           width: double.infinity,
@@ -68,16 +67,18 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              StreamBuilder<LoopMode>(
-                stream: _audioProvider.audioPlayer.loopModeStream,
+              StreamBuilder<PlaylistLoopMode>(
+                stream: player.loopMode, //_audioProvider.audioPlayer.loopModeStream,
                 builder: (context, snapshot) {
-                  return loopButton(context, snapshot.data ?? LoopMode.off);
+                  return loopButton(context, snapshot.data ?? PlaylistLoopMode.off, player);
                 },
               ),
-              StreamBuilder(
-                stream: _audioProvider.audioPlayer.playingStream,
+              StreamBuilder<AudioProcessingState>(
+                stream: player.audioProcessingState, //_audioProvider.audioPlayer.playingStream,
+
                 builder: (context, snapshot) {
-                  return playButton(snapshot.data);
+                  final playerState = snapshot.data ?? AudioProcessingState.unknown;
+                  return playButton(playerState, player);
                 },
               ),
               shuffleButton(),
@@ -88,17 +89,18 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     );
   }
 
-  Widget loopButton(BuildContext context, LoopMode loopMode) {
+  Widget loopButton(BuildContext context, PlaylistLoopMode loopMode, AudioPlayerService player) {
     const cycleModes = [
-      LoopMode.off,
-      LoopMode.one,
+      PlaylistLoopMode.off,
+      PlaylistLoopMode.one,
+      PlaylistLoopMode.all,
     ];
     final index = cycleModes.indexOf(loopMode);
     return Expanded(
       child: CupertinoButton(
         onPressed: () {
           setState(() {
-            _audioProvider.audioPlayer.setLoopMode(
+            player.setLoopMode(
               cycleModes[(cycleModes.indexOf(loopMode) + 1) % cycleModes.length],
             );
           });
@@ -111,23 +113,22 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     );
   }
 
-  Widget playButton(bool isPlaying) {
-    if (isPlaying == true) {
-      _playPauseIconAnimationController.fling();
-    } else {
+  Widget playButton(AudioProcessingState processingState, AudioPlayerService player) {
+    if (processingState == AudioProcessingState.idle) {
+      print('idle');
       _playPauseIconAnimationController.reset();
+    } else if (processingState == AudioProcessingState.ready) {
+      //when audio plays then pauses, this is called
+      print('ready');
+      _playPauseIconAnimationController.reset();
+    } else if (processingState != AudioProcessingState.completed) {
+      //called right away
+      print('!complete');
+      _playPauseIconAnimationController.fling();
     }
     return Expanded(
       child: CupertinoButton(
-        onPressed: () {
-          setState(() {
-            if (_audioProvider.audioPlayer.playing == false) {
-              _audioProvider.audioPlayer.play();
-            } else {
-              _audioProvider.audioPlayer.pause();
-            }
-          });
-        },
+        onPressed: processingState == AudioProcessingState.ready ? player.play : player.pause,
         child: AnimatedIcon(
           progress: _playPauseIconAnimationController,
           icon: AnimatedIcons.play_pause,

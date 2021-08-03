@@ -1,4 +1,4 @@
-import 'package:stario/src/models/song_model.dart';
+import 'package:stario/src/models/my_song_model.dart';
 
 final List<Song> exploreSongs = [
   Song(

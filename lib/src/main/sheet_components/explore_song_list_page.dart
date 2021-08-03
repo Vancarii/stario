@@ -15,7 +15,7 @@ class _ExploreSongListPageState extends State<ExploreSongListPage> {
       height: MediaQuery.of(context).size.height,
       //color: Theme.of(context).scaffoldBackgroundColor,
       child: SongTilesListView(
-        songList: exploreSongs,
+        playlistName: kExplorePlaylist,
         physics: NeverScrollableScrollPhysics(),
       ),
     );

@@ -17,13 +17,13 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
 
   bool isFavourite = false;
 
-  AudioProvider _audioProvider;
+  //AudioProvider _audioProvider;
 
   Duration currentSongPosition;
 
   @override
   void initState() {
-    _audioProvider = Provider.of<AudioProvider>(context, listen: false);
+   // _audioProvider = Provider.of<AudioProvider>(context, listen: false);
     //print(_audioProvider.audioPlayer.position);
     super.initState();
   }
