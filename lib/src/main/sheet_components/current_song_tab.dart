@@ -23,6 +23,9 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
 
   bool isFavourite = false;
 
+  // controller for current_song_tab.dart
+  PageController currentSongTabController = PageController();
+
   double fadeInOutHeader({bool fadeOut = true}) {
     if (fadeOut == true) {
       if (1 - (widget.sheetProgress / 0.5) < 0) {
@@ -55,6 +58,10 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
   Widget build(BuildContext context) {
     AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
     AudioProvider _providerListener = Provider.of<AudioProvider>(context);
+
+/*    currentSongTabController.animateToPage(_providerListener.currentIndex,
+        duration: Duration(milliseconds: 250), curve: Curves.easeInOutQuart);*/
+
     return sheetIsHalfway == true
         ? Opacity(
             opacity: fadeInOutHeader(fadeOut: false),
@@ -161,7 +168,8 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                     children: [
                                       CircleAvatar(
                                         backgroundImage: AssetImage(HardcodedPlaylists()
-                                            .playlists[_providerListener.currentPlaylist][index]
+                                            .playlists[_providerListener.currentPlaylist]
+                                                [_providerListener.currentIndex]
                                             .coverImagePath),
                                       ),
                                       SizedBox(
@@ -173,7 +181,8 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                         children: [
                                           Text(
                                             HardcodedPlaylists()
-                                                .playlists[_providerListener.currentPlaylist][index]
+                                                .playlists[_providerListener.currentPlaylist]
+                                                    [_providerListener.currentIndex]
                                                 .songName,
                                             style: TextStyle(
                                               color: Colors.white,
@@ -183,7 +192,8 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                           ),
                                           Text(
                                             HardcodedPlaylists()
-                                                .playlists[_providerListener.currentPlaylist][index]
+                                                .playlists[_providerListener.currentPlaylist]
+                                                    [_providerListener.currentIndex]
                                                 .artist
                                                 .artistName,
                                             style: TextStyle(

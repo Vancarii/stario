@@ -119,14 +119,11 @@ class _SongTilesListViewState extends State<SongTilesListView> {
       key: Key('$index'),
       onPressed: () {
         setState(() {
+          //print('index: $index');
           _provider
               .loadPlaylist(widget.playlistName)
               .then((value) => _provider.seekTo(index))
               .then((value) => _provider.playPauseAudio(true));
-          /*_audioProvider.audioPlayer
-              .seek(Duration())
-              .then((_) => _audioProvider.audioPlayer.play());*/
-          //TODO: notify provider which song is tapped so it can play it and show in current song tab
 
           currentSelectedSongIndex = index;
         });

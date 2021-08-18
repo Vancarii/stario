@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/main/sheet_components/song_details_tab.dart';
 import 'package:starioo/src/song_lists/song_lists.dart';
-
-// controller for current_song_tab.dart
-PageController currentSongTabController = PageController();
-
-// controller for song_details_tab.dart
-PageController detailsTabPageController = PageController();
 
 class AudioProvider extends ChangeNotifier {
   AudioPlayer _audioPlayer = AudioPlayer();
 
   bool _isPlaying = false;
   String _currentPlaylist;
+  int _currentIndex = 0;
 
   /// The current playlist that the song playing is from
   String get currentPlaylist => _currentPlaylist;
+
+  /// The current index inside of the current playlist
+  int get currentIndex => _currentIndex;
 
   /// If the song is playing or is paused
   bool get isPlaying => _isPlaying;
@@ -71,12 +68,15 @@ class AudioProvider extends ChangeNotifier {
   /// seeks to the song specified by [index] in the loaded playlist
   seekTo(int index) {
     _audioPlayer.seek(Duration.zero, index: index);
+    _currentIndex = index;
+    print('index: $_currentIndex');
+    notifyListeners();
 
-    // animates the current playing song pageview in song_details_tab.dart
+/*    // animates the current playing song pageview in song_details_tab.dart
     detailsTabPageController.animateToPage(index,
         duration: Duration(milliseconds: 250), curve: Curves.easeInOutQuart);
     currentSongTabController.animateToPage(index,
-        duration: Duration(milliseconds: 250), curve: Curves.easeInOutQuart);
+        duration: Duration(milliseconds: 250), curve: Curves.easeInOutQuart);*/
   }
 
   /// starts playing the song from the specified position [value]

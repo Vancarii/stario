@@ -17,13 +17,10 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
 
   Duration currentSongPosition;
 
-  @override
-  void initState() {
-    //print(_audioProvider.audioPlayer.position);
-    super.initState();
-  }
+  int previousIndex = 0;
 
-  //TODO: Fix favourite button, duration slider, add func for action bar buttons
+  // controller for song_details_tab.dart
+  PageController detailsTabPageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +30,19 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
     //print(Provider.of<AudioProvider>(context).audioPlayer.position);
     AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
     AudioProvider _providerListener = Provider.of<AudioProvider>(context);
+
+    print('prov index: ${_providerListener.currentIndex}');
+
+    /*_providerListener
+      ..addListener(() {
+        */ /*if (_providerListener.currentIndex != previousIndex) {
+          print('previous: $previousIndex');
+          print('previous int: ${_providerListener.currentIndex}');
+          detailsTabPageController.animateToPage(_providerListener.currentIndex,
+              duration: Duration(milliseconds: 250), curve: Curves.easeInOutQuart);
+          previousIndex = _providerListener.currentIndex;
+        }*/ /*
+      });*/
     return Container(
       constraints: BoxConstraints(
         maxWidth: double.infinity,
@@ -78,7 +88,8 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                                 Card(
                                   margin: const EdgeInsets.all(0),
                                   child: Image.asset(HardcodedPlaylists()
-                                      .playlists[_providerListener.currentPlaylist][index]
+                                      .playlists[_providerListener.currentPlaylist]
+                                          [_providerListener.currentIndex]
                                       .coverImagePath),
                                   elevation: 20.0,
                                 ),
@@ -91,10 +102,12 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                                       children: [
                                         Text(
                                           HardcodedPlaylists()
-                                              .playlists[_providerListener.currentPlaylist][index]
+                                              .playlists[_providerListener.currentPlaylist]
+                                                  [_providerListener.currentIndex]
                                               .songName,
                                           overflow: TextOverflow.fade,
                                           maxLines: 1,
+                                          softWrap: false,
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,
@@ -106,7 +119,8 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                                         ),
                                         Text(
                                           HardcodedPlaylists()
-                                              .playlists[_providerListener.currentPlaylist][index]
+                                              .playlists[_providerListener.currentPlaylist]
+                                                  [_providerListener.currentIndex]
                                               .artist
                                               .artistName,
                                           style: TextStyle(
