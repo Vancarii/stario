@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stario/src/main/song_bottom_sheet.dart';
-import 'package:stario/src/route_transitions/route_transitions.dart';
+import 'package:starioo/src/main/song_bottom_sheet.dart';
+import 'package:starioo/src/route_transitions/route_transitions.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -57,7 +57,7 @@ class SettingsPage extends StatelessWidget {
                 showAboutDialog(
                   context: context,
                   applicationVersion: '0.0.1',
-                  applicationName: 'Stario App',
+                  applicationName: 'starioo App',
                 );
               },
             ),

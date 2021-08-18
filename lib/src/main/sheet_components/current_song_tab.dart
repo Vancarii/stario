@@ -2,9 +2,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
-import 'package:stario/src/constants/constants.dart';
-import 'package:stario/src/song_lists/explore_songs.dart';
-import 'package:stario/src/widgets/custom_physics.dart';
+import 'package:provider/provider.dart';
+import 'package:starioo/src/constants/constants.dart';
+import 'package:starioo/src/provider/audio_provider.dart';
+import 'package:starioo/src/song_lists/song_lists.dart';
+import 'package:starioo/src/widgets/custom_physics.dart';
 
 class CurrentSongTab extends StatefulWidget {
   final double sheetProgress;
@@ -51,6 +53,8 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
 
   @override
   Widget build(BuildContext context) {
+    AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
+    AudioProvider _providerListener = Provider.of<AudioProvider>(context);
     return sheetIsHalfway == true
         ? Opacity(
             opacity: fadeInOutHeader(fadeOut: false),
@@ -147,13 +151,18 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                               color: Colors.transparent,
                               child: PageView.builder(
                                 physics: CustomScrollPhysics(),
-                                itemCount: exploreSongs.length,
+                                controller: currentSongTabController,
+                                itemCount: HardcodedPlaylists()
+                                    .playlists[_providerListener.currentPlaylist]
+                                    .length,
                                 itemBuilder: (context, index) {
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
-                                        backgroundImage: AssetImage(exploreSongs[index].imagePath),
+                                        backgroundImage: AssetImage(HardcodedPlaylists()
+                                            .playlists[_providerListener.currentPlaylist][index]
+                                            .coverImagePath),
                                       ),
                                       SizedBox(
                                         width: 10.0,
@@ -163,7 +172,9 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            exploreSongs[index].songName,
+                                            HardcodedPlaylists()
+                                                .playlists[_providerListener.currentPlaylist][index]
+                                                .songName,
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 15,
@@ -171,7 +182,10 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                             ),
                                           ),
                                           Text(
-                                            exploreSongs[index].artistName,
+                                            HardcodedPlaylists()
+                                                .playlists[_providerListener.currentPlaylist][index]
+                                                .artist
+                                                .artistName,
                                             style: TextStyle(
                                               fontSize: 15,
                                               color: Colors.white60,

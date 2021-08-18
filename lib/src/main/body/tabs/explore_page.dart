@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:stario/src/constants/constants.dart';
-import 'package:stario/src/genre_list/genre_list.dart';
-import 'package:stario/src/models/my_genre_model.dart';
-import 'package:stario/src/widgets/custom_physics.dart';
+import 'package:starioo/src/constants/constants.dart';
+import 'package:starioo/src/genre_list/genre_list.dart';
+import 'package:starioo/src/models/genre_model.dart';
+import 'package:starioo/src/widgets/custom_physics.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key key}) : super(key: key);

@@ -2,10 +2,10 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stario/src/provider/audio_provider.dart';
-import 'package:stario/src/route_transitions/route_transitions.dart';
-import 'package:stario/src/song_lists/explore_songs.dart';
-import 'package:stario/src/widgets/custom_physics.dart';
+import 'package:starioo/src/provider/audio_provider.dart';
+import 'package:starioo/src/route_transitions/route_transitions.dart';
+import 'package:starioo/src/song_lists/song_lists.dart';
+import 'package:starioo/src/widgets/custom_physics.dart';
 
 class SongDetailsTab extends StatefulWidget {
   @override
@@ -13,17 +13,12 @@ class SongDetailsTab extends StatefulWidget {
 }
 
 class _SongDetailsTabState extends State<SongDetailsTab> {
-  double _currentSliderValue = 0.0;
-
   bool isFavourite = false;
-
-  //AudioProvider _audioProvider;
 
   Duration currentSongPosition;
 
   @override
   void initState() {
-   // _audioProvider = Provider.of<AudioProvider>(context, listen: false);
     //print(_audioProvider.audioPlayer.position);
     super.initState();
   }
@@ -36,6 +31,8 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
       currentSongPosition = event;
     });*/
     //print(Provider.of<AudioProvider>(context).audioPlayer.position);
+    AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
+    AudioProvider _providerListener = Provider.of<AudioProvider>(context);
     return Container(
       constraints: BoxConstraints(
         maxWidth: double.infinity,
@@ -67,73 +64,96 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                     Expanded(
                       child: PageView.builder(
                           physics: CustomScrollPhysics(),
-                          itemCount: exploreSongs.length,
+                          onPageChanged: (int index) {
+                            _provider.seekTo(index);
+                          },
+                          controller: detailsTabPageController,
+                          itemCount: HardcodedPlaylists()
+                              .playlists[_providerListener.currentPlaylist]
+                              .length,
                           itemBuilder: (context, index) {
                             return Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Card(
                                   margin: const EdgeInsets.all(0),
-                                  child: Image.asset(exploreSongs[index].imagePath),
+                                  child: Image.asset(HardcodedPlaylists()
+                                      .playlists[_providerListener.currentPlaylist][index]
+                                      .coverImagePath),
                                   elevation: 20.0,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        exploreSongs[index].songName,
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          HardcodedPlaylists()
+                                              .playlists[_providerListener.currentPlaylist][index]
+                                              .songName,
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Text(
-                                        exploreSongs[index].artistName,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white60,
+                                        SizedBox(
+                                          height: 5.0,
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          HardcodedPlaylists()
+                                              .playlists[_providerListener.currentPlaylist][index]
+                                              .artist
+                                              .artistName,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white60,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             );
                           }),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Text(
-                              '0:00',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
+                    StreamBuilder<Duration>(
+                        stream: _provider.getCurrentPosition,
+                        builder: (context, snapshot) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10.0),
+                                  child: Text(
+                                    snapshot.hasData
+                                        ? '${snapshot.data.inMinutes}:${snapshot.data.inSeconds % 60 < 10 ? '0${snapshot.data.inSeconds % 60}' : snapshot.data.inSeconds % 60}'
+                                        : '0:00',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                                songDurationSlider(_provider, snapshot.data),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Text(
+                                    '${_provider.songTotalDuration.inMinutes}:${_provider.songTotalDuration.inSeconds % 60 < 10 ? '0${_provider.songTotalDuration.inSeconds % 60}' : _provider.songTotalDuration.inSeconds % 60}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          songDurationSlider(),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Text(
-                              '0:00', //'${_audioProvider.audioPlayer.duration.inMinutes}:${_audioProvider.audioPlayer.duration.inSeconds % 60}',
-                              style: TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                        }),
                   ],
                 ),
               ),
@@ -145,7 +165,7 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
     );
   }
 
-  Widget songDurationSlider() {
+  Widget songDurationSlider(AudioProvider provider, Duration position) {
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15.0),
@@ -160,12 +180,14 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
             overlayShape: SliderComponentShape.noOverlay,
           ),
           child: Slider(
-            value: _currentSliderValue,
+            value: position != null ? position.inMilliseconds.toDouble() : 0,
             min: 0,
-            max: 100,
+            max: provider.songTotalDuration.inMilliseconds.toDouble(),
             onChanged: (double value) {
               setState(() {
-                _currentSliderValue = value;
+                //_currentSliderValue = value;
+                var duration = Duration(milliseconds: value.toInt());
+                provider.seekToPosition(duration);
               });
             },
           ),

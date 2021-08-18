@@ -8,12 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:stario/main.dart';
+import 'package:starioo/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(StarioApp());
+    await tester.pumpWidget(stariooApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

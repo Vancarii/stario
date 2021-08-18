@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
-import 'package:stario/src/widgets/custom_rounded_textfield.dart';
+import 'package:starioo/src/widgets/custom_rounded_textfield.dart';
 
 class ShareSheet extends StatefulWidget {
   const ShareSheet({Key key}) : super(key: key);

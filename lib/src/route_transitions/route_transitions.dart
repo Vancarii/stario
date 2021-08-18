@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stario/src/main/body/sub_screens/share_sheet.dart';
+import 'package:starioo/src/main/body/sub_screens/share_sheet.dart';
 
 class RouteTransitions {
   Route slideRightToLeftTransitionType(secondPage) {

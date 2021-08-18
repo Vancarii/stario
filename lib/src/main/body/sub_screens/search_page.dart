@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stario/src/main/song_bottom_sheet.dart';
-import 'package:stario/src/widgets/custom_rounded_textfield.dart';
+import 'package:starioo/src/main/song_bottom_sheet.dart';
+import 'package:starioo/src/widgets/custom_rounded_textfield.dart';
 
 class SearchPage extends StatefulWidget {
   final Function(bodyPages) onBackButtonTapped;

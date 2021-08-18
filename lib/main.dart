@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:stario/src/main/song_bottom_sheet.dart';
-import 'package:stario/src/services/audio/audio_player_service.dart';
-import 'package:stario/src/services/audio/just_audio_player.dart';
-import 'package:stario/src/services/playlists/hardcoded_collection_songs.dart';
-import 'package:stario/src/services/playlists/playlists_service.dart';
+import 'package:starioo/src/main/song_bottom_sheet.dart';
+import 'package:starioo/src/provider/audio_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(StarioApp());
+  runApp(stariooApp());
 }
 
-class StarioApp extends StatelessWidget {
+class stariooApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -24,18 +21,9 @@ class StarioApp extends StatelessWidget {
     ));
     return MultiProvider(
       providers: [
-        Provider<PlaylistsService>(
-          create: (_) => HardcodedPlaylistsService(),
-        ),
-        Provider<AudioPlayerService>(
-          create: (_) => JustAudioPlayer(),
-          dispose: (_, value) {
-            (value as JustAudioPlayer).dispose();
-          },
-        ),
-        /*ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (BuildContext context) => AudioProvider(),
-        ),*/
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

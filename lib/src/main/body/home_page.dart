@@ -2,14 +2,14 @@ import 'package:animations/animations.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stario/src/genre_list/genre_list.dart';
-import 'package:stario/src/main/body/sub_screens/search_page.dart';
-import 'package:stario/src/main/body/tabs/explore_page.dart';
-import 'package:stario/src/main/body/tabs/my_collections_page.dart';
-import 'package:stario/src/main/body/tabs/profile_page.dart';
-import 'package:stario/src/main/song_bottom_sheet.dart';
-import 'package:stario/src/models/my_genre_model.dart';
-import 'package:stario/src/widgets/custom_physics.dart';
+import 'package:starioo/src/genre_list/genre_list.dart';
+import 'package:starioo/src/main/body/sub_screens/search_page.dart';
+import 'package:starioo/src/main/body/tabs/explore_page.dart';
+import 'package:starioo/src/main/body/tabs/my_collections_page.dart';
+import 'package:starioo/src/main/body/tabs/profile_page.dart';
+import 'package:starioo/src/main/song_bottom_sheet.dart';
+import 'package:starioo/src/models/genre_model.dart';
+import 'package:starioo/src/widgets/custom_physics.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -177,19 +177,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           extendBodyBehindAppBar: true,
           //resizeToAvoidBottomInset: true,
           appBar: homeAppBar(),
-          body: Stack(
-            children: [
-              ExtendedTabBarView(
-                controller: tabController,
-                physics: CustomScrollPhysics(),
-                children: [
-                  ExplorePage(),
-                  MyCollectionsPage(),
-                  ProfilePage(),
-                ],
-              ),
-              floatingActionButton(),
-            ],
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.black, Theme.of(context).scaffoldBackgroundColor],
+                  begin: Alignment.topCenter,
+                  end: Alignment.center),
+            ),
+            child: Stack(
+              children: [
+                ExtendedTabBarView(
+                  controller: tabController,
+                  physics: CustomScrollPhysics(),
+                  children: [
+                    ExplorePage(),
+                    MyCollectionsPage(),
+                    ProfilePage(),
+                  ],
+                ),
+                floatingActionButton(),
+              ],
+            ),
           ),
         ),
       ),

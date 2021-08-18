@@ -1,12 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stario/src/constants/constants.dart';
-import 'package:stario/src/playlists/song_model.dart';
-import 'package:stario/src/services/audio/audio_player_service.dart';
-import 'package:stario/src/services/playlists/playlists_service.dart';
-import 'package:stario/src/song_lists/liked_songs.dart';
-import 'package:stario/src/widgets/song_tiles_listview.dart';
+import 'package:starioo/src/constants/constants.dart';
+import 'package:starioo/src/song_lists/song_lists.dart';
+import 'package:starioo/src/widgets/song_tiles_listview.dart';
 
 class MyCollectionsPage extends StatefulWidget {
   const MyCollectionsPage({Key key}) : super(key: key);
@@ -26,7 +21,11 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
         margin: const EdgeInsets.all(7),
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          gradient: LinearGradient(
+              colors: [Colors.black, Theme.of(context).primaryColor],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter),
+          //color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
         child: SafeArea(
@@ -41,12 +40,8 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                   child: SongTilesListView(
                     playlistName: kCollectionsPlaylist,
                     isFavouriteList: true,
-                  ),
-                  /*SongTilesListView(
-                    songList: likedSongs,
-                    isFavouriteList: true,
                     physics: BouncingScrollPhysics(),
-                  ),*/
+                  ),
                 ),
               ),
               /*SizedBox(

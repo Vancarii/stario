@@ -1,13 +1,16 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
-import 'package:stario/src/constants/constants.dart';
-import 'package:stario/src/main/body/home_page.dart';
-import 'package:stario/src/main/body/sub_screens/search_page.dart';
-import 'package:stario/src/main/sheet_components/song_details_tab.dart';
+import 'package:provider/provider.dart';
+import 'package:starioo/src/constants/constants.dart';
+import 'package:starioo/src/main/body/home_page.dart';
+import 'package:starioo/src/main/body/sub_screens/search_page.dart';
+import 'package:starioo/src/main/body/sub_screens/settings_page.dart';
+import 'package:starioo/src/main/sheet_components/song_details_tab.dart';
+import 'package:starioo/src/provider/audio_provider.dart';
 import 'sheet_components/current_song_tab.dart';
-import 'sheet_components/explore_song_list_page.dart';
-import 'sheet_components/bottom_music_action_bar.dart';
+import 'sheet_components/recently_played_list_page.dart';
+import 'sheet_components/bottom_action_bar.dart';
 
 enum bodyPages {
   mainBody,
@@ -32,12 +35,12 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
     return Scaffold(
       resizeToAvoidBottomInset: false,
       /*appBar: AppBar(
-    //appBar that makes the body not extend past the android status bar
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      toolbarHeight: 0,
-      brightness: Brightness.dark,
-    ),*/
+      //appBar that makes the body not extend past the android status bar
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+        brightness: Brightness.dark,
+      ),*/
       body: SlidingSheet(
         controller: songSheetController,
         closeOnBackdropTap: true,
@@ -56,7 +59,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
           snappings: [SnapSpec.headerSnap, double.infinity],
           initialSnap: SnapSpec.headerSnap,
 /*          snappings: [SnapSpec.headerFooterSnap, double.infinity],
-        initialSnap: SnapSpec.headerFooterSnap,*/
+          initialSnap: SnapSpec.headerFooterSnap,*/
         ),
         body: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -112,13 +115,13 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
           });
         },
         builder: (BuildContext context, SheetState bodyState) {
-          return ExploreSongListPage();
+          return RecentlyPlayedListPage();
         },
         footerBuilder: (BuildContext context, SheetState footerState) {
           return SongDetailsTab();
         },
       ),
-      bottomNavigationBar: BottomMusicActionBar(),
+      bottomNavigationBar: BottomActionBar(),
     );
   }
 }
