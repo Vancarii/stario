@@ -179,11 +179,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           appBar: homeAppBar(),
           body: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+                /*gradient: LinearGradient(
                   colors: [Colors.black, Theme.of(context).scaffoldBackgroundColor],
                   begin: Alignment.topCenter,
-                  end: Alignment.center),
-            ),
+                  end: Alignment.center),*/
+                ),
             child: Stack(
               children: [
                 ExtendedTabBarView(
@@ -217,10 +217,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         child: AnimatedContainer(
           duration: Duration(milliseconds: 300),
           curve: Curves.easeInOutCirc,
-          height: showGenres == false ? 65 : MediaQuery.of(context).size.height / 4,
+          height: showGenres == false ? 55 : MediaQuery.of(context).size.height / 4,
           width: showGenres == false
               ? currentSelectedGenreIndex == null
-                  ? 65
+                  ? 55
                   : MediaQuery.of(context).size.width - 50.0
               : MediaQuery.of(context).size.width - 50.0,
           decoration: BoxDecoration(
@@ -281,6 +281,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   : Icon(
                       Icons.settings_input_component,
                       color: Theme.of(context).primaryColor,
+                      size: 20,
                     )
               : MediaQuery.removePadding(
                   removeTop: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:starioo/src/models/song_model.dart';
 import 'package:starioo/src/provider/audio_provider.dart';
@@ -93,6 +94,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                 );
               });*/
             },
+            //buildDefaultDragHandles: false,
             physics: widget.physics,
             shrinkWrap: true,
             padding: const EdgeInsets.all(0),
@@ -129,7 +131,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
         });
       },
       child: Container(
-        height: 65,
+        height: 60,
         width: double.infinity,
         color:
             currentSelectedSongIndex == index ? Theme.of(context).accentColor : Colors.transparent,
@@ -158,7 +160,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                     Text(
                       HardcodedPlaylists().playlists[widget.playlistName][index].songName,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -203,6 +205,7 @@ class _SongTilesListViewState extends State<SongTilesListView> {
                   child: Icon(
                     isFavourited(index) == true ? Icons.favorite : Icons.favorite_border,
                     color: isFavourited(index) == true ? Colors.redAccent : Colors.grey,
+                    size: 20,
                   ),
                 ),
               ),

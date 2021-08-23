@@ -48,13 +48,21 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
         maxWidth: double.infinity,
         maxHeight: 250,
       ),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      //color: Theme.of(context).scaffoldBackgroundColor,
       child: Container(
         margin: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(30.0),
           ),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5,
+              spreadRadius: 2,
+              offset: Offset(2, 2),
+              color: Colors.black54,
+            )
+          ],
           color: Theme.of(context).accentColor.withOpacity(0.2),
         ),
         child: Column(

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:starioo/src/constants/constants.dart';
 import 'package:starioo/src/route_transitions/route_transitions.dart';
 import 'package:starioo/src/song_lists/song_lists.dart';
@@ -16,7 +17,8 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin {
+class _ProfilePageState extends State<ProfilePage>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final ScrollController _sliverScrollController = ScrollController();
 
   TabController _tabViewController;
@@ -26,31 +28,37 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   static const double profileExpandedHeight = 300;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     _tabViewController = TabController(length: 3, vsync: this);
 
-/*    _sliverScrollController.addListener(() {
+    _sliverScrollController.addListener(() {
       if (_sliverScrollController.offset <= _sliverScrollController.position.minScrollExtent &&
           !_sliverScrollController.position.outOfRange) {
         print('reach top');
       }
 
-      */
+/*      print('offset: ${_sliverScrollController.offset}');
+      print('offset2: ${(profileExpandedHeight - (kToolbarHeight))}');*/
 
-    /*if (!isPinned &&
+      if (!isPinned &&
           _sliverScrollController.hasClients &&
-          _sliverScrollController.offset > (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
+          _sliverScrollController.offset > (profileExpandedHeight - kToolbarHeight)) {
         setState(() {
           isPinned = true;
+          print('ispinned: $isPinned');
         });
       } else if (isPinned &&
           _sliverScrollController.hasClients &&
-          _sliverScrollController.offset < (profileExpandedHeight - (kToolbarHeight * 2) - 40)) {
+          _sliverScrollController.offset < (profileExpandedHeight - kToolbarHeight)) {
         setState(() {
           isPinned = false;
+          print('ispinned: $isPinned');
         });
-      }*/ /*
-    });*/
+      }
+    });
     super.initState();
   }
 
@@ -112,26 +120,15 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
   Widget profileCoverBar() {
     return SliverAppBar(
       stretch: true,
-      backgroundColor: Color(0xfff222222),
+      //backgroundColor: Colors.transparent,
       pinned: true,
       elevation: 0,
+      centerTitle: true,
       expandedHeight: profileExpandedHeight,
       titleSpacing: 5,
-
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          /*CupertinoButton(
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-            color: Theme.of(context).primaryColor,
-            padding: const EdgeInsets.all(0),
-            child: Icon(
-              Icons.edit,
-              color: Colors.white,
-              size: 25,
-            ),
-            onPressed: () {},
-          ),*/
           CupertinoButton(
             onPressed: () {
               Navigator.push(
@@ -148,63 +145,66 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
           ),
         ],
       ),
-      //collapsedHeight: kToolbarHeight * 2 + (kToolbarHeight / 2),
-      //backgroundColor: Color(0xfff222222),
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         titlePadding: const EdgeInsets.all(0),
         title: Container(
+          height: kToolbarHeight,
           decoration: BoxDecoration(
-            color: Color(0xfff222222),
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(15.0),
-            ),
-            /*gradient: LinearGradient(
+            gradient: LinearGradient(
               colors: [
-                isPinned == false ? Colors.transparent : Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor,
+                Colors.transparent,
+                isPinned == false ? Color(0xfff222222) : Color(0xfff222222).withOpacity(0.7),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-            ),*/
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 6.0, bottom: 4.0),
-                        width: 25,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.all(Radius.circular(2)),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Xiuneng',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /*Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 6.0, bottom: 4.0),
+                      width: 20,
+                      height: 3,
+                      decoration: BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                      ),
+                    ),
+                  ),*/
+                  Text(
+                    'Xiuneng',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         background: Container(
-          child: Image.asset(
-            'assets/genres/hiphop.jpg',
-            fit: BoxFit.cover,
+          /*decoration: BoxDecoration(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(100.0),
+            ),
+          ),*/
+          child: ClipRRect(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(50.0),
+            ),
+            child: Image.asset(
+              'assets/genres/hiphop.jpg',
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
@@ -287,15 +287,16 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
         centerTitle: false,
         titlePadding: const EdgeInsets.symmetric(horizontal: 15.0),
         title: Container(
+          height: 75,
           alignment: Alignment.center,
-          decoration: BoxDecoration(),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 15.0),
                 child: Text(
                   '302,532 Monthly listeners',
-                  style: TextStyle(fontSize: 12, color: Colors.white54),
+                  style: GoogleFonts.lato(fontSize: 12, color: Colors.white54),
                 ),
               ),
               Row(
@@ -309,7 +310,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           '15',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -317,7 +318,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           'Songs',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 12,
                             color: Colors.white54,
                             fontWeight: FontWeight.w400,
                           ),
@@ -333,7 +334,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           '5',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -341,7 +342,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           'Albums',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 12,
                             color: Colors.white54,
                             fontWeight: FontWeight.w400,
                           ),
@@ -357,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           '240k',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -365,7 +366,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
                           'Followers',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 12,
                             color: Colors.white54,
                             fontWeight: FontWeight.w400,
                           ),
@@ -407,7 +408,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
     return SliverAppBar(
       titleSpacing: 5,
       elevation: 0,
-      toolbarHeight: 80,
+      toolbarHeight: 65,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           color: Color(0xfff222222),
@@ -448,9 +449,9 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               padding: const EdgeInsets.all(0),
               onPressed: () {},
               child: Container(
-                height: 40,
+                height: kMinInteractiveDimensionCupertino,
                 alignment: Alignment.center,
-                margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                //margin: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   color: Colors.white12,
@@ -476,7 +477,7 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
       backgroundColor: Color(0xfff222222),
       pinned: true,
       titleSpacing: 0,
-      toolbarHeight: 40,
+      toolbarHeight: 55,
       elevation: 0,
       title: TabBar(
         controller: _tabViewController,
@@ -488,18 +489,34 @@ class _ProfilePageState extends State<ProfilePage> with TickerProviderStateMixin
               height: 40,
               alignment: Alignment.center,
               child: Text(
-                'SONGS',
+                'Songs',
+                style: GoogleFonts.lato(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
               )),
           Container(
               width: double.infinity,
               height: 40,
               alignment: Alignment.center,
-              child: Text('ALBUMS')),
+              child: Text(
+                'Albums',
+                style: GoogleFonts.lato(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              )),
           Container(
               width: double.infinity,
               height: 40,
               alignment: Alignment.center,
-              child: Text('ABOUT')),
+              child: Text(
+                'About',
+                style: GoogleFonts.lato(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              )),
         ],
       ),
     );

@@ -133,8 +133,9 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                 height: kCurrentSongTabHeight,
                 //color: Theme.of(context).scaffoldBackgroundColor,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Align(
+                    /*Align(
                       alignment: Alignment.topCenter,
                       child: Container(
                         margin: const EdgeInsets.only(top: 6.0, bottom: 5.0),
@@ -145,9 +146,9 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                           borderRadius: BorderRadius.all(Radius.circular(2)),
                         ),
                       ),
-                    ),
+                    ),*/
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.only(right: 10.0, left: 15.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -166,12 +167,28 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      CircleAvatar(
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(HardcodedPlaylists()
+                                                .playlists[_providerListener.currentPlaylist]
+                                                    [_providerListener.currentIndex]
+                                                .coverImagePath),
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
+                                        ),
+                                      ),
+                                      /*CircleAvatar(
+
                                         backgroundImage: AssetImage(HardcodedPlaylists()
                                             .playlists[_providerListener.currentPlaylist]
                                                 [_providerListener.currentIndex]
                                             .coverImagePath),
-                                      ),
+                                      ),*/
                                       SizedBox(
                                         width: 10.0,
                                       ),
@@ -186,7 +203,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                                 .songName,
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 15,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -197,7 +214,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                                                 .artist
                                                 .artistName,
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 12,
                                               color: Colors.white60,
                                               fontWeight: FontWeight.w600,
                                             ),
@@ -220,6 +237,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                             child: Icon(
                               isFavourite == false ? Icons.favorite_border : Icons.favorite,
                               color: isFavourite == false ? Colors.grey : Colors.redAccent,
+                              size: 20,
                             ),
                           ),
                         ],

@@ -96,6 +96,7 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     final index = cycleModes.indexOf(loopMode);
     return Expanded(
       child: CupertinoButton(
+        padding: const EdgeInsets.all(0),
         onPressed: () {
           setState(() {
             /*_audioProvider.audioPlayer.setLoopMode(
@@ -103,9 +104,11 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
             );*/
           });
         },
-        child: Icon(
-          Icons.all_inclusive,
-          color: index == 0 ? Colors.white : Theme.of(context).accentColor,
+        child: FittedBox(
+          child: Icon(
+            Icons.all_inclusive,
+            color: index == 0 ? Colors.white : Theme.of(context).accentColor,
+          ),
         ),
       ),
     );
@@ -119,6 +122,7 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     }
     return Expanded(
       child: CupertinoButton(
+        padding: const EdgeInsets.all(0),
         onPressed: () {
           setState(() {
             provider.playPauseAudio(!providerListener.isPlaying);
@@ -131,11 +135,13 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
             }
           });*/
         },
-        child: AnimatedIcon(
-          progress: _playPauseIconAnimationController,
-          icon: AnimatedIcons.play_pause,
-          size: 40,
-          color: Colors.white,
+        child: FittedBox(
+          child: AnimatedIcon(
+            progress: _playPauseIconAnimationController,
+            icon: AnimatedIcons.play_pause,
+            size: 40,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -144,11 +150,13 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
   Widget shuffleButton() {
     return Expanded(
       child: CupertinoButton(
-        //padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(0),
         onPressed: () {},
-        child: Icon(
-          Icons.shuffle,
-          color: Colors.white,
+        child: FittedBox(
+          child: Icon(
+            Icons.shuffle,
+            color: Colors.white,
+          ),
         ),
       ),
     );
