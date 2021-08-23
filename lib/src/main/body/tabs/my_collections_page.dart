@@ -34,15 +34,15 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> with AutomaticKee
             margin: const EdgeInsets.all(7),
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              /*gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
                   Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-              ),
-              //color: Theme.of(context).primaryColor,
+              ),*/
+              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
             ),
             child: SafeArea(

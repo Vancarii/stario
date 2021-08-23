@@ -72,43 +72,37 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(7),
+      margin: const EdgeInsets.only(left: 7.0, right: 7.0, bottom: 7.0, top: kToolbarHeight + 7.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.only(top: kToolbarHeight + 40),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          child: Scaffold(
-            backgroundColor: Color(0xfff222222),
-            body: MediaQuery.removePadding(
-              removeTop: true,
-              context: context,
-              child: Padding(
-                padding: const EdgeInsets.only(),
-                child: NestedScrollView(
-                  controller: _sliverScrollController,
-                  physics: BouncingScrollPhysics(),
-                  headerSliverBuilder: (context, isScrolled) {
-                    return [
-                      profileCoverBar(),
-                      profileInfoBar(),
-                      profileActionBar(),
-                      profileTabBar(),
-                    ];
-                  },
-                  body: ExtendedTabBarView(
-                    controller: _tabViewController,
-                    children: [
-                      SongTilesListView(
-                        playlistName: kMySongsPlaylist,
-                      ),
-                      MyAlbumsTab(),
-                      AboutTab(),
-                    ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(30.0)),
+        child: Scaffold(
+          backgroundColor: Color(0xfff222222),
+          body: MediaQuery.removePadding(
+            removeTop: true,
+            context: context,
+            child: NestedScrollView(
+              controller: _sliverScrollController,
+              physics: BouncingScrollPhysics(),
+              headerSliverBuilder: (context, isScrolled) {
+                return [
+                  profileCoverBar(),
+                  profileInfoBar(),
+                  profileActionBar(),
+                  profileTabBar(),
+                ];
+              },
+              body: ExtendedTabBarView(
+                controller: _tabViewController,
+                children: [
+                  SongTilesListView(
+                    playlistName: kMySongsPlaylist,
                   ),
-                ),
+                  MyAlbumsTab(),
+                  AboutTab(),
+                ],
               ),
             ),
           ),
@@ -449,7 +443,7 @@ class _ProfilePageState extends State<ProfilePage>
               padding: const EdgeInsets.all(0),
               onPressed: () {},
               child: Container(
-                height: kMinInteractiveDimensionCupertino,
+                height: 40,
                 alignment: Alignment.center,
                 //margin: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(

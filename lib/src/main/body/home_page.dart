@@ -171,32 +171,34 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             });
           }
         },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          extendBody: true,
-          extendBodyBehindAppBar: true,
-          //resizeToAvoidBottomInset: true,
-          appBar: homeAppBar(),
-          body: Container(
-            decoration: BoxDecoration(
-                /*gradient: LinearGradient(
-                  colors: [Colors.black, Theme.of(context).scaffoldBackgroundColor],
-                  begin: Alignment.topCenter,
-                  end: Alignment.center),*/
-                ),
-            child: Stack(
-              children: [
-                ExtendedTabBarView(
-                  controller: tabController,
-                  physics: CustomScrollPhysics(),
-                  children: [
-                    ExplorePage(),
-                    MyCollectionsPage(),
-                    ProfilePage(),
-                  ],
-                ),
-                floatingActionButton(),
-              ],
+        child: SafeArea(
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            //resizeToAvoidBottomInset: true,
+            appBar: homeAppBar(),
+            body: Container(
+              decoration: BoxDecoration(
+                  /*gradient: LinearGradient(
+                    colors: [Colors.black, Theme.of(context).scaffoldBackgroundColor],
+                    begin: Alignment.topCenter,
+                    end: Alignment.center),*/
+                  ),
+              child: Stack(
+                children: [
+                  ExtendedTabBarView(
+                    controller: tabController,
+                    physics: CustomScrollPhysics(),
+                    children: [
+                      ExplorePage(),
+                      MyCollectionsPage(),
+                      ProfilePage(),
+                    ],
+                  ),
+                  floatingActionButton(),
+                ],
+              ),
             ),
           ),
         ),

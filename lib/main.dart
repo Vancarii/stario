@@ -16,7 +16,7 @@ class stariooApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
+      statusBarColor: Color(0xfff17181c).withOpacity(0.7),
       systemNavigationBarColor: Color(0xfff17181c),
     ));
     return MultiProvider(
@@ -37,7 +37,7 @@ class stariooApp extends StatelessWidget {
           primaryColorLight: Color(0xfff3a5461),
           accentColor: Color(0xfff448e96),*/
           accentColor: Color(0xfff448e96),
-
+          backgroundColor: Color(0xfff17181c),
           //Discord Theme
           scaffoldBackgroundColor: Color(0xfff17181c),
           primaryColor: Color(0xfff35383f),

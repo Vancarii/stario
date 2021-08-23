@@ -57,32 +57,41 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
     return StreamBuilder(
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         //final playerState = snapshot.data;
-        return Container(
-          height: kPlayPauseButtonHeight,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              loopButton(context, LoopMode.off),
-              playButton(_provider, _providerListener),
-              /*StreamBuilder<LoopMode>(
-                stream: _audioProvider.audioPlayer.loopModeStream,
-                builder: (context, snapshot) {
-                  return loopButton(context, snapshot.data ?? LoopMode.off);
-                },
+        return Stack(
+          children: [
+            Container(
+              height: kPlayPauseButtonHeight,
+              width: double.infinity,
+              color: Theme.of(context).primaryColor,
+            ),
+            Container(
+              height: kPlayPauseButtonHeight,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
               ),
-              StreamBuilder(
-                stream: _audioProvider.audioPlayer.playingStream,
-                builder: (context, snapshot) {
-                  return playButton(snapshot.data);
-                },
-              ),*/
-              shuffleButton(),
-            ],
-          ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  loopButton(context, LoopMode.off),
+                  playButton(_provider, _providerListener),
+                  /*StreamBuilder<LoopMode>(
+                    stream: _audioProvider.audioPlayer.loopModeStream,
+                    builder: (context, snapshot) {
+                      return loopButton(context, snapshot.data ?? LoopMode.off);
+                    },
+                  ),
+                  StreamBuilder(
+                    stream: _audioProvider.audioPlayer.playingStream,
+                    builder: (context, snapshot) {
+                      return playButton(snapshot.data);
+                    },
+                  ),*/
+                  shuffleButton(),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );

@@ -47,10 +47,10 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         closeOnBackButtonPressed: true,
         isBackdropInteractable: true,
         backdropColor: Colors.black54,
-        shadowColor: Colors.black54,
+        shadowColor: Colors.black,
         cornerRadius: 30,
-        color: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 5,
+        color: Theme.of(context).primaryColor, //Theme.of(context).scaffoldBackgroundColor,
+        elevation: 100,
         scrollSpec: ScrollSpec(
           showScrollbar: true,
           physics: BouncingScrollPhysics(),

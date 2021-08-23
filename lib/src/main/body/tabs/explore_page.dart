@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/genre_list/genre_list.dart';
-import 'package:starioo/src/models/genre_model.dart';
+import 'package:starioo/src/provider/audio_provider.dart';
 import 'package:starioo/src/widgets/custom_physics.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -19,11 +19,13 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
 
   PageController _explorePageViewController;
 
-  PageController _customSliverController;
+  //PageController _customSliverController;
 
-  bool _isPinned = false;
+  //bool _isPinned = false;
 
-  ScrollPhysics explorePagePhysics = NeverScrollableScrollPhysics();
+  bool _showPlayPrompt = false;
+
+  //ScrollPhysics explorePagePhysics = NeverScrollableScrollPhysics();
 
   @override
   bool get wantKeepAlive => true;
@@ -32,7 +34,7 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
   void initState() {
     _explorePageViewController = PageController();
 
-    _customSliverController = PageController();
+    //_customSliverController = PageController();
 
     /*_customSliverController.addListener(() {
       print('offset ${_customSliverController.offset}');
@@ -68,8 +70,33 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
 
   @override
   Widget build(BuildContext context) {
+    AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
+    AudioProvider _providerListener = Provider.of<AudioProvider>(context);
+
+    if (_providerListener.currentPlaylist == kExplorePlaylist) {
+      setState(() {
+        _showPlayPrompt = !_providerListener.isPlaying;
+      });
+    } else {
+      setState(() {
+        _showPlayPrompt = true;
+      });
+    }
+
     return NotificationListener(
       onNotification: (notification) {
+        if (_explorePageViewController.position.userScrollDirection == ScrollDirection.forward ||
+            _explorePageViewController.position.userScrollDirection == ScrollDirection.reverse) {
+          setState(() {
+            if (_showPlayPrompt == true) {
+              _provider
+                  .loadPlaylist(kExplorePlaylist)
+                  .then((value) => _provider.seekTo(0))
+                  .then((value) => _provider.playPauseAudio(true));
+            }
+          });
+        }
+
         /*if (_explorePageViewController.position.userScrollDirection != ScrollDirection.idle) {
           print('direct idle ${_explorePageViewController.position.userScrollDirection}');
           if (_explorePageViewController.position.userScrollDirection == ScrollDirection.forward) {
@@ -91,129 +118,108 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
           _explorePageRefreshKey.currentState?.show(atTop: true);
           await Future.delayed(Duration(milliseconds: 1000));
         },
-        child: SafeArea(
-          child: Container(
-            margin: const EdgeInsets.all(7.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              child: NestedScrollView(
+        child: Container(
+          margin: const EdgeInsets.all(7.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+            child: Container(
+              height: MediaQuery.of(context).size.height -
+                  (kCurrentSongTabHeight + kPlayPauseButtonHeight),
+              width: double.infinity,
+              child: PageView.builder(
+                controller: _explorePageViewController,
+                physics: CustomScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                //controller: _customSliverController,
-                //physics: BouncingScrollPhysics(),
-                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-                  return [
-                    SliverAppBar(
-                      stretch: true,
-                      snap: true,
-                      floating: true,
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      expandedHeight: 80,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 25.0, bottom: 10.0, right: 10.0),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        if (_showPlayPrompt == true) {
+                          _provider
+                              .loadPlaylist(kExplorePlaylist)
+                              .then((value) => _provider.seekTo(index))
+                              .then((value) => _provider.playPauseAudio(true));
+                        } else {
+                          _provider.playPauseAudio(false);
+                        }
+
+                        //TODO: Check if audio playing is from explore page
+                        //_showPlayPrompt = !_showPlayPrompt;
+                      });
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          //margin: const EdgeInsets.symmetric(vertical: 7.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage('assets/covers/eden.jpg'),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _showPlayPrompt,
+                          child: Container(
+                            color: Colors.black54,
+                            alignment: Alignment.centerLeft,
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                Container(
+                                  margin: const EdgeInsets.only(right: 15.0, left: 25.0),
+                                  height: 200,
+                                  width: 1,
+                                  color: Colors.white70,
+                                ),
                                 Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
                                       'Find',
                                       style: GoogleFonts.lato(
+                                        fontStyle: FontStyle.italic,
                                         color: Colors.white54,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16.0,
+                                        fontSize: 22.0,
                                       ),
                                     ),
                                     Text(
                                       'New Music',
                                       style: GoogleFonts.lato(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 20.0,
+                                        fontSize: 26.0,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                      child: Icon(
+                                        Icons.play_circle_outline,
+                                        color: Colors.white,
+                                        size: 40,
                                       ),
                                     ),
                                   ],
                                 ),
                                 Spacer(),
-                                CupertinoButton(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Icon(
-                                    Icons.play_circle_outline,
-                                    color: Colors.white,
-                                    size: 32,
-                                  ),
-                                  onPressed: () {},
-                                ),
-                                CupertinoButton(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Icon(
-                                    Icons.settings_input_component,
-                                    color: Colors.white,
-                                    size: 22,
-                                  ),
-                                  onPressed: () {},
-                                ),
                               ],
                             ),
+
+                            /* Center(
+                        child: Icon(
+                          Icons.play_arrow_rounded,
+                          color: Colors.white,
+                          size: 100,
+                        ),
+                      ),*/
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    /*SliverToBoxAdapter(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height -
-                          (kCurrentSongTabHeight +
-                              kPlayPauseButtonHeight +
-                              MediaQuery.of(context).padding.top),
-                      width: MediaQuery.of(context).size.width,
-                      child: PageView.builder(
-                        controller: _explorePageViewController,
-                        physics: explorePagePhysics,
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.symmetric(vertical: 7.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage('assets/covers/eden.jpg'),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),*/
-                  ];
+                  );
                 },
-                body: Container(
-                  height: MediaQuery.of(context).size.height -
-                      (kCurrentSongTabHeight +
-                          kPlayPauseButtonHeight +
-                          MediaQuery.of(context).padding.top),
-                  width: MediaQuery.of(context).size.width,
-                  child: PageView.builder(
-                    controller: _explorePageViewController,
-                    //physics: explorePagePhysics,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 7.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/covers/eden.jpg'),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
               ),
             ),
           ),
