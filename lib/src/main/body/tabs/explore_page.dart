@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
-import 'package:starioo/src/widgets/custom_physics.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/provider/audio_provider.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({Key key}) : super(key: key);

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/provider/audio_provider.dart';
 
 class BottomActionBar extends StatefulWidget {
   @override
@@ -11,7 +11,6 @@ class BottomActionBar extends StatefulWidget {
 }
 
 class _BottomActionBarState extends State<BottomActionBar> with TickerProviderStateMixin {
-
   AnimationController _playPauseIconAnimationController;
 
   @override
@@ -48,20 +47,20 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
   Widget build(BuildContext context) {
     AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
     AudioProvider _providerListener = Provider.of<AudioProvider>(context);
-        return Stack(
-          children: [
-            Container(
-              height: kPlayPauseButtonHeight,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  loopButton(context, LoopMode.off),
-                  playButton(_provider, _providerListener),
-                  /*StreamBuilder<LoopMode>(
+    return Stack(
+      children: [
+        Container(
+          height: kPlayPauseButtonHeight,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              loopButton(context, LoopMode.off),
+              playButton(_provider, _providerListener),
+              /*StreamBuilder<LoopMode>(
                     stream: _audioProvider.audioPlayer.loopModeStream,
                     builder: (context, snapshot) {
                       return loopButton(context, snapshot.data ?? LoopMode.off);
@@ -73,12 +72,12 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
                       return playButton(snapshot.data);
                     },
                   ),*/
-                  shuffleButton(),
-                ],
-              ),
-            ),
-          ],
-        );
+              shuffleButton(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget loopButton(BuildContext context, LoopMode loopMode) {

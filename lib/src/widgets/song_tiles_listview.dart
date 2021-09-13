@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/models/song_model.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
-import 'package:starioo/src/song_lists/song_lists.dart';
+import 'package:stario/src/models/song_model.dart';
+import 'package:stario/src/provider/audio_provider.dart';
+import 'package:stario/src/song_lists/song_lists.dart';
 
 class SongTilesListView extends StatefulWidget {
   final String playlistName;

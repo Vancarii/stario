@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/main/song_bottom_sheet.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
+import 'package:stario/src/main/song_bottom_sheet.dart';
+import 'package:stario/src/provider/audio_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(StariooApp());
+  runApp(StarioApp());
 }
 
-class StariooApp extends StatelessWidget {
+class StarioApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

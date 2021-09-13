@@ -1,4 +1,4 @@
-package com.vancarii.starioo
+package com.vancarii.stario
 
 import io.flutter.embedding.android.FlutterActivity
 

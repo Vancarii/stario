@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
-import 'package:starioo/src/song_lists/song_lists.dart';
-import 'package:starioo/src/widgets/custom_physics.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/provider/audio_provider.dart';
+import 'package:stario/src/song_lists/song_lists.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 
 class CurrentSongTab extends StatefulWidget {
   final double sheetProgress;

@@ -1,6 +1,6 @@
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/models/artist_model.dart';
-import 'package:starioo/src/models/song_model.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/models/artist_model.dart';
+import 'package:stario/src/models/song_model.dart';
 
 abstract class PlaylistsService {
   Map<String, List<Song>> get playlists;

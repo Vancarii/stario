@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/widgets/song_tiles_listview.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/widgets/song_tiles_listview.dart';
 
 // The listview that shows all the songs that were recently played
 

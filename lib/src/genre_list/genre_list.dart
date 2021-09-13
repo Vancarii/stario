@@ -1,4 +1,4 @@
-import 'package:starioo/src/models/genre_model.dart';
+import 'package:stario/src/models/genre_model.dart';
 
 List<Genre> genres = [
   Genre(genre: 'Lo-fi', imagePath: 'assets/genres/lofi.jpg'),

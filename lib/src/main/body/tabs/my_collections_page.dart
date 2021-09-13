@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/widgets/song_tiles_listview.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/widgets/song_tiles_listview.dart';
 
 class MyCollectionsPage extends StatefulWidget {
   const MyCollectionsPage({Key key}) : super(key: key);

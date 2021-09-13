@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/song_lists/song_lists.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/song_lists/song_lists.dart';
 
 class AudioProvider extends ChangeNotifier {
   AudioPlayer _audioPlayer = AudioPlayer();

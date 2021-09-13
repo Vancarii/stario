@@ -2,14 +2,14 @@ import 'package:animations/animations.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:starioo/src/genre_list/genre_list.dart';
-import 'package:starioo/src/main/body/sub_screens/search_page.dart';
-import 'package:starioo/src/main/body/tabs/explore_page.dart';
-import 'package:starioo/src/main/body/tabs/my_collections_page.dart';
-import 'package:starioo/src/main/body/tabs/profile_page.dart';
-import 'package:starioo/src/main/song_bottom_sheet.dart';
-import 'package:starioo/src/models/genre_model.dart';
-import 'package:starioo/src/widgets/custom_physics.dart';
+import 'package:stario/src/genre_list/genre_list.dart';
+import 'package:stario/src/main/body/sub_screens/search_page.dart';
+import 'package:stario/src/main/body/tabs/explore_page.dart';
+import 'package:stario/src/main/body/tabs/my_collections_page.dart';
+import 'package:stario/src/main/body/tabs/profile_page.dart';
+import 'package:stario/src/main/song_bottom_sheet.dart';
+import 'package:stario/src/models/genre_model.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 
 class MyHomePage extends StatefulWidget {

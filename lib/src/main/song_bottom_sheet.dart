@@ -1,10 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
-import 'package:starioo/src/constants/constants.dart';
-import 'package:starioo/src/main/body/home_page.dart';
-import 'package:starioo/src/main/body/sub_screens/search_page.dart';
-import 'package:starioo/src/main/sheet_components/song_details_tab.dart';
+import 'package:stario/src/constants/constants.dart';
+import 'package:stario/src/main/body/home_page.dart';
+import 'package:stario/src/main/body/sub_screens/search_page.dart';
+import 'package:stario/src/main/sheet_components/song_details_tab.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/recently_played_list_page.dart';
 import 'sheet_components/bottom_action_bar.dart';

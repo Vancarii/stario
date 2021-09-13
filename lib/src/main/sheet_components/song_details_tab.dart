@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:starioo/src/main/body/sub_screens/artist_profile_page.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
-import 'package:starioo/src/route_transitions/route_transitions.dart';
-import 'package:starioo/src/song_lists/song_lists.dart';
-import 'package:starioo/src/widgets/custom_physics.dart';
+import 'package:stario/src/main/body/sub_screens/artist_profile_page.dart';
+import 'package:stario/src/provider/audio_provider.dart';
+import 'package:stario/src/route_transitions/route_transitions.dart';
+import 'package:stario/src/song_lists/song_lists.dart';
+import 'package:stario/src/widgets/custom_physics.dart';
 
 // The Widget that shows the current songs details including the current duration
 
