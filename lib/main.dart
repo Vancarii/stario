@@ -8,15 +8,15 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(stariooApp());
+  runApp(StariooApp());
 }
 
-class stariooApp extends StatelessWidget {
+class StariooApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarBrightness: Brightness.dark,
-      statusBarColor: Color(0xfff17181c).withOpacity(0.7),
+      statusBarColor: Color(0xfff17181c),
       systemNavigationBarColor: Color(0xfff17181c),
     ));
     return MultiProvider(

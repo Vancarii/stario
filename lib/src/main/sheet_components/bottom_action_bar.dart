@@ -11,12 +11,8 @@ class BottomActionBar extends StatefulWidget {
 }
 
 class _BottomActionBarState extends State<BottomActionBar> with TickerProviderStateMixin {
-  //bool isPlaying = false;
 
   AnimationController _playPauseIconAnimationController;
-
-  //AudioProvider _provider;
-  //AudioProvider _providerListener;
 
   @override
   void initState() {
@@ -52,23 +48,13 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
   Widget build(BuildContext context) {
     AudioProvider _provider = Provider.of<AudioProvider>(context, listen: false);
     AudioProvider _providerListener = Provider.of<AudioProvider>(context);
-
-    //streambuilder not used yet
-    return StreamBuilder(
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        //final playerState = snapshot.data;
         return Stack(
           children: [
             Container(
               height: kPlayPauseButtonHeight,
               width: double.infinity,
-              color: Theme.of(context).primaryColor,
-            ),
-            Container(
-              height: kPlayPauseButtonHeight,
-              width: double.infinity,
               decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.7),
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,8 +79,6 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
             ),
           ],
         );
-      },
-    );
   }
 
   Widget loopButton(BuildContext context, LoopMode loopMode) {
@@ -125,8 +109,10 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
 
   Widget playButton(AudioProvider provider, AudioProvider providerListener) {
     if (providerListener.isPlaying == true) {
+      // if it is playing, show the pause button
       _playPauseIconAnimationController.fling();
     } else {
+      // if not playing, show play button
       _playPauseIconAnimationController.reset();
     }
     return Expanded(
@@ -134,15 +120,9 @@ class _BottomActionBarState extends State<BottomActionBar> with TickerProviderSt
         padding: const EdgeInsets.all(0),
         onPressed: () {
           setState(() {
+            // tapping the playpause button changes to opposite hence the !
             provider.playPauseAudio(!providerListener.isPlaying);
           });
-          /*setState(() {
-            if (_audioProvider.audioPlayer.playing == false) {
-              _audioProvider.audioPlayer.play();
-            } else {
-              _audioProvider.audioPlayer.pause();
-            }
-          });*/
         },
         child: FittedBox(
           child: AnimatedIcon(

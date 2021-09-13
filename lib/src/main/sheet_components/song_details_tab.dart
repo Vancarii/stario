@@ -2,10 +2,13 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:starioo/src/main/body/sub_screens/artist_profile_page.dart';
 import 'package:starioo/src/provider/audio_provider.dart';
 import 'package:starioo/src/route_transitions/route_transitions.dart';
 import 'package:starioo/src/song_lists/song_lists.dart';
 import 'package:starioo/src/widgets/custom_physics.dart';
+
+// The Widget that shows the current songs details including the current duration
 
 class SongDetailsTab extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class SongDetailsTab extends StatefulWidget {
 class _SongDetailsTabState extends State<SongDetailsTab> {
   bool isFavourite = false;
 
+  // The current progress of the song
   Duration currentSongPosition;
 
   int previousIndex = 0;
@@ -63,7 +67,15 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
               color: Colors.black54,
             )
           ],
-          color: Theme.of(context).accentColor.withOpacity(0.2),
+          gradient: LinearGradient(
+            colors: [
+              Color(0xfff222222).withOpacity(0.7),
+              Theme.of(context).primaryColor,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          //color: Theme.of(context).primaryColor,
         ),
         child: Column(
           children: [
@@ -74,7 +86,14 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                   borderRadius: BorderRadius.all(
                     Radius.circular(30.0),
                   ),
-                  color: Colors.black38,
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).primaryColor,
+                      Color(0xfff222222).withOpacity(0.7),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,15 +144,25 @@ class _SongDetailsTabState extends State<SongDetailsTab> {
                                         SizedBox(
                                           height: 5.0,
                                         ),
-                                        Text(
-                                          HardcodedPlaylists()
-                                              .playlists[_providerListener.currentPlaylist]
-                                                  [_providerListener.currentIndex]
-                                              .artist
-                                              .artistName,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white60,
+                                        CupertinoButton(
+                                          minSize: 0,
+                                          padding: const EdgeInsets.all(0),
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                RouteTransitions().slideRightToLeftTransitionType(
+                                                    ArtistProfilePage()));
+                                          },
+                                          child: Text(
+                                            HardcodedPlaylists()
+                                                .playlists[_providerListener.currentPlaylist]
+                                                    [_providerListener.currentIndex]
+                                                .artist
+                                                .artistName,
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white60,
+                                            ),
                                           ),
                                         ),
                                       ],

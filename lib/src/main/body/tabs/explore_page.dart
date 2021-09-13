@@ -89,10 +89,14 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
             _explorePageViewController.position.userScrollDirection == ScrollDirection.reverse) {
           setState(() {
             if (_showPlayPrompt == true) {
-              _provider
-                  .loadPlaylist(kExplorePlaylist)
-                  .then((value) => _provider.seekTo(0))
-                  .then((value) => _provider.playPauseAudio(true));
+              if (_providerListener.currentPlaylist == kExplorePlaylist) {
+                _provider.playPauseAudio(true);
+              } else {
+                _provider
+                    .loadPlaylist(kExplorePlaylist)
+                    .then((value) => _provider.seekTo(0))
+                    .then((value) => _provider.playPauseAudio(true));
+              }
             }
           });
         }
@@ -135,10 +139,14 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
                     onTap: () {
                       setState(() {
                         if (_showPlayPrompt == true) {
-                          _provider
-                              .loadPlaylist(kExplorePlaylist)
-                              .then((value) => _provider.seekTo(index))
-                              .then((value) => _provider.playPauseAudio(true));
+                          if (_providerListener.currentPlaylist == kExplorePlaylist) {
+                            _provider.playPauseAudio(true);
+                          } else {
+                            _provider
+                                .loadPlaylist(kExplorePlaylist)
+                                .then((value) => _provider.seekTo(0))
+                                .then((value) => _provider.playPauseAudio(true));
+                          }
                         } else {
                           _provider.playPauseAudio(false);
                         }
@@ -155,7 +163,7 @@ class _ExplorePageState extends State<ExplorePage> with AutomaticKeepAliveClient
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage('assets/covers/eden.jpg'),
+                              image: AssetImage('assets/covers/churchclothes.png'),
                             ),
                           ),
                         ),

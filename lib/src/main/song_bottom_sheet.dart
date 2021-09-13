@@ -1,13 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:music_sliding_sheet/sliding_sheet.dart';
-import 'package:provider/provider.dart';
 import 'package:starioo/src/constants/constants.dart';
 import 'package:starioo/src/main/body/home_page.dart';
 import 'package:starioo/src/main/body/sub_screens/search_page.dart';
-import 'package:starioo/src/main/body/sub_screens/settings_page.dart';
 import 'package:starioo/src/main/sheet_components/song_details_tab.dart';
-import 'package:starioo/src/provider/audio_provider.dart';
 import 'sheet_components/current_song_tab.dart';
 import 'sheet_components/recently_played_list_page.dart';
 import 'sheet_components/bottom_action_bar.dart';
@@ -18,8 +15,6 @@ enum bodyPages {
 }
 
 class SongBottomSheet extends StatefulWidget {
-  const SongBottomSheet({Key key}) : super(key: key);
-
   @override
   _SongBottomSheetState createState() => _SongBottomSheetState();
 }
@@ -28,6 +23,7 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
   //Controller for the bottom sheet
   SheetController songSheetController = SheetController();
 
+  //current shown page
   bodyPages body = bodyPages.mainBody;
 
   @override
@@ -49,8 +45,8 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         backdropColor: Colors.black54,
         shadowColor: Colors.black,
         cornerRadius: 30,
-        color: Theme.of(context).primaryColor, //Theme.of(context).scaffoldBackgroundColor,
-        elevation: 100,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        //elevation: 100,
         scrollSpec: ScrollSpec(
           showScrollbar: true,
           physics: BouncingScrollPhysics(),
@@ -60,8 +56,6 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
         snapSpec: const SnapSpec(
           snappings: [SnapSpec.headerSnap, double.infinity],
           initialSnap: SnapSpec.headerSnap,
-/*          snappings: [SnapSpec.headerFooterSnap, double.infinity],
-          initialSnap: SnapSpec.headerFooterSnap,*/
         ),
         body: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -116,13 +110,20 @@ class _SongBottomSheetState extends State<SongBottomSheet> with SingleTickerProv
             );
           });
         },
+        // This is the list that shows what song has just been played
+        // from either playlists
         builder: (BuildContext context, SheetState bodyState) {
           return RecentlyPlayedListPage();
         },
+        // This is the details card that shows the current songs
+        // full details including the duration
         footerBuilder: (BuildContext context, SheetState footerState) {
           return SongDetailsTab();
         },
       ),
+      // This is the bar at the bottom that shows the loop, play, and shuffle buttons
+      // This is placed at the bottomnavbar so that the sliding sheet can use header snap
+      // and that we can place the detailstab inside the footer instead of the actionbar
       bottomNavigationBar: BottomActionBar(),
     );
   }
