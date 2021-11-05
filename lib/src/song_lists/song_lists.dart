@@ -13,7 +13,7 @@ class HardcodedPlaylists implements PlaylistsService {
       artist: Artist(artistName: 'Xiuneng', profileImagePath: null),
       coverImagePath: 'assets/covers/eden.jpg',
       songPath: Uri.parse(
-          'https://cdn.shopify.com/s/files/1/0580/5093/7012/files/My-Time.mp3?v=1626737167'),
+          'https://firebasestorage.googleapis.com/v0/b/stario-22448.appspot.com/o/eden-xiuneng.mp3?alt=media&token=8eb16efd-322e-438a-a85c-2b1969273ef7'),
     ),
     Song(
       songName: 'Back in my Bag - Explore',

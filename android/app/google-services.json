@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54836152808",
+    "project_id": "stario-22448",
+    "storage_bucket": "stario-22448.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54836152808:android:bdb38820bbd92221707c5d",
+        "android_client_info": {
+          "package_name": "com.vancarii.stario"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54836152808-pg0a88mi8o3o649rn29bo72aho7avapg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqAp0o_nnyJ-6gvDVgdyfrsql8GY8CE9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54836152808-pg0a88mi8o3o649rn29bo72aho7avapg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

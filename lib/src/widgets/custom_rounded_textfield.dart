@@ -9,7 +9,7 @@ class CustomRoundedTextField extends StatelessWidget {
   final TextInputAction keyboardAction;
   final EdgeInsetsGeometry padding;
   final String labelText;
-  final IconButton startIcon;
+  final Icon startIcon;
   final IconButton endIcon;
   final TextInputType keyboard;
   final Color focusIconColor;
@@ -18,9 +18,12 @@ class CustomRoundedTextField extends StatelessWidget {
   final Color focusedBorderColor;
   final TextEditingController controller;
   final Function(String) onTextChanged;
+  final Function(String) validator;
   final Function(String) onSubmit;
   final TextStyle labelTextStyle;
   final Widget prefix;
+  final String errorText;
+  final List<TextInputFormatter> formatter;
 
   const CustomRoundedTextField({
     Key key,
@@ -41,8 +44,11 @@ class CustomRoundedTextField extends StatelessWidget {
     this.controller,
     this.onTextChanged,
     this.onSubmit,
-    this.labelTextStyle = const TextStyle(color: Colors.white),
+    this.labelTextStyle = const TextStyle(color: Colors.white54),
     this.prefix,
+    this.errorText,
+    this.validator,
+    this.formatter,
   }) : super(key: key);
 
   @override
@@ -50,10 +56,10 @@ class CustomRoundedTextField extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Theme(
-        data: Theme.of(context).copyWith(
-          accentColor: focusIconColor,
-        ),
+        data: Theme.of(context)
+            .copyWith(colorScheme: Theme.of(context).colorScheme.copyWith(primary: focusIconColor)),
         child: TextFormField(
+          inputFormatters: formatter,
           obscureText: password,
           textInputAction: keyboardAction,
           focusNode: node,
@@ -63,10 +69,12 @@ class CustomRoundedTextField extends StatelessWidget {
           minLines: minLines,
           keyboardType: keyboard,
           cursorColor: cursorColor,
-          textCapitalization: TextCapitalization.sentences,
+          textCapitalization: TextCapitalization.none,
           maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
           onFieldSubmitted: onSubmit,
+          validator: validator,
           decoration: InputDecoration(
+            errorText: errorText,
             prefix: prefix,
             fillColor: Colors.white12,
             filled: true,

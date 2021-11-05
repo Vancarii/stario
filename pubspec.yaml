@@ -20,7 +20,13 @@ dependencies:
   provider: ^5.0.0
   google_fonts: ^2.1.0
 
+  form_field_validator: ^1.1.0
+
   just_audio: ^0.9.4
+
+  firebase_core: ^1.6.0
+  firebase_auth: ^3.1.1
+  cloud_firestore: ^2.5.2
 
   music_sliding_sheet:
     path: ./music_sliding_sheet/

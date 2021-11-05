@@ -71,6 +71,7 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       margin: const EdgeInsets.only(left: 7.0, right: 7.0, bottom: 7.0, top: kToolbarHeight + 7.0),
       decoration: BoxDecoration(
@@ -97,9 +98,7 @@ class _ProfilePageState extends State<ProfilePage>
               body: ExtendedTabBarView(
                 controller: _tabViewController,
                 children: [
-                  SongTilesListView(
-                    playlistName: kMySongsPlaylist,
-                  ),
+                  MySongsTab(),
                   MyAlbumsTab(),
                   AboutTab(),
                 ],
@@ -513,6 +512,22 @@ class _ProfilePageState extends State<ProfilePage>
               )),
         ],
       ),
+    );
+  }
+}
+
+class MySongsTab extends StatefulWidget {
+  const MySongsTab({Key key}) : super(key: key);
+
+  @override
+  _MySongsTabState createState() => _MySongsTabState();
+}
+
+class _MySongsTabState extends State<MySongsTab> {
+  @override
+  Widget build(BuildContext context) {
+    return SongTilesListView(
+      playlistName: kMySongsPlaylist,
     );
   }
 }

@@ -1,13 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:stario/src/core/auth/login/login_page.dart';
+import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/provider/audio_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // Initialize Firebase
+  await Firebase.initializeApp();
   runApp(StarioApp());
 }
 
@@ -48,7 +53,7 @@ class StarioApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
         ),
-        home: SongBottomSheet(),
+        home: LoginPage(), //SongBottomSheet(),
       ),
     );
   }
