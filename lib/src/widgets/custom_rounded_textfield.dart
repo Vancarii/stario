@@ -81,8 +81,8 @@ class CustomRoundedTextField extends StatelessWidget {
             isDense: true,
             contentPadding: EdgeInsets.only(
               left: 15,
-              top: 10,
-              bottom: 10,
+              top: 15,
+              bottom: 15,
             ),
             alignLabelWithHint: true,
             floatingLabelBehavior: FloatingLabelBehavior.never,

@@ -22,6 +22,106 @@ class RouteTransitions {
     );
   }
 
+  Route slideUpTransitionType(secondPage) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => secondPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 0.8);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Route slideUpJoinedTransitionType(currentPage, nextPage) {
+    return PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 250),
+      reverseTransitionDuration: Duration(milliseconds: 250),
+      maintainState: true,
+      pageBuilder: (context, animation, secondaryAnimation) => nextPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var curve = Curves.easeInOut;
+
+        return Stack(
+          children: <Widget>[
+            SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 1.0),
+                end: const Offset(0.0, 0.0),
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                ),
+              ),
+              child: child,
+            ),
+            SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 0.0),
+                end: const Offset(0.0, -1.0),
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                ),
+              ),
+              child: currentPage,
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Route slideDownJoinedTransitionType(currentPage, nextPage) {
+    return PageRouteBuilder(
+      transitionDuration: Duration(milliseconds: 500),
+      reverseTransitionDuration: Duration(milliseconds: 500),
+      maintainState: true,
+      pageBuilder: (context, animation, secondaryAnimation) => nextPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var curve = Curves.easeInOut;
+
+        return Stack(
+          children: <Widget>[
+            SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, -1.0),
+                end: const Offset(0.0, 0.0),
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                ),
+              ),
+              child: child,
+            ),
+            SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 0.0),
+                end: const Offset(0.0, 1.0),
+              ).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: curve,
+                ),
+              ),
+              child: currentPage,
+            )
+          ],
+        );
+      },
+    );
+  }
+
   Route slideRightToLeftJoinedTransitionType(currentPage, nextPage) {
     return PageRouteBuilder(
       transitionDuration: Duration(milliseconds: 200),

@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
+import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -18,15 +23,17 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _auth = FirebaseAuth.instance;
 
-  String email;
-  String username;
-  String password;
+  final RoundedLoadingButtonController _registerBtnController = RoundedLoadingButtonController();
+
+  String _registerEmail;
+  String _registerUsername;
+  String _registerPassword;
 
   String usernameErrorMessage;
   String emailErrorMessage;
   String passwordErrorMessage;
 
-  bool nextButtonPressed = false;
+  bool _registerButtonPressed = false;
 
   Key _formKey = GlobalKey<FormState>();
 
@@ -50,7 +57,8 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               introTitle(),
               inputTextFields(),
-              nextButton(),
+              //nextButton(),
+              buttonsRow(),
             ],
           ),
         ),
@@ -59,6 +67,31 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget introTitle() {
+    return Expanded(
+      child: Container(
+        child: Row(
+          children: [
+            Expanded(
+              child: Hero(
+                tag: 'intro_logo',
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'STARIO',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  /*Widget introTitle() {
     return Container(
       child: Row(
         children: [
@@ -133,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget inputTextFields() {
     return Container(
@@ -155,10 +188,10 @@ class _RegisterPageState extends State<RegisterPage> {
               labelText: 'Username',
               startIcon: Icon(Icons.account_circle),
               borderColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
               errorText: usernameErrorMessage,
               onTextChanged: (userInput) {
-                username = userInput;
+                _registerUsername = userInput;
                 print('dis the username' + userInput);
                 setState(() {
                   if (usernameErrorMessage != null) {
@@ -167,8 +200,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 });
               },
               validator: (value) {
-                if (nextButtonPressed = true) {
-                  nextButtonPressed = false;
+                if (_registerButtonPressed = true) {
+                  _registerButtonPressed = false;
                   if (value.isEmpty) {
                     usernameErrorMessage = 'Please enter a username';
                   } else if (value.length < 4) {
@@ -182,27 +215,28 @@ class _RegisterPageState extends State<RegisterPage> {
               },
             ),
             CustomRoundedTextField(
-              minLines: 1,
-              maxLines: 1,
-              keyboard: TextInputType.emailAddress,
-              keyboardAction: TextInputAction.next,
-              labelText: 'Email',
-              startIcon: Icon(Icons.email),
-              borderColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              errorText: emailErrorMessage,
-              onTextChanged: (emailInput) {
-                email = emailInput;
-                print('dis the email' + emailInput);
+                minLines: 1,
+                maxLines: 1,
+                keyboard: TextInputType.emailAddress,
+                keyboardAction: TextInputAction.next,
+                labelText: 'Email',
+                startIcon: Icon(Icons.email),
+                borderColor: Theme.of(context).primaryColor,
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                errorText: emailErrorMessage,
+                onTextChanged: (emailInput) {
+                  _registerEmail = emailInput;
+                  print('dis the email' + emailInput);
 
-                setState(() {
-                  if (emailErrorMessage != null) {
-                    emailErrorMessage = null;
-                  }
-                });
-              },
-              validator: EmailValidator(errorText: 'enter a valid email address'),
-            ),
+                  setState(() {
+                    if (emailErrorMessage != null) {
+                      emailErrorMessage = null;
+                    }
+                  });
+                },
+                validator: MultiValidator([
+                  EmailValidator(errorText: 'Enter a valid email address'),
+                ])),
             CustomRoundedTextField(
               minLines: 1,
               maxLines: 1,
@@ -216,10 +250,10 @@ class _RegisterPageState extends State<RegisterPage> {
               startIcon: Icon(Icons.lock),
               password: true,
               borderColor: Theme.of(context).primaryColor,
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
               errorText: passwordErrorMessage,
               onTextChanged: (passwordInput) {
-                password = passwordInput;
+                _registerPassword = passwordInput;
                 print('dis the password' + passwordInput);
 
                 setState(() {
@@ -235,12 +269,12 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget nextButton() {
+  /*Widget nextButton() {
     return Container(
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-          /*Padding(
+          */ /*Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
               errorMessage,
@@ -252,25 +286,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontSize: 15.0,
               ),
             ),
-          ),*/
+          ),*/ /*
           CupertinoButton(
             onPressed: () async {
-              print('$email $password $username');
+              print('$_registerEmail $_registerPassword $_registerUsername');
               setState(() {
-                nextButtonPressed = true;
-                if (username == null) {
+                _registerButtonPressed = true;
+                if (_registerUsername == null) {
                   usernameErrorMessage = 'Please enter a username';
                 }
-                if (email == null) {
+                if (_registerEmail == null) {
                   emailErrorMessage = 'Please enter an email';
                 }
-                if (password == null) {
+                if (_registerPassword == null) {
                   passwordErrorMessage = 'Please enter a password';
                 }
               });
               try {
-                final newUser =
-                    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+                final newUser = await _auth.createUserWithEmailAndPassword(
+                    email: _registerEmail, password: _registerPassword);
                 if (newUser != null) {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) => SongBottomSheet()));
@@ -301,6 +335,130 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ],
       ),
+    );
+  }*/
+
+  Widget buttonsRow() {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+                child: RoundedLoadingButton(
+                  borderRadius: 10.0,
+                  color: Theme.of(context).accentColor,
+                  width: 200,
+                  height: 60,
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white.withOpacity(0.8),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  controller: _registerBtnController,
+                  onPressed: () async {
+                    print('$_registerEmail $_registerPassword $_registerUsername');
+                    setState(() {
+                      _registerBtnController.start();
+
+                      _registerButtonPressed = true;
+                      if (_registerUsername == null) {
+                        usernameErrorMessage = 'Please enter a username';
+                      }
+                      if (_registerEmail == null) {
+                        emailErrorMessage = 'Please enter an email';
+                      }
+                      if (_registerPassword == null) {
+                        passwordErrorMessage = 'Please enter a password';
+                      }
+                    });
+                    try {
+                      final newUser = await _auth.createUserWithEmailAndPassword(
+                          email: _registerEmail, password: _registerPassword);
+                      if (newUser != null) {
+                        _registerBtnController.success();
+                        Timer(Duration(seconds: 1), () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SongBottomSheet(),
+                            ),
+                          );
+                        });
+                      }
+                    } catch (e) {
+                      _registerBtnController.error();
+                      print(e.message);
+                      setState(() {
+                        //errorMessage = e.message.toString();
+                      });
+                    }
+                  },
+                ),
+              ),
+              otherLoginMethodButton(icon: FontAwesomeIcons.facebook, onPressed: () {}),
+              otherLoginMethodButton(icon: FontAwesomeIcons.google, onPressed: () {}),
+            ],
+          ),
+          CupertinoButton(
+            onPressed: () {
+              Navigator.pop(context);
+              /*Navigator.of(context).push(
+                  RouteTransitions().slideDownJoinedTransitionType(RegisterPage(), LoginPage()));*/
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+            },
+            padding: const EdgeInsets.all(0),
+            child: Column(
+              children: [
+                Text(
+                  'Log In',
+                  textAlign: TextAlign.end,
+                  style: GoogleFonts.lato(
+                    //fontStyle: FontStyle.italic,
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15.0,
+                  ),
+                ),
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white70,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  CupertinoButton otherLoginMethodButton({IconData icon, Function onPressed}) {
+    return CupertinoButton(
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+      child: Container(
+          width: 60,
+          height: 60,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            color: Colors.transparent,
+            border: Border.all(
+              color: Colors.white,
+              width: 0.5,
+            ),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+          )),
+      onPressed: onPressed,
     );
   }
 }
