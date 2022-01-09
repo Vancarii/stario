@@ -7,6 +7,7 @@ import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/provider/audio_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +15,20 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   // Initialize Firebase
   await Firebase.initializeApp();
-  runApp(StarioApp());
+
+  //-----------save login info---------------
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var email = prefs.getString('email');
+  print(email);
+
+  runApp(StarioApp(isLoggedIn: email == null ? false : true));
 }
 
 class StarioApp extends StatelessWidget {
+  StarioApp({this.isLoggedIn});
+
+  final bool isLoggedIn;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -54,7 +65,7 @@ class StarioApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
         ),
-        home: LoginPage(), //SongBottomSheet(),
+        home: isLoggedIn == false ? LoginPage() : /*LoginPage(),*/ SongBottomSheet(),
       ),
     );
   }

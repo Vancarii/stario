@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 
@@ -61,6 +63,25 @@ class SettingsPage extends StatelessWidget {
                 );
               },
             ),
+            Spacer(),
+            ProfileSettingsTileButton(
+              text: 'Log Out',
+              textStyle: TextStyle(color: Colors.red),
+              icon: Icons.logout,
+              iconColor: Colors.red,
+              onTap: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.remove('email');
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ),
+                  (Route<dynamic> route) => false,
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -73,8 +94,11 @@ class ProfileSettingsTileButton extends StatelessWidget {
   final IconData icon;
   final Widget nextScreen;
   final VoidCallback onTap;
+  final TextStyle textStyle;
+  final Color iconColor;
 
-  ProfileSettingsTileButton({this.text, this.icon, this.nextScreen, this.onTap});
+  ProfileSettingsTileButton(
+      {this.text, this.icon, this.nextScreen, this.onTap, this.textStyle, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -98,11 +122,12 @@ class ProfileSettingsTileButton extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Icon(
                 icon,
-                //color: AppColors.colorBlack,
+                color: iconColor,
               ),
             ),
             Text(
               text,
+              style: textStyle,
             ),
           ],
         ),

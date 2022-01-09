@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
@@ -39,24 +40,28 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding: const EdgeInsets.all(25.0),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Theme.of(context).primaryColor, Colors.black45],
-          )),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              introTitle(),
-              inputTextFields(),
-              buttonsRow(),
-            ],
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+            padding: const EdgeInsets.all(25.0),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Theme.of(context).primaryColor, Colors.black45],
+            )),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                introTitle(),
+                inputTextFields(),
+                buttonsRow(),
+              ],
+            ),
           ),
         ),
       ),
@@ -69,16 +74,13 @@ class _LoginPageState extends State<LoginPage> {
         child: Row(
           children: [
             Expanded(
-              child: Hero(
-                tag: 'intro_logo',
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'STARIO',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30.0,
-                    ),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'STARIO',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.0,
                   ),
                 ),
               ),
@@ -114,6 +116,8 @@ class _LoginPageState extends State<LoginPage> {
       borderColor: Theme.of(context).primaryColor,
       padding: const EdgeInsets.symmetric(vertical: 15.0),
       onTextChanged: (userInput) {
+        _loginBtnController.reset();
+
         _loginUsername = userInput;
         print('dis the username' + userInput);
       },
@@ -132,6 +136,8 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.symmetric(vertical: 15.0),
       errorText: emailErrorMessage,
       onTextChanged: (emailInput) {
+        _loginBtnController.reset();
+
         _loginEmail = emailInput;
         print('dis the email' + emailInput);
         setState(() {
@@ -176,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
       labelText: 'Password',
       startIcon: Icon(Icons.lock),
       endIcon: IconButton(
-        icon: passwordIsVisible ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+        icon: passwordIsVisible ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
         onPressed: () {
           setState(() {
             passwordIsVisible = !passwordIsVisible;
@@ -188,6 +194,8 @@ class _LoginPageState extends State<LoginPage> {
       padding: const EdgeInsets.only(top: 15.0),
       errorText: passwordErrorMessage,
       onTextChanged: (passwordInput) {
+        _loginBtnController.reset();
+
         _loginPassword = passwordInput;
         print('dis the password' + passwordInput);
 
@@ -286,14 +294,24 @@ class _LoginPageState extends State<LoginPage> {
                           email: _loginEmail, password: _loginPassword);
                       if (user != null) {
                         _loginBtnController.success();
-                        Timer(Duration(seconds: 1), () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SongBottomSheet(),
-                            ),
-                          );
-                        });
+                        //Navigator.of(context).popUntil((route) => route.isFirst);
+
+                        //Save the user email so that it stays login
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setString('email', '$_loginEmail');
+
+                        Timer(
+                          Duration(milliseconds: 500),
+                          () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SongBottomSheet(),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                        );
                       }
                     } catch (e) {
                       _loginBtnController.error();

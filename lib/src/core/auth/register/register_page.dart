@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
@@ -41,25 +42,29 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding: const EdgeInsets.all(25.0),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Theme.of(context).primaryColor, Colors.black45],
-          )),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              introTitle(),
-              inputTextFields(),
-              //nextButton(),
-              buttonsRow(),
-            ],
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Container(
+            height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+            padding: const EdgeInsets.all(25.0),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Theme.of(context).primaryColor, Colors.black45],
+            )),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                introTitle(),
+                inputTextFields(),
+                //nextButton(),
+                buttonsRow(),
+              ],
+            ),
           ),
         ),
       ),
@@ -72,16 +77,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Row(
           children: [
             Expanded(
-              child: Hero(
-                tag: 'intro_logo',
-                child: Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'STARIO',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30.0,
-                    ),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'STARIO',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30.0,
                   ),
                 ),
               ),
@@ -191,6 +193,8 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               errorText: usernameErrorMessage,
               onTextChanged: (userInput) {
+                _registerBtnController.reset();
+
                 _registerUsername = userInput;
                 print('dis the username' + userInput);
                 setState(() {
@@ -225,6 +229,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 errorText: emailErrorMessage,
                 onTextChanged: (emailInput) {
+                  _registerBtnController.reset();
+
                   _registerEmail = emailInput;
                   print('dis the email' + emailInput);
 
@@ -253,6 +259,8 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               errorText: passwordErrorMessage,
               onTextChanged: (passwordInput) {
+                _registerBtnController.reset();
+
                 _registerPassword = passwordInput;
                 print('dis the password' + passwordInput);
 
@@ -365,6 +373,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _registerBtnController,
                   onPressed: () async {
                     print('$_registerEmail $_registerPassword $_registerUsername');
+
                     setState(() {
                       _registerBtnController.start();
 
@@ -384,17 +393,27 @@ class _RegisterPageState extends State<RegisterPage> {
                           email: _registerEmail, password: _registerPassword);
                       if (newUser != null) {
                         _registerBtnController.success();
-                        Timer(Duration(seconds: 1), () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SongBottomSheet(),
-                            ),
-                          );
-                        });
+
+                        //Save the user email so that it stays login
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        prefs.setString('email', '$_registerEmail');
+
+                        Timer(
+                          Duration(milliseconds: 500),
+                          () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SongBottomSheet(),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                        );
                       }
                     } catch (e) {
                       _registerBtnController.error();
+
                       print(e.message);
                       setState(() {
                         //errorMessage = e.message.toString();

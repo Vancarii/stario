@@ -42,8 +42,8 @@ class RouteTransitions {
 
   Route slideUpJoinedTransitionType(currentPage, nextPage) {
     return PageRouteBuilder(
-      transitionDuration: Duration(milliseconds: 250),
-      reverseTransitionDuration: Duration(milliseconds: 250),
+      transitionDuration: Duration(milliseconds: 300),
+      reverseTransitionDuration: Duration(milliseconds: 300),
       maintainState: true,
       pageBuilder: (context, animation, secondaryAnimation) => nextPage,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
