@@ -34,6 +34,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String emailErrorMessage;
   String passwordErrorMessage;
 
+  bool passwordIsVisible = false;
+
   bool _registerButtonPressed = false;
 
   Key _formKey = GlobalKey<FormState>();
@@ -254,7 +256,15 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardAction: TextInputAction.done,
               labelText: 'Password',
               startIcon: Icon(Icons.lock),
-              password: true,
+              endIcon: IconButton(
+                icon: passwordIsVisible ? Icon(Icons.visibility_off) : Icon(Icons.visibility),
+                onPressed: () {
+                  setState(() {
+                    passwordIsVisible = !passwordIsVisible;
+                  });
+                },
+              ),
+              password: !passwordIsVisible,
               borderColor: Theme.of(context).primaryColor,
               padding: const EdgeInsets.symmetric(vertical: 15.0),
               errorText: passwordErrorMessage,

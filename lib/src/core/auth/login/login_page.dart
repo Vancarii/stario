@@ -27,6 +27,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool passwordIsVisible = false;
 
+  bool loginButtonPressed = false;
+
   String _loginUsername;
   String _loginEmail;
   String _loginPassword;
@@ -34,14 +36,14 @@ class _LoginPageState extends State<LoginPage> {
   String emailErrorMessage;
   String passwordErrorMessage;
 
-  bool loginButtonPressed = false;
-  bool showSpinner = false;
+  String logInErrorMessage;
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           child: Container(
             height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
@@ -54,12 +56,18 @@ class _LoginPageState extends State<LoginPage> {
             )),
             alignment: Alignment.center,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                introTitle(),
+                Expanded(flex: 2, child: introTitle()),
                 inputTextFields(),
-                buttonsRow(),
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        signUpButton(),
+                      ],
+                    )),
               ],
             ),
           ),
@@ -69,23 +77,13 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget introTitle() {
-    return Expanded(
-      child: Container(
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'STARIO',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
-                  ),
-                ),
-              ),
-            ),
-          ],
+    return Container(
+      alignment: Alignment.topLeft,
+      child: Text(
+        'STARIO',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 30.0,
         ),
       ),
     );
@@ -100,7 +98,168 @@ class _LoginPageState extends State<LoginPage> {
           emailTextField(),
           passwordTextField(),
           forgotPasswordButton(),
+          logInButton(),
+          orDivider(),
+          buttonsRow(),
         ],
+      ),
+    );
+  }
+
+  Widget buttonsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        otherLoginMethodButton(
+            icon: FontAwesomeIcons.facebook, onPressed: () {}, borderColor: Colors.blue),
+        otherLoginMethodButton(
+            icon: FontAwesomeIcons.google, onPressed: () {}, borderColor: Colors.red),
+        otherLoginMethodButton(
+            icon: FontAwesomeIcons.twitter, onPressed: () {}, borderColor: Colors.lightBlueAccent),
+      ],
+    );
+  }
+
+  Widget orDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Divider(
+              indent: 15,
+              endIndent: 15,
+              color: Colors.white60,
+              thickness: 1,
+            ),
+          ),
+          Text('OR'),
+          Expanded(
+            child: Divider(
+              indent: 15,
+              endIndent: 15,
+              color: Colors.white60,
+              thickness: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget logInButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+      child: RoundedLoadingButton(
+        borderRadius: 10.0,
+        color: Theme.of(context).accentColor,
+        width: MediaQuery.of(context).size.width,
+        child: Text(
+          'Log In',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white.withOpacity(0.8),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        controller: _loginBtnController,
+        onPressed: () async {
+          setState(() {
+            _loginBtnController.start();
+
+            loginButtonPressed = true;
+            if (_loginEmail == null) {
+              emailErrorMessage = 'Please enter an email';
+            }
+            if (_loginPassword == null) {
+              passwordErrorMessage = 'Please enter a password';
+            }
+          });
+          print('$_loginUsername $_loginEmail $_loginPassword');
+          try {
+            final user = await _auth.signInWithEmailAndPassword(
+                email: _loginEmail, password: _loginPassword);
+            if (user != null) {
+              _loginBtnController.success();
+              //Navigator.of(context).popUntil((route) => route.isFirst);
+
+              //Save the user email so that it stays login
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.setString('email', '$_loginEmail');
+
+              Timer(
+                Duration(milliseconds: 500),
+                () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SongBottomSheet(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+              );
+            }
+          } catch (e) {
+            _loginBtnController.error();
+            print('errormessage: $e');
+            print('REPLACED ERROR MESSAGE' +
+                e.toString().substring(e.toString().indexOf(']') + 1, e.toString().length));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget signUpButton() {
+    return CupertinoButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(RouteTransitions().slideUpJoinedTransitionType(LoginPage(), RegisterPage()));
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+      },
+      padding: const EdgeInsets.all(0),
+      child: Container(
+        width: double.infinity,
+        /*decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.white60),
+            ),
+            color: Colors.transparent),*/
+        child: Column(
+          children: [
+            Icon(
+              Icons.keyboard_arrow_up,
+              color: Colors.white,
+            ),
+            RichText(
+              text: TextSpan(
+                text: 'Don\'t have an account? ',
+                style: GoogleFonts.lato(fontSize: 15.0),
+                children: [
+                  TextSpan(
+                    text: 'Sign Up',
+                    style: GoogleFonts.lato(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            /*Text(
+              'Don\'t have an account? Sign Up',
+              textAlign: TextAlign.end,
+              style: GoogleFonts.lato(
+                //fontStyle: FontStyle.italic,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 15.0,
+              ),
+            ),*/
+          ],
+        ),
       ),
     );
   }
@@ -109,12 +268,15 @@ class _LoginPageState extends State<LoginPage> {
     return CustomRoundedTextField(
       minLines: 1,
       maxLines: 1,
+      formatter: [
+        FilteringTextInputFormatter.allow(RegExp('[a-z0-9._-]')),
+      ],
       keyboard: TextInputType.name,
       keyboardAction: TextInputAction.next,
       labelText: 'Username',
       startIcon: Icon(Icons.account_circle),
       borderColor: Theme.of(context).primaryColor,
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       onTextChanged: (userInput) {
         _loginBtnController.reset();
 
@@ -133,7 +295,7 @@ class _LoginPageState extends State<LoginPage> {
       labelText: 'Email',
       startIcon: Icon(Icons.email),
       borderColor: Theme.of(context).primaryColor,
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       errorText: emailErrorMessage,
       onTextChanged: (emailInput) {
         _loginBtnController.reset();
@@ -191,7 +353,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       password: !passwordIsVisible,
       borderColor: Theme.of(context).primaryColor,
-      padding: const EdgeInsets.only(top: 15.0),
+      padding: const EdgeInsets.only(top: 10.0),
       errorText: passwordErrorMessage,
       onTextChanged: (passwordInput) {
         _loginBtnController.reset();
@@ -228,7 +390,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  CupertinoButton otherLoginMethodButton({IconData icon, Function onPressed}) {
+  CupertinoButton otherLoginMethodButton(
+      {IconData icon, Function onPressed, Color borderColor = Colors.white}) {
     return CupertinoButton(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
       child: Container(
@@ -239,7 +402,7 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.all(Radius.circular(15.0)),
             color: Colors.transparent,
             border: Border.all(
-              color: Colors.white,
+              color: borderColor,
               width: 0.5,
             ),
           ),
@@ -248,158 +411,6 @@ class _LoginPageState extends State<LoginPage> {
             color: Colors.white,
           )),
       onPressed: onPressed,
-    );
-  }
-
-  Widget buttonsRow() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
-                child: RoundedLoadingButton(
-                  borderRadius: 10.0,
-                  color: Theme.of(context).accentColor,
-                  width: 200,
-                  height: 60,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white.withOpacity(0.8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  controller: _loginBtnController,
-                  onPressed: () async {
-                    setState(() {
-                      _loginBtnController.start();
-
-                      loginButtonPressed = true;
-                      if (_loginEmail == null) {
-                        emailErrorMessage = 'Please enter an email';
-                      }
-                      if (_loginPassword == null) {
-                        passwordErrorMessage = 'Please enter a password';
-                      }
-                    });
-                    print('$_loginUsername $_loginEmail $_loginPassword');
-                    try {
-                      final user = await _auth.signInWithEmailAndPassword(
-                          email: _loginEmail, password: _loginPassword);
-                      if (user != null) {
-                        _loginBtnController.success();
-                        //Navigator.of(context).popUntil((route) => route.isFirst);
-
-                        //Save the user email so that it stays login
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs.setString('email', '$_loginEmail');
-
-                        Timer(
-                          Duration(milliseconds: 500),
-                          () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SongBottomSheet(),
-                              ),
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                        );
-                      }
-                    } catch (e) {
-                      _loginBtnController.error();
-                      print(e);
-                    }
-                  },
-                ),
-              ),
-              /*CupertinoButton(
-                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
-                onPressed: () async {
-                  setState(() {
-                    loginButtonPressed = true;
-                    if (_loginEmail == null) {
-                      emailErrorMessage = 'Please enter an email';
-                    }
-                    if (_loginPassword == null) {
-                      passwordErrorMessage = 'Please enter a password';
-                    }
-                  });
-                  print('$_loginUsername $_loginEmail $_loginPassword');
-                  try {
-                    final user = await _auth.signInWithEmailAndPassword(
-                        email: _loginEmail, password: _loginPassword);
-                    if (user != null) {
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => SongBottomSheet()));
-                    }
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-                child: Container(
-                  width: 200,
-                  height: 60,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    color: Theme.of(context).accentColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 2,
-                          spreadRadius: 2,
-                          offset: Offset(2, 2)),
-                    ],
-                  ),
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),*/
-              otherLoginMethodButton(icon: FontAwesomeIcons.facebook, onPressed: () {}),
-              otherLoginMethodButton(icon: FontAwesomeIcons.google, onPressed: () {}),
-            ],
-          ),
-          CupertinoButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  RouteTransitions().slideUpJoinedTransitionType(LoginPage(), RegisterPage()));
-              //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
-            },
-            padding: const EdgeInsets.all(0),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.keyboard_arrow_up,
-                  color: Colors.white70,
-                ),
-                Text(
-                  'Sign Up',
-                  textAlign: TextAlign.end,
-                  style: GoogleFonts.lato(
-                    //fontStyle: FontStyle.italic,
-                    color: Colors.white70,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
