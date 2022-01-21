@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                 gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Theme.of(context).primaryColor, Colors.black45],
+              colors: [Colors.teal, Colors.black45],
             )),
             alignment: Alignment.center,
             child: Column(
@@ -275,7 +275,7 @@ class _LoginPageState extends State<LoginPage> {
       keyboardAction: TextInputAction.next,
       labelText: 'Username',
       startIcon: Icon(Icons.account_circle),
-      borderColor: Theme.of(context).primaryColor,
+      borderColor: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       onTextChanged: (userInput) {
         _loginBtnController.reset();
@@ -294,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
       keyboardAction: TextInputAction.next,
       labelText: 'Email',
       startIcon: Icon(Icons.email),
-      borderColor: Theme.of(context).primaryColor,
+      borderColor: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       errorText: emailErrorMessage,
       onTextChanged: (emailInput) {
@@ -352,7 +352,7 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
       password: !passwordIsVisible,
-      borderColor: Theme.of(context).primaryColor,
+      borderColor: Colors.transparent,
       padding: const EdgeInsets.only(top: 10.0),
       errorText: passwordErrorMessage,
       onTextChanged: (passwordInput) {

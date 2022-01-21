@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stario/src/core/auth/authentication/auth_screen.dart';
+import 'package:stario/src/core/auth/authentication_page.dart';
 import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
@@ -65,7 +66,7 @@ class StarioApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
         ),
-        home: isLoggedIn == false ? LoginPage() : /*LoginPage(),*/ SongBottomSheet(),
+        home: isLoggedIn == false ? AuthenticationPage() : /*LoginPage(),*/ SongBottomSheet(),
       ),
     );
   }
