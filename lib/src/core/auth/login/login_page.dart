@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return inputTextFields(); /*Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
+    );*/
   }
 
   Widget introTitle() {
@@ -91,6 +91,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget inputTextFields() {
     return Container(
+      //padding is so that the fade through transition in authentication page doesnt shift when
+      //switching from sign up to login
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      color: Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

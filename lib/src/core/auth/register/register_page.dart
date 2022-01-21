@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return inputTextFields(); /*SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
@@ -58,8 +58,8 @@ class _RegisterPageState extends State<RegisterPage> {
             )),
             alignment: Alignment.center,
             child: Column(
-              /* mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,*/
+              */ /* mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,*/ /*
               children: [
                 Expanded(flex: 2, child: introTitle()),
                 inputTextFields(),
@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-    );
+    );*/
   }
 
   Widget introTitle() {
@@ -88,6 +88,28 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 30.0,
+        ),
+      ),
+    );
+  }
+
+  Widget inputTextFields() {
+    return Container(
+      color: Colors.transparent,
+      //padding: const EdgeInsets.symmetric(vertical: 25.0),
+      child: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            usernameTextField(),
+            emailTextField(),
+            passwordTextField(),
+            signUpButton(),
+            orDivider(),
+            buttonsRow(),
+          ],
         ),
       ),
     );
@@ -278,27 +300,6 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         });
       },
-    );
-  }
-
-  Widget inputTextFields() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 25.0),
-      child: Form(
-        key: _formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            usernameTextField(),
-            emailTextField(),
-            passwordTextField(),
-            signUpButton(),
-            orDivider(),
-            buttonsRow(),
-          ],
-        ),
-      ),
     );
   }
 

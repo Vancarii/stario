@@ -1,9 +1,15 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'login/login_page.dart';
+
+enum authType {
+  login,
+  signUp,
+}
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({Key key}) : super(key: key);
@@ -13,7 +19,9 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
-  bool isLogin = true;
+  //bool isLogin = true;
+
+  authType currentAuthType = authType.login;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +37,33 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.teal, Colors.black45],
+              colors: [
+                currentAuthType == authType.login ? Colors.teal : Colors.deepOrange,
+                Colors.black45,
+              ],
             )),
             alignment: Alignment.center,
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(flex: 2, child: introTitle()),
-                //LoginPage(),
+                Expanded(
+                  flex: 2,
+                  child: introTitle(),
+                ),
+                PageTransitionSwitcher(
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation,
+                  ) {
+                    return FadeThroughTransition(
+                      animation: animation,
+                      secondaryAnimation: secondaryAnimation,
+                      child: child,
+                    );
+                  },
+                  child: currentAuthType == authType.login ? LoginPage() : RegisterPage(),
+                ),
                 Expanded(
                     flex: 1,
                     child: Column(
@@ -69,51 +96,35 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   Widget signUpButton() {
     return CupertinoButton(
       onPressed: () {
-        Navigator.of(context)
-            .push(RouteTransitions().slideUpJoinedTransitionType(LoginPage(), RegisterPage()));
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()));
+        setState(() {
+          if (currentAuthType == authType.login) {
+            currentAuthType = authType.signUp;
+          } else {
+            currentAuthType = authType.login;
+          }
+        });
       },
       padding: const EdgeInsets.all(0),
       child: Container(
         width: double.infinity,
-        /*decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Colors.white60),
-            ),
-            color: Colors.transparent),*/
-        child: Column(
-          children: [
-            Icon(
-              Icons.keyboard_arrow_up,
-              color: Colors.white,
-            ),
-            RichText(
-              text: TextSpan(
-                text: 'Don\'t have an account? ',
-                style: GoogleFonts.lato(fontSize: 15.0),
-                children: [
-                  TextSpan(
-                    text: 'Sign Up',
-                    style: GoogleFonts.lato(
-                      color: Theme.of(context).accentColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ],
+        alignment: Alignment.center,
+        child: RichText(
+          text: TextSpan(
+            text: currentAuthType == authType.login
+                ? 'Don\'t have an account? '
+                : 'Already have an account? ',
+            style: GoogleFonts.lato(fontSize: 15.0),
+            children: [
+              TextSpan(
+                text: currentAuthType == authType.login ? 'Sign Up' : 'Log In',
+                style: GoogleFonts.lato(
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
+                ),
               ),
-            ),
-            /*Text(
-              'Don\'t have an account? Sign Up',
-              textAlign: TextAlign.end,
-              style: GoogleFonts.lato(
-                //fontStyle: FontStyle.italic,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 15.0,
-              ),
-            ),*/
-          ],
+            ],
+          ),
         ),
       ),
     );

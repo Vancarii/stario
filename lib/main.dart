@@ -48,6 +48,9 @@ class StarioApp extends StatelessWidget {
         theme: ThemeData(
           brightness: Brightness.dark,
 
+          //so that the background for PageTransitionSwitcher isnt greyed out in the auth page
+          canvasColor: Colors.transparent,
+
           //custom blue theme
 /*        scaffoldBackgroundColor: Color(0xfff132630),
           primaryColor: Color(0xfff1b3845),
