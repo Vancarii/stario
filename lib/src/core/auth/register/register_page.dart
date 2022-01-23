@@ -13,6 +13,7 @@ import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key key}) : super(key: key);
@@ -22,10 +23,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  //database
+  final _firestore = FirebaseFirestore.instance;
+
+  //authentication
   final _auth = FirebaseAuth.instance;
+
+  String _newUserUid;
 
   final RoundedLoadingButtonController _registerBtnController = RoundedLoadingButtonController();
 
+  String _registerName;
   String _registerEmail;
   String _registerUsername;
   String _registerPassword;
@@ -103,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            nameTextField(),
             usernameTextField(),
             emailTextField(),
             passwordTextField(),
@@ -191,6 +200,26 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }*/
 
+  Widget nameTextField() {
+    return CustomRoundedTextField(
+      minLines: 1,
+      maxLines: 1,
+      formatter: [
+        FilteringTextInputFormatter.allow(RegExp('[a-z]')),
+      ],
+      keyboard: TextInputType.name,
+      keyboardAction: TextInputAction.next,
+      labelText: 'Full name',
+      startIcon: Icon(Icons.person),
+      borderColor: Colors.transparent,
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      onTextChanged: (userInput) {
+        _registerName = userInput;
+        print('dis the name' + _registerName);
+      },
+    );
+  }
+
   Widget usernameTextField() {
     return CustomRoundedTextField(
       minLines: 1,
@@ -200,7 +229,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
       keyboard: TextInputType.name,
       keyboardAction: TextInputAction.next,
-      labelText: 'Username',
+      labelText: 'Unique Username / Handle',
       startIcon: Icon(Icons.account_circle),
       borderColor: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -335,7 +364,7 @@ class _RegisterPageState extends State<RegisterPage> {
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-          */ /*Padding(
+          Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
               errorMessage,
@@ -347,7 +376,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontSize: 15.0,
               ),
             ),
-          ),*/ /*
+          ),
           CupertinoButton(
             onPressed: () async {
               print('$_registerEmail $_registerPassword $_registerUsername');
@@ -433,10 +462,28 @@ class _RegisterPageState extends State<RegisterPage> {
             }
           });
           try {
+            //FIREBASE
+            //Creates a new use in the firebase AUTHENTICATION section
             final newUser = await _auth.createUserWithEmailAndPassword(
                 email: _registerEmail, password: _registerPassword);
+
             if (newUser != null) {
               _registerBtnController.success();
+
+              //Creates a new user document in the DATABASE 'users' collection
+
+              //saves user UID
+              _newUserUid = newUser.user.uid;
+
+              _firestore.collection('users').doc(_registerUsername).set({
+                'artist name': _registerName,
+                'uid': _newUserUid,
+                //TODO: use this for user 'new release'
+                /*'songs': [
+                  {'song name': 'name1', 'song location': 'locate1'},
+                  {'song name': 'name2', 'song location': 'locate2'},
+                ],*/
+              });
 
               //Save the user email so that it stays login
               SharedPreferences prefs = await SharedPreferences.getInstance();
