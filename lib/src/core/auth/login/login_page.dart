@@ -12,6 +12,7 @@ import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -21,6 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
   final RoundedLoadingButtonController _loginBtnController = RoundedLoadingButtonController();
@@ -37,6 +39,19 @@ class _LoginPageState extends State<LoginPage> {
   String passwordErrorMessage;
 
   String logInErrorMessage;
+
+  void getUIDs(currentUserUID) async {
+    final users = await _firestore.collection('users').get();
+    for (var user in users.docs) {
+      final uid = user.data()['uid'];
+      print('UIDS: $uid');
+
+      if (currentUserUID == uid) {
+        print('SIUUUU');
+        print(uid + currentUserUID);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       //padding is so that the fade through transition in authentication page doesnt shift when
       //switching from sign up to login
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 50.0),
       color: Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
       child: RoundedLoadingButton(
         borderRadius: 10.0,
         color: Theme.of(context).accentColor,
+        successColor: Theme.of(context).accentColor,
         width: MediaQuery.of(context).size.width,
         child: Text(
           'Log In',
@@ -191,6 +207,11 @@ class _LoginPageState extends State<LoginPage> {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.setString('email', '$_loginEmail');
 
+              //TODO: go through firestore and find user with UID
+
+              getUIDs(user.user.uid);
+
+              //TODO: replace Timer so that it runs the sharedprefs and auth before it goes to SongBottomSheet()
               Timer(
                 Duration(milliseconds: 500),
                 () {
@@ -207,6 +228,7 @@ class _LoginPageState extends State<LoginPage> {
           } catch (e) {
             _loginBtnController.error();
             print('errormessage: $e');
+            //TODO: Fix this shit
             print('REPLACED ERROR MESSAGE' +
                 e.toString().substring(e.toString().indexOf(']') + 1, e.toString().length));
           }

@@ -38,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String _registerUsername;
   String _registerPassword;
 
+  String nameErrorMessage;
   String usernameErrorMessage;
   String emailErrorMessage;
   String passwordErrorMessage;
@@ -205,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
       minLines: 1,
       maxLines: 1,
       formatter: [
-        FilteringTextInputFormatter.allow(RegExp('[a-z]')),
+        FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
       ],
       keyboard: TextInputType.name,
       keyboardAction: TextInputAction.next,
@@ -213,10 +214,25 @@ class _RegisterPageState extends State<RegisterPage> {
       startIcon: Icon(Icons.person),
       borderColor: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
+      errorText: nameErrorMessage,
       onTextChanged: (userInput) {
+        _registerBtnController.reset();
+
         _registerName = userInput;
         print('dis the name' + _registerName);
+
+        if (nameErrorMessage != null) {
+          nameErrorMessage = null;
+        }
       },
+      /* validator: (value) {
+        if (_registerButtonPressed = true) {
+          _registerButtonPressed = false;
+          if (value.isEmpty) {
+            nameErrorMessage = 'Please enter your name';
+          }
+        }
+      },*/
     );
   }
 
@@ -230,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
       keyboard: TextInputType.name,
       keyboardAction: TextInputAction.next,
       labelText: 'Unique Username / Handle',
-      startIcon: Icon(Icons.account_circle),
+      startIcon: Icon(FontAwesomeIcons.at),
       borderColor: Colors.transparent,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       errorText: usernameErrorMessage,
@@ -433,7 +449,8 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
       child: RoundedLoadingButton(
         borderRadius: 10.0,
-        color: Theme.of(context).accentColor,
+        color: Colors.deepOrange,
+        successColor: Colors.deepOrange,
         width: MediaQuery.of(context).size.width,
         child: Text(
           'Sign Up',
@@ -451,6 +468,9 @@ class _RegisterPageState extends State<RegisterPage> {
             _registerBtnController.start();
 
             _registerButtonPressed = true;
+            if (_registerName == null) {
+              nameErrorMessage = 'Please enter a name';
+            }
             if (_registerUsername == null) {
               usernameErrorMessage = 'Please enter a username';
             }
