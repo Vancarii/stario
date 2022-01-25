@@ -5,6 +5,7 @@ import 'package:stario/src/core/auth/authentication_page.dart';
 import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
+import 'package:stario/src/shared_prefs/shared_prefs.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -71,8 +72,11 @@ class SettingsPage extends StatelessWidget {
               icon: Icons.logout,
               iconColor: Colors.red,
               onTap: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                prefs.remove('email');
+                //SharedPreferences prefs = await SharedPreferences.getInstance();
+                //prefs.remove('username');
+                SharedPrefs().removeUsername();
+
+                //TODO: stop playing audio when exit
 
                 Navigator.pushAndRemoveUntil(
                   context,

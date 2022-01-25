@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
+import 'package:stario/src/shared_prefs/shared_prefs.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,17 +41,22 @@ class _LoginPageState extends State<LoginPage> {
 
   String logInErrorMessage;
 
-  void getUIDs(currentUserUID) async {
+  //Goes through all users UIDs and matches current logged in UID
+  Future<String> getUIDs(currentUserUID) async {
     final users = await _firestore.collection('users').get();
     for (var user in users.docs) {
       final uid = user.data()['uid'];
       print('UIDS: $uid');
 
       if (currentUserUID == uid) {
+        print('user: ${user.id}');
+
         print('SIUUUU');
-        print(uid + currentUserUID);
+        print(uid + ' ' + currentUserUID);
+        return user.id;
       }
     }
+    return null;
   }
 
   @override
@@ -203,13 +209,14 @@ class _LoginPageState extends State<LoginPage> {
               _loginBtnController.success();
               //Navigator.of(context).popUntil((route) => route.isFirst);
 
-              //Save the user email so that it stays login
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString('email', '$_loginEmail');
-
               //TODO: go through firestore and find user with UID
 
-              getUIDs(user.user.uid);
+              final _currentLoggedInUsername = await getUIDs(user.user.uid);
+              print('currentLoggedInUsername: $_currentLoggedInUsername');
+
+              //Save the user email so that it stays login
+              //SharedPreferences prefs = await SharedPreferences.getInstance();
+              SharedPrefs().username = '$_currentLoggedInUsername';
 
               //TODO: replace Timer so that it runs the sharedprefs and auth before it goes to SongBottomSheet()
               Timer(

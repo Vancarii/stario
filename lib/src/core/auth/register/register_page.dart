@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/core/auth/login/login_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
+import 'package:stario/src/shared_prefs/shared_prefs.dart';
 import 'package:stario/src/widgets/custom_rounded_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -507,7 +508,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
               //Save the user email so that it stays login
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.setString('email', '$_registerEmail');
+              //prefs.setString('username', '$_registerUsername');
+              SharedPrefs().username = '$_registerUsername';
 
               Timer(
                 Duration(milliseconds: 500),
