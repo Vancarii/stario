@@ -20,6 +20,17 @@ class SharedPrefs {
   removeUsername() {
     _sharedPrefs.remove(keyUsername);
   }
+
+  String get artistName => _sharedPrefs.getString(keyArtistName) ?? null;
+
+  set artistName(String value) {
+    _sharedPrefs.setString(keyArtistName, value);
+  }
+
+  removeArtistName() {
+    _sharedPrefs.remove(keyArtistName);
+  }
 }
 
 const String keyUsername = "key_username";
+const String keyArtistName = "key_artist_name";

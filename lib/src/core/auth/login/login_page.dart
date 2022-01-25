@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/core/auth/register/register_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
@@ -42,18 +40,20 @@ class _LoginPageState extends State<LoginPage> {
   String logInErrorMessage;
 
   //Goes through all users UIDs and matches current logged in UID
-  Future<String> getUIDs(currentUserUID) async {
+  Future<List<String>> getUserDetails(currentAuthUserUID) async {
     final users = await _firestore.collection('users').get();
     for (var user in users.docs) {
       final uid = user.data()['uid'];
+      final artistName = user.data()['artist name'];
       print('UIDS: $uid');
+      print('artistName: $artistName');
 
-      if (currentUserUID == uid) {
-        print('user: ${user.id}');
+      if (currentAuthUserUID == uid) {
+/*        print('user: ${user.id}');
 
         print('SIUUUU');
-        print(uid + ' ' + currentUserUID);
-        return user.id;
+        print(uid + ' ' + currentAuthUserUID);*/
+        return [user.id, artistName];
       }
     }
     return null;
@@ -211,12 +211,14 @@ class _LoginPageState extends State<LoginPage> {
 
               //TODO: go through firestore and find user with UID
 
-              final _currentLoggedInUsername = await getUIDs(user.user.uid);
+              final _userDetails = await getUserDetails(user.user.uid);
+              final _currentLoggedInUsername = _userDetails[0];
+              final _currentLoggedInArtistName = _userDetails[1];
               print('currentLoggedInUsername: $_currentLoggedInUsername');
 
-              //Save the user email so that it stays login
-              //SharedPreferences prefs = await SharedPreferences.getInstance();
+              //Save the username so that it stays logged in and app knows who it is
               SharedPrefs().username = '$_currentLoggedInUsername';
+              SharedPrefs().artistName = '$_currentLoggedInArtistName';
 
               //TODO: replace Timer so that it runs the sharedprefs and auth before it goes to SongBottomSheet()
               Timer(

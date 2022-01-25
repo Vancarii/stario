@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class _ProfilePageState extends State<ProfilePage>
   bool isPinned = false;
 
   static const double profileExpandedHeight = 300;
+
+  //final _firestore = FirebaseFirestore.instance;
 
   @override
   bool get wantKeepAlive => true;
@@ -70,6 +73,17 @@ class _ProfilePageState extends State<ProfilePage>
     _sliverScrollController.dispose();
     super.dispose();
   }
+
+  //String artistName;
+
+/*  void getArtistName() {
+    _firestore.collection('users').doc(SharedPrefs().username).get().then((value) {
+      setState(() {
+        artistName = value.data()['artist name'];
+        print('artistName: $artistName');
+      });
+    });
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +189,8 @@ class _ProfilePageState extends State<ProfilePage>
                     ),
                   ),*/
                   Text(
-                    SharedPrefs().username,
+                    //takes the current logged in username from shared prefs class
+                    SharedPrefs().artistName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,

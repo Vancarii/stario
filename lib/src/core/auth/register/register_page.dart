@@ -506,10 +506,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ],*/
               });
 
-              //Save the user email so that it stays login
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              //prefs.setString('username', '$_registerUsername');
+              //Save the username  so that it stays logged in and the app knows whos logged in
               SharedPrefs().username = '$_registerUsername';
+              SharedPrefs().artistName = '$_registerName';
 
               Timer(
                 Duration(milliseconds: 500),
