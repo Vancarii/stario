@@ -129,7 +129,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    /*Align(
+                    Align(
                       alignment: Alignment.topCenter,
                       child: Container(
                         margin: const EdgeInsets.only(top: 6.0, bottom: 5.0),
@@ -140,7 +140,7 @@ class _CurrentSongTabState extends State<CurrentSongTab> {
                           borderRadius: BorderRadius.all(Radius.circular(2)),
                         ),
                       ),
-                    ),*/
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0, left: 15.0),
                       child: Row(

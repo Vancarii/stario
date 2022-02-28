@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stario/src/core/auth/authentication_page.dart';
+import 'package:stario/src/firebase_functions/firebase_functions.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/provider/audio_provider.dart';
 import 'package:stario/src/shared_prefs/shared_prefs.dart';
@@ -18,6 +19,8 @@ void main() async {
 
   //initializes shared preferences
   await SharedPrefs().init();
+
+  firebaseFunctions.init();
 
   runApp(StarioApp());
 }

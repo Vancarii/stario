@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/src/constants/constants.dart';
 import 'package:stario/src/route_transitions/route_transitions.dart';
@@ -11,7 +13,9 @@ import 'package:stario/src/shared_prefs/shared_prefs.dart';
 import 'package:stario/src/song_lists/song_lists.dart';
 import 'package:stario/src/widgets/song_tiles_listview.dart';
 
-import '../sub_screens/settings_page.dart';
+import '../../sub_screens/settings_page.dart';
+import 'complex_modal.dart';
+import 'new_release_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key key}) : super(key: key);
@@ -93,31 +97,59 @@ class _ProfilePageState extends State<ProfilePage>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30.0)),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-        child: Scaffold(
-          backgroundColor: Color(0xfff222222),
-          body: MediaQuery.removePadding(
-            removeTop: true,
-            context: context,
-            child: NestedScrollView(
-              controller: _sliverScrollController,
-              physics: BouncingScrollPhysics(),
-              headerSliverBuilder: (context, isScrolled) {
-                return [
-                  profileCoverBar(),
-                  profileInfoBar(),
-                  profileActionBar(),
-                  profileTabBar(),
-                ];
-              },
-              body: ExtendedTabBarView(
-                controller: _tabViewController,
-                children: [
-                  MySongsTab(),
-                  MyAlbumsTab(),
-                  AboutTab(),
-                ],
+      child: CustomRefreshIndicator(
+        notificationPredicate: (notification) => notification.depth == 1,
+        onRefresh: () => Future.delayed(const Duration(seconds: 2)),
+        builder: (
+          BuildContext context,
+          Widget child,
+          IndicatorController controller,
+        ) {
+          /// TODO: Implement your own refresh indicator
+          return Stack(
+            children: <Widget>[
+              AnimatedBuilder(
+                animation: controller,
+                builder: (BuildContext context, _) {
+                  /// This part will be rebuild on every controller change
+                  return Container(height: 20);
+                },
+              ),
+
+              /// Scrollable widget that was provided as [child] argument
+              ///
+              /// TIP:
+              /// You can also wrap [child] with [Transform] widget to also a animate list transform (see example app)
+              child,
+            ],
+          );
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          child: Scaffold(
+            backgroundColor: Color(0xfff222222),
+            body: MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: NestedScrollView(
+                controller: _sliverScrollController,
+                physics: BouncingScrollPhysics(),
+                headerSliverBuilder: (context, isScrolled) {
+                  return [
+                    profileCoverBar(),
+                    profileInfoBar(),
+                    profileActionBar(),
+                    profileTabBar(),
+                  ];
+                },
+                body: ExtendedTabBarView(
+                  controller: _tabViewController,
+                  children: [
+                    MySongsTab(),
+                    MyAlbumsTab(),
+                    AboutTab(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -155,6 +187,7 @@ class _ProfilePageState extends State<ProfilePage>
         ],
       ),
       flexibleSpace: FlexibleSpaceBar(
+        //stretchModes: [StretchMode.zoomBackground],
         centerTitle: true,
         titlePadding: const EdgeInsets.all(0),
         title: Container(
@@ -434,7 +467,12 @@ class _ProfilePageState extends State<ProfilePage>
           Expanded(
             child: CupertinoButton(
               padding: const EdgeInsets.all(0),
-              onPressed: () {},
+              onPressed: () => showCupertinoModalBottomSheet(
+                enableDrag: false,
+                expand: true,
+                context: context,
+                builder: (context) => ComplexModal(),
+              ),
               child: Container(
                 height: 40,
                 alignment: Alignment.center,

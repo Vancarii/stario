@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stario/src/genre_list/genre_list.dart';
 import 'package:stario/src/main/body/sub_screens/search_page.dart';
-import 'package:stario/src/main/body/tabs/explore_page.dart';
-import 'package:stario/src/main/body/tabs/my_collections_page.dart';
-import 'package:stario/src/main/body/tabs/profile_page.dart';
+import 'package:stario/src/main/body/tabs/explore/explore_page.dart';
+import 'package:stario/src/main/body/tabs/my_collections/my_collections_page.dart';
+import 'package:stario/src/main/body/tabs/profile/profile_page.dart';
 import 'package:stario/src/main/song_bottom_sheet.dart';
 import 'package:stario/src/models/genre_model.dart';
 import 'package:stario/src/widgets/custom_physics.dart';
@@ -196,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       ProfilePage(),
                     ],
                   ),
-                  floatingActionButton(),
+                  //floatingActionButton(),
                 ],
               ),
             ),
