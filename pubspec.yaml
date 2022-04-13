@@ -40,6 +40,8 @@ dependencies:
 
   dotted_border: ^2.0.0+2
 
+  file_picker: ^4.4.0
+
   music_sliding_sheet:
     path: ./music_sliding_sheet/
 

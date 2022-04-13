@@ -1,10 +1,59 @@
+import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:just_audio/just_audio.dart';
 
-class ComplexModal extends StatelessWidget {
+class ComplexModal extends StatefulWidget {
   const ComplexModal({Key key}) : super(key: key);
+
+  @override
+  _ComplexModalState createState() => _ComplexModalState();
+}
+
+class _ComplexModalState extends State<ComplexModal> {
+  AudioPlayer _audioPlayer = AudioPlayer();
+
+  File coverImagePath;
+
+  @override
+  void initState() {
+    pickAudioFile();
+    super.initState();
+  }
+
+  Future<void> pickAudioFile() async {
+    FilePickerResult pickedAudioFile = await FilePicker.platform.pickFiles(type: FileType.audio);
+
+    setState(() {
+      if (pickedAudioFile != null) {
+        File file = File(pickedAudioFile.files.single.path);
+
+        _audioPlayer.setAudioSource(AudioSource.uri(file.uri));
+        _audioPlayer.play();
+
+        print('file uri: ${file.uri}');
+      } else {
+        print('result is: $pickedAudioFile : ${_audioPlayer.currentIndex}');
+        return;
+        // User canceled the picker
+      }
+    });
+  }
+
+  Future<void> pickCoverImage() async {
+    FilePickerResult pickedImageFile = await FilePicker.platform.pickFiles(type: FileType.image);
+
+    setState(() {
+      if (pickedImageFile != null) {
+        coverImagePath = File(pickedImageFile.files.single.path);
+      } else {
+        return;
+        // User canceled the picker
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext rootContext) {
@@ -12,68 +61,187 @@ class ComplexModal extends StatelessWidget {
         child: Navigator(
       onGenerateRoute: (_) => MaterialPageRoute(
         builder: (builderContext) => Builder(
-          builder: (context) => CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-                backgroundColor: Theme.of(rootContext).backgroundColor,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    showCupertinoDialog(
-                        context: rootContext,
-                        builder: (BuildContext dialogContext) {
-                          return CupertinoAlertDialog(
-                            title: Text('Save as draft?'),
-                            actions: <Widget>[
-                              CupertinoButton(
-                                child: Text('Save'),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true).pop();
-                                  Navigator.of(rootContext).pop();
-                                  //TODO: save as draft
-                                },
-                              ),
-                              CupertinoButton(
-                                child: Text('Delete'),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true).pop();
-                                  Navigator.of(rootContext).pop();
-                                },
-                              ),
-                              CupertinoButton(
-                                child: Text('Cancel'),
-                                onPressed: () {
-                                  Navigator.of(context, rootNavigator: true).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        });
-                    //Navigator.of(rootContext).pop();
-                  },
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Theme.of(rootContext).backgroundColor,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.white,
                 ),
-                middle: Text(
-                  'Release New Music',
-                  style: TextStyle(color: Colors.white),
-                )),
-            child: SafeArea(
+                onPressed: () {
+                  showCupertinoDialog(
+                      context: rootContext,
+                      builder: (BuildContext dialogContext) {
+                        return CupertinoAlertDialog(
+                          title: Text('Save as draft?'),
+                          actions: <Widget>[
+                            CupertinoButton(
+                              child: Text('Save'),
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true).pop();
+                                Navigator.of(rootContext).pop();
+                                //TODO: save as draft
+                              },
+                            ),
+                            CupertinoButton(
+                              child: Text('Delete'),
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true).pop();
+                                Navigator.of(rootContext).pop();
+                              },
+                            ),
+                            CupertinoButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                  //Navigator.of(rootContext).pop();
+                },
+              ),
+              centerTitle: true,
+              title: Text(
+                'Release New Music',
+                style: TextStyle(color: Colors.white),
+              ),
+              bottom: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.grey[800],
+                toolbarHeight: 100,
+                centerTitle: true,
+                shape: coverImagePath == null
+                    ? RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(25.0),
+                        ),
+                      )
+                    : RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(25.0),
+                        ),
+                      ),
+                title: _audioPlayer.currentIndex != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.0),
+                                color: Colors.white10,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    '0:00',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  Slider(value: 0, onChanged: (value) {}),
+                                  Text(
+                                    '0:00',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          CupertinoButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
+                              setState(() {
+                                //set the audio player to null so that the current index will be null
+                                _audioPlayer.dispose();
+                                _audioPlayer = AudioPlayer();
+                                print('currentindex : ${_audioPlayer.currentIndex}');
+                              });
+                            },
+                            child: Icon(
+                              Icons.cancel,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      )
+                    : DashedButton(
+                        onPressed: () {
+                          setState(() {
+                            pickAudioFile();
+                          });
+                        },
+                        text: 'Upload song file',
+                        //icon: Icons.audiotrack,
+                        height: 50,
+                      ),
+              ),
+            ),
+            body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    DashedButton(
-                      text: 'Upload a song cover',
-                      icon: Icon(
-                        Icons.image,
-                        color: Colors.white,
-                      ),
-                    ),
-                    DashedButton(
-                      text: 'Upload song file',
-                      //icon: Icons.audiotrack,
-                      height: 50,
-                    ),
+                    coverImagePath == null
+                        ? DashedButton(
+                            onPressed: () {
+                              setState(() {
+                                pickCoverImage();
+                              });
+                            },
+                            text: 'Upload a song cover',
+                            icon: Icon(
+                              Icons.image,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(
+                              top: 15.0,
+                              bottom: 35.0,
+                              left: 35.0,
+                              right: 35.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[800],
+                              borderRadius: BorderRadius.vertical(bottom: Radius.circular(25.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black,
+                                  offset: Offset(5, 5),
+                                  blurRadius: 5,
+                                  spreadRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    offset: Offset(5, 5),
+                                    blurRadius: 5,
+                                    spreadRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: Image.file(
+                                coverImagePath,
+                                width: 300,
+                                height: 300,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                     /*CupertinoButton(
                       onPressed: () {},
                       child: Container(
@@ -152,13 +320,14 @@ class DashedButton extends StatelessWidget {
   final String text;
   final Icon icon;
   final double height;
-  const DashedButton({Key key, @required this.text, this.icon, this.height = 150})
+  final Function onPressed;
+  const DashedButton({Key key, @required this.text, this.icon, this.height = 150, this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: DottedBorder(
         color: Colors.white54,
         strokeWidth: 3,
