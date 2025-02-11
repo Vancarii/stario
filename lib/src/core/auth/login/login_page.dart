@@ -217,8 +217,8 @@ class _LoginPageState extends State<LoginPage> {
               print('currentLoggedInUsername: $_currentLoggedInUsername');
 
               //Save the username so that it stays logged in and app knows who it is
-              SharedPrefs().username = '$_currentLoggedInUsername';
-              SharedPrefs().artistName = '$_currentLoggedInArtistName';
+              SharedPrefs.instance.username = '$_currentLoggedInUsername';
+              SharedPrefs.instance.artistName = '$_currentLoggedInArtistName';
 
               //TODO: replace Timer so that it runs the sharedprefs and auth before it goes to SongBottomSheet()
               Timer(
