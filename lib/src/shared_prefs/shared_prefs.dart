@@ -1,38 +1,39 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
-  static SharedPreferences? _sharedPrefs;
+  static SharedPreferences _sharedPrefs;
 
-  // Singleton Pattern
   static final SharedPrefs instance = SharedPrefs._internal();
 
   SharedPrefs._internal();
 
   /// Ensures `_sharedPrefs` is initialized before accessing it
   static Future<void> init() async {
-    _sharedPrefs ??= await SharedPreferences.getInstance();
+    if (_sharedPrefs == null) {
+      _sharedPrefs = await SharedPreferences.getInstance();
+    }
   }
 
-  /// Returns stored username or an empty string (avoids null errors)
-  String get username => _sharedPrefs?.getString(keyUsername) ?? '';
+  /// Returns stored username (or `null` if not found)
+  String get username => _sharedPrefs.getString(keyUsername);
 
   set username(String value) {
-    _sharedPrefs?.setString(keyUsername, value);
+    _sharedPrefs.setString(keyUsername, value);
   }
 
   void removeUsername() {
-    _sharedPrefs?.remove(keyUsername);
+    _sharedPrefs.remove(keyUsername);
   }
 
-  /// Returns stored artist name or an empty string (avoids null errors)
-  String get artistName => _sharedPrefs?.getString(keyArtistName) ?? '';
+  /// Returns stored artist name (or `null` if not found)
+  String get artistName => _sharedPrefs.getString(keyArtistName);
 
   set artistName(String value) {
-    _sharedPrefs?.setString(keyArtistName, value);
+    _sharedPrefs.setString(keyArtistName, value);
   }
 
   void removeArtistName() {
-    _sharedPrefs?.remove(keyArtistName);
+    _sharedPrefs.remove(keyArtistName);
   }
 }
 
