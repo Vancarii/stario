@@ -1,34 +1,48 @@
-name: Flutter Test
+name: Flutter CI/CD
 
-on: [push, pull_request]  # Runs the workflow on push and PRs
+on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use Ubuntu to set up the Flutter environment
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4  # Fetches your code from GitHub
+        uses: actions/checkout@v4  # Fetches your Flutter project
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.0.0"  # Change this to match your Flutter version
+          flutter-version: "2.5.3"  # Compatible with your SDK version
+
+      - name: Enable Flutter Dependencies
+        run: |
+          flutter config --enable-web
+          flutter config --enable-macos-desktop
 
       - name: Install dependencies
-        run: flutter pub get  # Fetch required packages
+        run: flutter pub get
 
-      - name: Check Flutter Doctor
-        run: flutter doctor  # Verifies the setup
+      - name: Run Flutter Doctor
+        run: flutter doctor
 
-      - name: Run Tests
-        run: flutter test  # Runs Flutter unit tests (if available)
+      - name: Run Tests (if any)
+        run: flutter test --no-sound-null-safety
 
-      - name: Build Flutter Web (Optional)
-        run: flutter build web  # Compiles your app for web
+      - name: Build Flutter Web
+        run: flutter build web --no-sound-null-safety
 
-      - name: Upload Web Build as Artifact (Optional)
+      - name: Upload Web Build as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: web-build
           path: build/web
+
+      - name: Build Android APK
+        run: flutter build apk --no-sound-null-safety
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
