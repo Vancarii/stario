@@ -18,7 +18,7 @@ void main() async {
   await Firebase.initializeApp();
 
   //initializes shared preferences
-  await SharedPrefs().init();
+  await SharedPrefs.init();
 
   firebaseFunctions.init();
 
@@ -65,7 +65,7 @@ class StarioApp extends StatelessWidget {
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
         ),
-        home: SharedPrefs().username == null ? AuthenticationPage() : SongBottomSheet(),
+        home: SharedPrefs.instance.username == null ? AuthenticationPage() : SongBottomSheet(),
       ),
     );
   }
