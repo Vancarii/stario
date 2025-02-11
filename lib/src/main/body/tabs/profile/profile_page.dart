@@ -223,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage>
                   ),*/
                   Text(
                     //takes the current logged in username from shared prefs class
-                    SharedPrefs().artistName,
+                    SharedPrefs.instance.artistName,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
