@@ -1,0 +1,34 @@
+name: Flutter Test
+
+on: [push, pull_request]  # Runs the workflow on push and PRs
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Use Ubuntu to set up the Flutter environment
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Fetches your code from GitHub
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.0.0"  # Change this to match your Flutter version
+
+      - name: Install dependencies
+        run: flutter pub get  # Fetch required packages
+
+      - name: Check Flutter Doctor
+        run: flutter doctor  # Verifies the setup
+
+      - name: Run Tests
+        run: flutter test  # Runs Flutter unit tests (if available)
+
+      - name: Build Flutter Web (Optional)
+        run: flutter build web  # Compiles your app for web
+
+      - name: Upload Web Build as Artifact (Optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: build/web
