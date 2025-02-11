@@ -7,33 +7,33 @@ class SharedPrefs {
 
   SharedPrefs._internal();
 
-  /// Ensures `_sharedPrefs` is initialized before accessing it
+  /// Ensures `_sharedPrefs` is initialized before use
   static Future<void> init() async {
     if (_sharedPrefs == null) {
       _sharedPrefs = await SharedPreferences.getInstance();
     }
   }
 
-  /// Returns stored username (or `null` if not found)
-  String get username => _sharedPrefs.getString(keyUsername);
+  /// Returns stored username (or an empty string if not set)
+  String get username => _sharedPrefs?.getString(keyUsername) ?? '';
 
   set username(String value) {
-    _sharedPrefs.setString(keyUsername, value);
+    _sharedPrefs?.setString(keyUsername, value);
   }
 
   void removeUsername() {
-    _sharedPrefs.remove(keyUsername);
+    _sharedPrefs?.remove(keyUsername);
   }
 
-  /// Returns stored artist name (or `null` if not found)
-  String get artistName => _sharedPrefs.getString(keyArtistName);
+  /// Returns stored artist name (or an empty string if not set)
+  String get artistName => _sharedPrefs?.getString(keyArtistName) ?? '';
 
   set artistName(String value) {
-    _sharedPrefs.setString(keyArtistName, value);
+    _sharedPrefs?.setString(keyArtistName, value);
   }
 
   void removeArtistName() {
-    _sharedPrefs.remove(keyArtistName);
+    _sharedPrefs?.remove(keyArtistName);
   }
 }
 
