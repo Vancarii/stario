@@ -18,7 +18,7 @@ void main() {
       keyUsername: "TestUser",  
     });
 
-    await SharedPrefs.instance.init(); 
+    await SharedPrefs.init(); 
   });
 
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
