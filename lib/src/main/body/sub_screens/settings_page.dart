@@ -73,7 +73,7 @@ class SettingsPage extends StatelessWidget {
               iconColor: Colors.red,
               onTap: () async {
                 //removes the username from shared prefs onces logged out
-                SharedPrefs().removeUsername();
+                SharedPrefs.instance.removeUsername();
 
                 //TODO: stop playing audio when exit
 
