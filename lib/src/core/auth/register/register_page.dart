@@ -507,8 +507,8 @@ class _RegisterPageState extends State<RegisterPage> {
               });
 
               //Save the username  so that it stays logged in and the app knows whos logged in
-              SharedPrefs().username = '$_registerUsername';
-              SharedPrefs().artistName = '$_registerName';
+              SharedPrefs.instance.username = '$_registerUsername';
+              SharedPrefs.instance.artistName = '$_registerName';
 
               Timer(
                 Duration(milliseconds: 500),
