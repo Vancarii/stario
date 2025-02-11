@@ -14,16 +14,15 @@ void main() {
   setUpAll(() async {
     // Mock SharedPreferences before running tests
     SharedPreferences.setMockInitialValues({
-      "key_username": "TestUser",  // Add a mock value to avoid null errors
+      keyUsername: "TestUser",  // Provide a default username
     });
+
+    await SharedPrefs.init(); // Ensures SharedPrefs is initialized
   });
 
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Ensure SharedPreferences is initialized before running the app
-    await SharedPreferences.getInstance();
-
-    // Build our app and trigger a frame
     await tester.pumpWidget(StarioApp());
+    await tester.pumpAndSettle(); // Waits for widgets to load
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
@@ -31,7 +30,7 @@ void main() {
 
     // Tap the '+' icon and trigger a frame.
     await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
