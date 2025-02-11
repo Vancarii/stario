@@ -9,20 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stario/main.dart';
+import 'package:stario/src/shared_prefs/shared_prefs.dart';
 
 void main() {
   setUpAll(() async {
     // Mock SharedPreferences before running tests
     SharedPreferences.setMockInitialValues({
-      keyUsername: "TestUser",  // Provide a default username
+      keyUsername: "TestUser",  
     });
 
-    await SharedPrefs.init(); // Ensures SharedPrefs is initialized
+    await SharedPrefs.instance.init(); 
   });
 
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(StarioApp());
-    await tester.pumpAndSettle(); // Waits for widgets to load
+    await tester.pumpAndSettle();
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
