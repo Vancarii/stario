@@ -33,7 +33,7 @@ jobs:
         run: flutter build web --no-sound-null-safety
 
       - name: Upload Web Build as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: web-build
           path: build/web
@@ -42,7 +42,7 @@ jobs:
         run: flutter build apk --no-sound-null-safety
 
       - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
